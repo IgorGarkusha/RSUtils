@@ -1,13 +1,12 @@
 # RSUtils
 Remote Sensing Utilities
 
-Welcome to RSUtils (Remote Sensing Utilities)!
-----------------
+**Welcome to RSUtils (Remote Sensing Utilities)!**
+
 RSUtils is free and open source (GPL) software.
 RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the capabilities of the GDAL/OGR library. When developing the used functionality of the libxml2 library.
 
-GDAL/OGR General
-----------------
+## GDAL/OGR General
 
 In general GDAL/OGR is licensed under an MIT/X style license with the 
 following terms:
@@ -30,11 +29,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+## XML toolkit from the GNOME project
 
- XML toolkit from the GNOME project
- ----------------
- 
- Copyright (C) 1998-2012 Daniel Veillard. All Rights Reserved.
+Copyright (C) 1998-2012 Daniel Veillard. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
