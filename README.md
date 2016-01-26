@@ -8,6 +8,7 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 
 GDAL/OGR General
 ----------------
+
 In general GDAL/OGR is licensed under an MIT/X style license with the 
 following terms:
 
@@ -32,6 +33,7 @@ DEALINGS IN THE SOFTWARE.
 
  XML toolkit from the GNOME project
  ----------------
+ 
  Copyright (C) 1998-2012 Daniel Veillard. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
