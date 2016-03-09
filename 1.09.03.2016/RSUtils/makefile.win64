@@ -1,0 +1,14 @@
+MAKE_FILE=-f makefile.win64
+
+all: s2_set_projection check_reflectance
+
+clean: 
+	cd source\s2_set_projection && $(MAKE) $(MAKE_FILE) clean
+	cd source\check_reflectance &&	$(MAKE) $(MAKE_FILE) clean
+	del binary\target\*.dll
+
+s2_set_projection: 
+	cd source\s2_set_projection && $(MAKE) $(MAKE_FILE) all
+
+check_reflectance: 
+	cd source\check_reflectance && $(MAKE) $(MAKE_FILE) all
