@@ -50,9 +50,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-##RSUtils: build requirements
 
-============================================================================================
+##RSUtils: build requirements
 
 1. For GNU/Linux: installed GNU GCC/G++ compilers;
    for Mac OS X: installed Xcode;
@@ -64,8 +63,6 @@ THE SOFTWARE.
 
 
 ##RSUtils: building in GNU/Linux or Mac OS X
-
-============================================================================================
 
 1. Add to PATH the location jdk/bin directory.
 2. Add to PATH the location RSUtils/binary/target directory. Create system variable 
@@ -81,7 +78,6 @@ For example in Mac OS X:
 
 ##RSUtils: building in Windows
 
-============================================================================================
 
 1. Add to PATH the location jdk\bin directory.
 2. Add to PATH the location RSUtils\binary\target directory. Create system variable 
