@@ -49,8 +49,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-============================================================================================
-**Build requirements
+
+##RSUtils: build requirements
+
 ============================================================================================
 
 1. For GNU/Linux: installed GNU GCC/G++ compilers;
@@ -61,8 +62,9 @@ THE SOFTWARE.
 4. Installed OpenJDK or Oracle JDK 1.8.
 5. Installed Quantum GIS 2.12 (necessarily only for Windows! For other -- optional).
 
-============================================================================================
-**Building in GNU/Linux or Mac OS X
+
+##RSUtils: building in GNU/Linux or Mac OS X
+
 ============================================================================================
 
 1. Add to PATH the location jdk/bin directory.
@@ -76,8 +78,9 @@ For example in Mac OS X:
 	export PATH=$PATH:$RSUTILS_HOME
 3. Execute from console file build.sh. To clean the build directory to use the file clear.sh.
 
-============================================================================================
-**Building in Windows
+
+##RSUtils: building in Windows
+
 ============================================================================================
 
 1. Add to PATH the location jdk\bin directory.
