@@ -1,0 +1,20 @@
+# Makefile for check_reflectance project
+
+PROG_NAME=check_reflectance
+SRC_FILES=check_reflectance.cpp
+OBJ_FILES=check_reflectance.o
+CXX=g++
+CCFLAGS=-Wall -I/Library/Frameworks/GDAL.framework/Versions/Current/Headers
+LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal
+CLEAN=rm -f
+
+all: $(PROG_NAME)
+
+$(PROG_NAME): $(OBJ_FILES)
+	$(CXX) $(LDFLAGS) -o ../../binary/target/$@ ./obj/$^
+
+$(OBJ_FILES): $(SRC_FILES)
+	$(CXX) $(CCFLAGS) -o ./obj/$@ -c $^
+
+clean:
+	$(CLEAN) ./obj/*.o *~ ../../binary/target/$(PROG_NAME)
