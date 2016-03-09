@@ -1,0 +1,23 @@
+# Makefile for s2_set_projection project
+
+PROG_NAME=s2_set_projection
+SRC_FILES=s2_set_projection.cpp s2_xml.cpp
+OBJ_FILES=s2_set_projection.o s2_xml.o
+CXX=g++
+CCFLAGS=-Wall -I/usr/include/gdal -I/usr/include/libxml2
+LDFLAGS=-lgdal -lxml2
+CLEAN=rm -f
+
+all: $(PROG_NAME)
+
+$(PROG_NAME): $(OBJ_FILES)
+	cd ./obj ; $(CXX) $(LDFLAGS) -o ../../../binary/target/$@ $^ ; cd ..
+
+s2_set_projection.o: s2_set_projection.cpp
+	$(CXX) $(CCFLAGS) -o ./obj/$@ -c $^
+
+s2_xml.o: s2_xml.cpp
+	$(CXX) $(CCFLAGS) -o ./obj/$@ -c $^
+
+clean:
+	$(CLEAN) ./obj/*.o *~ ../../binary/target/$(PROG_NAME)

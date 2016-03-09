@@ -1,1 +1,26 @@
+# Makefile for s2_set_projection project
 
+PROG_NAME=s2_set_projection.exe
+SRC_FILES=s2_set_projection.cpp s2_xml.cpp
+OBJ_FILES=s2_set_projection.obj s2_xml.obj
+
+CXX=mingw32-g++
+CCFLAGS=-I"$(QGIS_HOME)"\include
+LIBS="$(QGIS_HOME)"\lib\gdal_i.lib "$(QGIS_HOME)"\lib\libxml2.lib
+COPY_DLL=copy "$(QGIS_HOME)"\bin\libxml2.dll
+CLEAN=del /Q
+
+all: $(PROG_NAME)
+
+$(PROG_NAME): $(OBJ_FILES)
+	cd obj && $(CXX) $(LDFLAGS) -o ..\..\..\binary\target\$@ $^ $(LIBS) && cd .. && $(COPY_DLL) ..\..\binary\target\
+
+s2_set_projection.obj: s2_set_projection.cpp
+	$(CXX) $(CCFLAGS) -o obj\$@ -c $^
+
+s2_xml.obj: s2_xml.cpp
+	$(CXX) $(CCFLAGS) -o obj\$@ -c $^
+
+clean:
+	$(CLEAN) obj\*
+	$(CLEAN) ..\..\binary\target\$(PROG_NAME)
