@@ -22,35 +22,24 @@
 
 package org.rsutils.downloader;
 
-import java.io.*;
 import javax.swing.*;
 
-public class ProcessRunner 
+public interface DownLoadMainFrameInterface
 {
-	public ProcessRunner(DownLoadMainFrameInterface mainFrameDownloadProgram, JProgressBar prBar, JTextArea txtInfo)
-	{
-		m_mainFrame = mainFrameDownloadProgram;
-		m_prBar = prBar;
-		m_txtInfo = txtInfo;
-	}
-	
-	public DownLoadMainFrameInterface getMainFrame()
-	{
-		return m_mainFrame;
-	}
-	
-	public JProgressBar getProgressBar()
-	{
-		return m_prBar;
-	}
-	
-	public JTextArea getTextInfoArea()
-	{
-		return m_txtInfo;
-	}
-		
-    protected DownLoadMainFrameInterface m_mainFrame = null;
-    private JProgressBar m_prBar = null;
-    private JTextArea m_txtInfo = null;    
-    private Thread thread = null;
+	public String getUI_WorkDir();
+	public String getUI_ProductID();
+	public String getUI_ProductName();
+	public String getUI_UTM_TILE();
+	public String getUI_UserNameAndPassword();
+	public String getSUFFIX();
+	public String getProductXML();
+	public String getGranuleName(String manifestSafePathName);
+	public String getGranuleXMLFileName(String granuleName);
+	public String getBandName(String granuleName, int index);
+	public int[] getDownloadBandsIndexes();
+	public String getUI_Polarization();
+	public JButton getUI_btnDownload();
+	public String getUI_Year();
+	public String getUI_FromMonth();
+	public String getUI_ToMonth();
 }
