@@ -11,7 +11,7 @@ CLEAN=del /Q
 all: $(PROG_NAME)
 
 $(PROG_NAME): $(OBJ_FILES)
-	$(CXX) $(LDFLAGS) /Fe..\..\binary\target\$@ obj\$** $(GDAL_LIB) /link /MACHINE:X64
+	$(CXX) $(LDFLAGS) /Fe..\..\binary\target\$@ obj\$** $(GDAL_LIB) /link /MACHINE:X64 && del ..\..\binary\target\*.exp && del ..\..\binary\target\*.lib
 
 $(OBJ_FILES): $(SRC_FILES)
 	$(CXX) $(CCFLAGS) /Foobj\$@ /c $**
