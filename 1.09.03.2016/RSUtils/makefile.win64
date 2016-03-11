@@ -1,10 +1,11 @@
 MAKE_FILE=-f makefile.win64
 
-all: s2_set_projection check_reflectance
+all: s2_set_projection check_reflectance s2_utm_tile_finder
 
 clean: 
 	cd source\s2_set_projection && $(MAKE) $(MAKE_FILE) clean
 	cd source\check_reflectance &&	$(MAKE) $(MAKE_FILE) clean
+	cd source\s2_utm_tile_finder &&	$(MAKE) $(MAKE_FILE) clean
 	del binary\target\*.dll
 
 s2_set_projection: 
@@ -12,3 +13,6 @@ s2_set_projection:
 
 check_reflectance: 
 	cd source\check_reflectance && $(MAKE) $(MAKE_FILE) all
+
+s2_utm_tile_finder: 
+	cd source\s2_utm_tile_finder && $(MAKE) $(MAKE_FILE) all
