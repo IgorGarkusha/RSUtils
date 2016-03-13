@@ -4,13 +4,17 @@ echo "BUILD S2_SET_PROJECTION and CHECK_REFLECTANCE..."
 echo ""
 
 MACOS=`uname -a | awk '{print $1;}' | grep Darwin`
+FREEBSD=`uname -a | awk '{print $1;}' | grep FreeBSD`
 
-if [ "-"${MACOS} == "-" ]; then 
-	# Build for LINUX
-	make -f ./makefile.unx
-else
+if [ "-"${FREEBSD} == "-FreeBSD" ]; then 
+	# Build for FreeBSD
+	make -f ./makefile.bsd
+elif [ "-"${MACOS} == "-Darwin" ]; then 
 	# Build for MAC OS X
 	make -f ./makefile.mac
+else
+	# Build for GNU/Linux
+	make -f ./makefile.unx
 fi
 
 echo ""
@@ -74,17 +78,17 @@ echo ""
 
 # export RSUTILS_HOME=`pwd`/binary/target
 
-echo "#!/bin/bash" > ./binary/target/modis_downloader
+echo "#!"$SHELL > ./binary/target/modis_downloader
 echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/modis_downloader.jar:. modis_downloader.modis_download \$1" >> ./binary/target/modis_downloader
 echo "" >> ./binary/target/modis_downloader
 chmod +x ./binary/target/modis_downloader
 
-echo "#!/bin/bash" > ./binary/target/s1a_grd_downloader
+echo "#!"$SHELL > ./binary/target/s1a_grd_downloader
 echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/s1a_grd_downloader.jar:. s1a_grd_downloader.s1a_grd_download \$1" >> ./binary/target/s1a_grd_downloader
 echo "" >> ./binary/target/s1a_grd_downloader
 chmod +x ./binary/target/s1a_grd_downloader
 
-echo "#!/bin/bash" > ./binary/target/s2a_tile_downloader
+echo "#!"$SHELL > ./binary/target/s2a_tile_downloader
 echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/s2a_tile_downloader.jar:. s2a_tile_downloader.s2_tile_download \$1" >> ./binary/target/s2a_tile_downloader
 echo "" >> ./binary/target/s2a_tile_downloader
 chmod +x ./binary/target/s2a_tile_downloader
