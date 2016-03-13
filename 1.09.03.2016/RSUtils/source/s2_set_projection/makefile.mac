@@ -6,7 +6,7 @@ OBJ_FILES=s2_set_projection.o s2_xml.o
 CXX=g++
 CCFLAGS=-Wall -I/Library/Frameworks/GDAL.framework/Versions/Current/Headers -I/usr/include/libxml2
 # -I/Library/Frameworks/libxml.framework/Versions/Current/Headers
-LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal
+LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal -lxml2
 CLEAN=rm -f
 
 all: $(PROG_NAME)
