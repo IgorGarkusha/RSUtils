@@ -95,7 +95,7 @@ public class s2_tile_download
 		System.out.println("Console parameters examples:");
 		System.out.println("\ts2a_tile_downloader \"/home/username/processing/data 92643e16-9b9e-484c-ab5b-c8a9b4f1c772 S2A_OPER_PRD_MSIL1C_PDMC_20160104T193934_R064_V20160103T084718_20160103T084718.SAFE 36UXV Username:Password\"");
 		System.out.println("\ts2a_tile_downloader \"/Users/username/processing/data 92643e16-9b9e-484c-ab5b-c8a9b4f1c772 S2A_OPER_PRD_MSIL1C_PDMC_20160104T193934_R064_V20160103T084718_20160103T084718.SAFE 36UXV Username:Password 1 9 10\"");
-		System.out.println("\ts2a_tile_downloader \"C:\\Processing\\Data 92643e16-9b9e-484c-ab5b-c8a9b4f1c772 S2A_OPER_PRD_MSIL1C_PDMC_20160104T193934_R064_V20160103T084718_20160103T084718.SAFE 36UXV Username:Password 1 9 10\"");
+		System.out.println("\ts2a_tile_downloader C:\\Processing\\Data 92643e16-9b9e-484c-ab5b-c8a9b4f1c772 S2A_OPER_PRD_MSIL1C_PDMC_20160104T193934_R064_V20160103T084718_20160103T084718.SAFE 36UXV Username:Password 1 9 10");
 		System.out.println();
 	}
 }
