@@ -9,7 +9,7 @@ echo BUILD S2_SET_PROJECTION and CHECK_REFLECTANCE...
 echo.
 nmake.exe -f makefile.win32
 
-call javabuild_cmd
+call javabuild.cmd
 
 echo.
 dir binary\target\
