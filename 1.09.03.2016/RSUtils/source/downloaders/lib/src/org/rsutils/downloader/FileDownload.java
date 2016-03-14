@@ -34,10 +34,10 @@ import org.rsutils.*;
 public class FileDownload implements Runnable
 {
 	public FileDownload(URL url, String saveFileName, 
- 						JProgressBar prBar, 
-						String strInfo, JTextArea txtInfo)
+ 				JProgressBar prBar, 
+				String strInfo, JTextArea txtInfo)
     {
-		fileProcessed = false;
+	fileProcessed = false;
 
         m_url = url;
         m_saveFileName = saveFileName;
@@ -49,12 +49,12 @@ public class FileDownload implements Runnable
     }
     
     public FileDownload(URL url, String saveFileName, 
-						String UserNameAndPasword, 
-						JProgressBar prBar, 
-						String strInfo, JTextArea txtInfo)
+			String UserNameAndPasword, 
+			JProgressBar prBar, 
+			String strInfo, JTextArea txtInfo)
     {
         fileProcessed = false;
-		m_UserNameAndPasword = UserNameAndPasword;
+	m_UserNameAndPasword = UserNameAndPasword;
         m_url = url;
         m_saveFileName = saveFileName;
         m_prBar = prBar;
@@ -65,14 +65,14 @@ public class FileDownload implements Runnable
     }
     
     public long getDownloadSize()
-	{
-		return m_downloadSize;
-	}
+    {
+	return m_downloadSize;
+    }
 
     @Override
     public void run() 
     {
-		Lock();
+	Lock();
 		
         Utils.printInfo(m_txtInfo, m_textInfo);
                 
@@ -83,52 +83,52 @@ public class FileDownload implements Runnable
         
         long downloadSize = 0;
         long size = -1;
-		boolean flExists = false;
-		long contentLength = -1;
-		boolean flHttps = false;
-		long fullSize = 0;
+	boolean flExists = false;
+	long contentLength = -1;
+	boolean flHttps = false;
+	long fullSize = 0;
         
         if( Utils.fileExists(m_saveFileName) )
-		{
-			downloadSize = Utils.getFileSize(m_saveFileName);
-			flExists = true;
-		}
+	{
+		downloadSize = Utils.getFileSize(m_saveFileName);
+		flExists = true;
+	}
         
         try 
         {
-            if(m_UserNameAndPasword.compareTo("") == 0) // HTTP Connection (for example: Terra MODIS)
-				connection = (HttpURLConnection)m_url.openConnection();
-			else  // HTTPS Connection (for example: Sentinel-1A, Sentinel-2A)
-			{
-				flHttps = true;
-				connection = (HttpsURLConnection)m_url.openConnection();
-				TrustManager[] trustAllCerts = new TrustManager[] { 
-					new X509TrustManager() {     
-						public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
-							return new X509Certificate[0];
-						} 
-						public void checkClientTrusted( 
-							java.security.cert.X509Certificate[] certs, String authType) {
-							} 
-						public void checkServerTrusted( 
-							java.security.cert.X509Certificate[] certs, String authType) {
-						}
+            	if(m_UserNameAndPasword.compareTo("") == 0) // HTTP Connection (for example: Terra MODIS)
+			connection = (HttpURLConnection)m_url.openConnection();
+		else  // HTTPS Connection (for example: Sentinel-1A, Sentinel-2A)
+		{
+			flHttps = true;
+			connection = (HttpsURLConnection)m_url.openConnection();
+			TrustManager[] trustAllCerts = new TrustManager[] { 
+				new X509TrustManager() {     
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
+						return new X509Certificate[0];
 					} 
-				}; 
-				SSLContext sc;
-				sc = SSLContext.getInstance("SSL");
-				sc.init(null, trustAllCerts, new java.security.SecureRandom());
-				((HttpsURLConnection)(connection)).setSSLSocketFactory(sc.getSocketFactory());
-				
-				String basicAuth = "Basic " + Base64.getEncoder().encodeToString(this.m_UserNameAndPasword.getBytes());
-				connection.setRequestProperty("Authorization", basicAuth);
-				connection.setDoInput(true);
-			}           
+					public void checkClientTrusted( 
+						java.security.cert.X509Certificate[] certs, String authType) {
+						} 
+					public void checkServerTrusted( 
+						java.security.cert.X509Certificate[] certs, String authType) {
+					}
+				} 
+			}; 
+			SSLContext sc;
+			sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			((HttpsURLConnection)(connection)).setSSLSocketFactory(sc.getSocketFactory());
+			
+			String basicAuth = "Basic " + Base64.getEncoder().encodeToString(this.m_UserNameAndPasword.getBytes());
+			connection.setRequestProperty("Authorization", basicAuth);
+			connection.setDoInput(true);
+		}           
             
             connection.setRequestProperty("Range", "bytes=" + downloadSize + "-");
             connection.connect();
                         
-			// connection.getResponseCode()
+		// connection.getResponseCode()
 			
             contentLength = connection.getContentLengthLong();
                         
@@ -166,7 +166,6 @@ public class FileDownload implements Runnable
 					file.write(buffer, 0, read);
 					downloadSize += read;
 					count += read;
-					//Utils.printProgress(m_prBar, (int)( ((float) downloadSize / size)*100 ) );
 					Utils.printProgress(m_prBar, (int)( ((float) downloadSize / fullSize)*100 ) );
 				}
 			}
@@ -216,25 +215,25 @@ public class FileDownload implements Runnable
     public static void Lock()
     {
 		while(fileProcessed) { synchronized(lock) { try { lock.wait(); } catch(InterruptedException e) {} } }
-	}
+    }
 	
-	public static void UnLock()
-	{
-		fileProcessed = true;
+    public static void UnLock()
+    {
+	fileProcessed = true;
         synchronized(lock) 
         {
-            lock.notifyAll();
+    		lock.notifyAll();
         }
-	}
+    }
     
     public static void Wait()
     {
-		synchronized(lock) { try { lock.wait(); } catch(InterruptedException e) {} }
-	}
+	synchronized(lock) { try { lock.wait(); } catch(InterruptedException e) {} }
+    }
     
     // HTTP Download
     public static void doDownload(URL url, String saveFileName, JProgressBar prBar, 
-								  String strInfo, JTextArea txtInfo, boolean flTimeOut)
+				  String strInfo, JTextArea txtInfo, boolean flTimeOut)
 	{
 		boolean flContinueDownload = false;
 		do
@@ -255,7 +254,7 @@ public class FileDownload implements Runnable
 	
 	// HTTPS Download
 	public static void doDownload(URL url, String saveFileName, String UserNameAndPasword, 
-								 JProgressBar prBar, String strInfo, JTextArea txtInfo, boolean flTimeOut)
+				      JProgressBar prBar, String strInfo, JTextArea txtInfo, boolean flTimeOut)
 	{
 		boolean flContinueDownload = false;
 		do
