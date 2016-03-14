@@ -86,7 +86,7 @@ public class modis_download
 		System.out.println("Console parameters examples:");
 		System.out.println("\tmodis_download \"/home/username/processing/data MOD17A2H.006 2015 04 09 h19v03 h19v04 h20v03 h20v04\"");
 		System.out.println("\tmodis_download \"/Users/username/processing/data MOD17A2H.006 2015 04 09 h19v03 h19v04 h20v03 h20v04\"");
-		System.out.println("\tmodis_download \"C:\\Processing\\Data MOD17A2H.006 2015 04 09 h19v03 h19v04 h20v03 h20v04\"");
+		System.out.println("\tmodis_download C:\\Processing\\Data MOD17A2H.006 2015 04 09 h19v03 h19v04 h20v03 h20v04");
 		
 		System.out.println();
 	}
