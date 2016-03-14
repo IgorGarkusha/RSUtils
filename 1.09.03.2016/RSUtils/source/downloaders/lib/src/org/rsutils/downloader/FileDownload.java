@@ -86,6 +86,7 @@ public class FileDownload implements Runnable
 		boolean flExists = false;
 		long contentLength = -1;
 		boolean flHttps = false;
+		long fullSize = 0;
         
         if( Utils.fileExists(m_saveFileName) )
 		{
@@ -135,6 +136,9 @@ public class FileDownload implements Runnable
             { 
 				size = contentLength;
 				
+				if(downloadSize == 0) fullSize = size;
+				else fullSize = downloadSize + size;
+				
 				if(flExists) Utils.printInfo(m_txtInfo, "Resume downloading. Residual amount: " + Utils.getHumanSize(size) + "\n");
 				else Utils.printInfo(m_txtInfo, "Download size: " + Utils.getHumanSize(size) + "\n");
 				
@@ -162,7 +166,8 @@ public class FileDownload implements Runnable
 					file.write(buffer, 0, read);
 					downloadSize += read;
 					count += read;
-					Utils.printProgress(m_prBar, (int)( ((float) downloadSize / size)*100 ) );
+					//Utils.printProgress(m_prBar, (int)( ((float) downloadSize / size)*100 ) );
+					Utils.printProgress(m_prBar, (int)( ((float) downloadSize / fullSize)*100 ) );
 				}
 			}
 			else 
