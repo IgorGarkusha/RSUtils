@@ -4,8 +4,8 @@ PROG_NAME=check_reflectance.exe
 SRC_FILES=check_reflectance.cpp
 OBJ_FILES=check_reflectance.obj
 CXX=cl
-CCFLAGS=/I"$(QGIS_HOME)"\include
-GDAL_LIB="$(QGIS_HOME)"\lib\gdal_i.lib
+CCFLAGS=/I$(QGIS_HOME)\include
+GDAL_LIB=$(QGIS_HOME)\lib\gdal_i.lib
 CLEAN=del /Q
 
 all: $(PROG_NAME)
