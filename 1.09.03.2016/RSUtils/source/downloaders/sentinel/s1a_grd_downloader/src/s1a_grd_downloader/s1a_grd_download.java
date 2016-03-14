@@ -87,7 +87,7 @@ public class s1a_grd_download
 		System.out.println("Console parameters examples:");
 		System.out.println("\ts1a_grd_downloader \"/home/username/processing/data c1cc2fd3-7aff-460c-8041-d344e0726d4b S1A_IW_GRDH_1SDV_20160214T035518_20160214T035543_009937_00E967_4E23.SAFE all Username:Password\"");
 		System.out.println("\ts1a_grd_downloader \"/Users/username/processing/data c1cc2fd3-7aff-460c-8041-d344e0726d4b S1A_IW_GRDH_1SDV_20160214T035518_20160214T035543_009937_00E967_4E23.SAFE vv Username:Password\"");
-		System.out.println("\ts1a_grd_downloader \"C:\\Processing\\Data c1cc2fd3-7aff-460c-8041-d344e0726d4b S1A_IW_GRDH_1SDV_20160214T035518_20160214T035543_009937_00E967_4E23.SAFE vh Username:Password\"");
+		System.out.println("\ts1a_grd_downloader C:\\Processing\\Data c1cc2fd3-7aff-460c-8041-d344e0726d4b S1A_IW_GRDH_1SDV_20160214T035518_20160214T035543_009937_00E967_4E23.SAFE vh Username:Password");
 		
 		System.out.println();
 	}
