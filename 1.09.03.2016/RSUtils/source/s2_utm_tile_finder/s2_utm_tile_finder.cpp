@@ -119,9 +119,7 @@ char* trim_all(char * str)
 	if(str[strlen(str)-1] == '\n') str[strlen(str)-1] = '\0';
 	int start_pos = 0;
 	int end_pos = 0;
-	//for(int i=0; isblank(str[i]) != 0; i++) start_pos = i;
 	for(int i=0; isblank_(str[i])!=0; i++) start_pos = i;
-	//for(int i=strlen(str)-1; isblank(str[i]) != 0; i--) end_pos = i;
 	for(int i=strlen(str)-1; isblank_(str[i]) != 0; i--) end_pos = i;
 	str[end_pos] = '\0';
 	int j = 0;
