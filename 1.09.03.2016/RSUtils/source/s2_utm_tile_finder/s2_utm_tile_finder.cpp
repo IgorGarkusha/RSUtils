@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #define PROG_VERSION "1"
 #define DATE_VERSION "09.03.2016"
@@ -35,6 +34,7 @@ char* getUtmTileName(FILE* fin, char* str);
 void getUtmTileCoords(FILE* fin, float * x1, float * y1, float * x2, float * y2,
 					  float * x3, float * y3, float * x4, float * y4);
 char* trim_all(char * str);
+int isblank_(char ch);
 int checkAndGetValueCoord(const char * srcTagName, char dstTagName[], const char * str, int start_pos, float * res);
 
 int main(int argc, char* argv[])
@@ -109,13 +109,20 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
+int isblank_(char ch)
+{
+	return (ch == '\x20')?1:(ch == '\t')?1:0;
+}
+
 char* trim_all(char * str)
 {
 	if(str[strlen(str)-1] == '\n') str[strlen(str)-1] = '\0';
 	int start_pos = 0;
 	int end_pos = 0;
-	for(int i=0; isblank(str[i]) != 0; i++) start_pos = i;
-	for(int i=strlen(str)-1; isblank(str[i]) != 0; i--) end_pos = i;
+	//for(int i=0; isblank(str[i]) != 0; i++) start_pos = i;
+	for(int i=0; isblank_(str[i])!=0; i++) start_pos = i;
+	//for(int i=strlen(str)-1; isblank(str[i]) != 0; i--) end_pos = i;
+	for(int i=strlen(str)-1; isblank_(str[i]) != 0; i--) end_pos = i;
 	str[end_pos] = '\0';
 	int j = 0;
 	for(int i=start_pos+1; str[i]!='\0'; i++, j++) str[j] = str[i];
