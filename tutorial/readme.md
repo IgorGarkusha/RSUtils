@@ -21,3 +21,7 @@
 
 7. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion and UTM Tile Set Projection (s2_set_projection):
     https://www.youtube.com/watch?v=ywotiPYdvTs
+
+8. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion, UTM Tile Set Projection and Check Reflectance (s2_set_projection, check_reflectance):
+    https://www.youtube.com/watch?v=LjbZY9trZPs
+
