@@ -74,21 +74,21 @@ public class FileDownload implements Runnable
     {
 	Lock();
 		
-        Utils.printInfo(m_txtInfo, m_textInfo);
-                
-        RandomAccessFile file = null;
-        InputStream stream = null;
-        
-        URLConnection connection = null;
-        
-        long downloadSize = 0;
-        long size = -1;
+	Utils.printInfo(m_txtInfo, m_textInfo);
+			
+	RandomAccessFile file = null;
+	InputStream stream = null;
+	
+	URLConnection connection = null;
+	
+	long downloadSize = 0;
+	long size = -1;
 	boolean flExists = false;
 	long contentLength = -1;
 	boolean flHttps = false;
 	long fullSize = 0;
         
-        if( Utils.fileExists(m_saveFileName) )
+    if( Utils.fileExists(m_saveFileName) )
 	{
 		downloadSize = Utils.getFileSize(m_saveFileName);
 		flExists = true;
@@ -96,7 +96,7 @@ public class FileDownload implements Runnable
         
         try 
         {
-            	if(m_UserNameAndPasword.compareTo("") == 0) // HTTP Connection (for example: Terra MODIS)
+            if(m_UserNameAndPasword.compareTo("") == 0) // HTTP Connection (for example: Terra MODIS)
 			connection = (HttpURLConnection)m_url.openConnection();
 		else  // HTTPS Connection (for example: Sentinel-1A, Sentinel-2A)
 		{
@@ -124,11 +124,13 @@ public class FileDownload implements Runnable
 			connection.setRequestProperty("Authorization", basicAuth);
 			connection.setDoInput(true);
 		}           
-            
+            connection.setRequestProperty("Content-Type", "application/octet-stream");
+			connection.setRequestProperty("Connection", "close");
+			
             connection.setRequestProperty("Range", "bytes=" + downloadSize + "-");
             connection.connect();
                         
-		// connection.getResponseCode()
+		 // connection.getResponseCode()
 			
             contentLength = connection.getContentLengthLong();
                         
@@ -186,7 +188,10 @@ public class FileDownload implements Runnable
 						else ((HttpURLConnection)(connection)).getErrorStream().close();
 					}catch(IOException e3){}
 				}
-				finally{ Utils.printInfo(m_txtInfo, "SKIP. File already downloaded!\n"); }
+				finally
+				{ 
+					Utils.printInfo(m_txtInfo, "SKIP. File already downloaded!\n");
+				}
 			}
 			else
 				{
@@ -200,6 +205,11 @@ public class FileDownload implements Runnable
             {
                 try{ file.close(); }catch(Exception e){}
             }
+            
+            if(flHttps) ((HttpsURLConnection)(connection)).disconnect();
+            else ((HttpURLConnection)(connection)).disconnect();
+            connection = null;
+            //System.out.println("\nDisconnect...\n");
         }
         
         if(stream != null)
@@ -236,6 +246,13 @@ public class FileDownload implements Runnable
 				  String strInfo, JTextArea txtInfo, boolean flTimeOut)
 	{
 		boolean flContinueDownload = false;
+		
+		if(flTimeOut)
+		{
+			Utils.printInfo(txtInfo, "\nTimeout 15 seconds...\n");
+			Utils.timeout();
+		}
+		
 		do
 		{
 			FileDownload download = new FileDownload(url, saveFileName, prBar, strInfo, txtInfo);
@@ -244,12 +261,6 @@ public class FileDownload implements Runnable
 			if( download.getDownloadSize() < Utils.getFileSize(saveFileName) ) flContinueDownload = true;
 			download = null;
 		}while(flContinueDownload);
-
-		if(flTimeOut)
-		{
-			Utils.printInfo(txtInfo, "\nTimeout 15 seconds...\n");
-			Utils.timeout();
-		}
 	}
 	
 	// HTTPS Download
@@ -257,6 +268,13 @@ public class FileDownload implements Runnable
 				      JProgressBar prBar, String strInfo, JTextArea txtInfo, boolean flTimeOut)
 	{
 		boolean flContinueDownload = false;
+		
+		if(flTimeOut)
+		{
+			Utils.printInfo(txtInfo, "\nTimeout 15 seconds...\n");
+			Utils.timeout();
+		}
+		
 		do
 		{
 			FileDownload download = new FileDownload(url, saveFileName, UserNameAndPasword, prBar, strInfo, txtInfo);
@@ -265,12 +283,7 @@ public class FileDownload implements Runnable
 			if( download.getDownloadSize() < Utils.getFileSize(saveFileName) ) flContinueDownload = true;
 			download = null;
 		}while(flContinueDownload);
-		
-		if(flTimeOut)
-		{
-			Utils.printInfo(txtInfo, "\nTimeout 15 seconds...\n");
-			Utils.timeout();
-		}
+				
 	}
     
     private String m_UserNameAndPasword = "";
