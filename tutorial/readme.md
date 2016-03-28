@@ -19,9 +19,12 @@
 6. Sentinel-2A UTM Tile Downloader GUI (s2a_tile_downloader):
     https://www.youtube.com/watch?v=oeh_YmltwJw
 
-7. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion and UTM Tile Set Projection (s2_set_projection):
+7. How to build **OpenJPEG library** in MS Windows:
+    https://www.youtube.com/watch?v=JsA5812uqKQ
+
+8. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion and UTM Tile Set Projection (s2_set_projection):
     https://www.youtube.com/watch?v=ywotiPYdvTs
 
-8. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion, UTM Tile Set Projection and Check Reflectance (s2_set_projection, check_reflectance):
+9. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion, UTM Tile Set Projection and Check Reflectance (s2_set_projection, check_reflectance):
     https://www.youtube.com/watch?v=LjbZY9trZPs
 
