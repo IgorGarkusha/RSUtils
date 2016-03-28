@@ -19,7 +19,7 @@
 6. Sentinel-2A UTM Tile Downloader GUI (**s2a_tile_downloader**):
     https://www.youtube.com/watch?v=oeh_YmltwJw
 
-7. How to build **OpenJPEG library** in MS Windows:
+7. How to build **OpenJPEG library SNAP Edition** in MS Windows:
     https://www.youtube.com/watch?v=JsA5812uqKQ
 
 8. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion and UTM Tile Set Projection (**s2_set_projection**):
