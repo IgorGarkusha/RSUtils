@@ -13,11 +13,7 @@ Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipropetrovsk.
 
 ## Previous versions
 
-Version 1.09.03.2016: 
-
--- IgorGarkusha/RSUtils/blob/master/archive/RSUtils_Version_1.09.03.2016.tar.gz
-
--- https://github.com/IgorGarkusha/RSUtils/tree/master/1.09.03.2016/RSUtils
+Version 1.09.03.2016: https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.09.03.2016.tar.gz
 
 ## GDAL/OGR General
 
