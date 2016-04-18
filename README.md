@@ -1,17 +1,23 @@
 # RSUtils
 
-**Remote Sensing Utilities. Version 1.09.03.2016. Last Update 03/19/2016**.
+**Remote Sensing Utilities. Version 1.17.04.2016.**
 
 **Welcome to RSUtils (Remote Sensing Utilities - Extentions GDAL/OGR)!**
+
+Preparing a new version...
 
 RSUtils is free and open source (GPL) software.
 RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the capabilities of the GDAL/OGR library. When developing the used functionality of the libxml2 library.
 
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipropetrovsk.
 
-Current stable version: https://github.com/IgorGarkusha/RSUtils/tree/master/1.09.03.2016/RSUtils
+## Previous versions
 
-Tutorials: https://github.com/IgorGarkusha/RSUtils/tree/master/tutorial
+Version 1.09.03.2016: 
+
+-- IgorGarkusha/RSUtils/blob/master/archive/RSUtils_Version_1.09.03.2016.tar.gz
+
+-- https://github.com/IgorGarkusha/RSUtils/tree/master/1.09.03.2016/RSUtils
 
 ## GDAL/OGR General
 
@@ -58,7 +64,7 @@ THE SOFTWARE.
 
 
 
-##RSUtils: build requirements
+## RSUtils: build requirements
 
 1. For GNU/Linux: installed GNU GCC/G++ compilers;
    for Mac OS X: installed Xcode;
@@ -69,7 +75,7 @@ THE SOFTWARE.
 5. Installed Quantum GIS 2.12 (necessarily only for Windows! For other -- optional).
 
 
-##RSUtils: building in GNU/Linux or Mac OS X
+## RSUtils: building in GNU/Linux or Mac OS X
 
 1. Add to PATH the location jdk/bin directory.
 2. Add to PATH the location RSUtils/binary/target directory. Create system variable 
@@ -82,8 +88,11 @@ For example in Mac OS X:
 	export PATH=$PATH:$RSUTILS_HOME
 3. Execute from console file build.sh. To clean the build directory to use the file clear.sh.
 
+## RSUtils: building in FreeBSD
 
-##RSUtils: building in Windows
+GEOS support must be enabled!
+
+## RSUtils: building in Windows
 
 
 1. Add to PATH the location jdk\bin directory.

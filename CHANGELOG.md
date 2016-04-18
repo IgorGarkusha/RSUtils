@@ -1,3 +1,6 @@
+## RSUtils. Version 1.17.04.2016
+
+Preparing a new version...
 
 ## RSUtils. Version 1.09.03.2016
 
