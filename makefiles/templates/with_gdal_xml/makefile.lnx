@@ -1,0 +1,22 @@
+# Makefile for PROGRAM__NAME project
+
+TARGET=PROGRAM__NAME
+MODULEXML=s2_xml
+CXX=g++
+CCFLAGS=-Wall -I/usr/include/gdal -I/usr/include/libxml2
+LDFLAGS=-lgdal -lxml2
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o $(MODULEXML).o
+	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o ../../obj/$(MODULEXML).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(TARGET).o -c $(TARGET).cpp
+
+$(MODULEXML).o: $(MODULEXML).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(MODULEXML).o -c $(MODULEXML).cpp
+
+clean:
+	$(CLEAN) ../../obj/*.o ../../bin/$(TARGET)

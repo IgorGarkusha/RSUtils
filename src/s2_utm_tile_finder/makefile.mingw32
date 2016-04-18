@@ -1,0 +1,17 @@
+# Makefile for s2_utm_tile_finder project
+
+TARGET=s2_utm_tile_finder
+CXX=mingw32-g++
+CLEAN=del /Q
+
+all: $(TARGET).exe
+
+$(TARGET).exe: $(TARGET).obj
+	$(CXX) -o ..\..\bin\$(TARGET).exe ..\..\obj\$(TARGET).obj
+
+$(TARGET).obj: $(TARGET).cpp
+	$(CXX) -o ..\..\obj\$(TARGET).obj -c $(TARGET).cpp
+
+clean:
+	$(CLEAN) ..\..\obj\*
+	$(CLEAN) ..\..\bin\$(TARGET).exe

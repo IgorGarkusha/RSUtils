@@ -1,0 +1,26 @@
+# Makefile for l8_dn_conversion project
+
+TARGET=l8_dn_conversion
+UTILS=utils
+MTL=landsat_metadata
+CXX=g++
+CCFLAGS=-Wall -I/Library/Frameworks/GDAL.framework/Versions/Current/Headers
+LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o $(UTILS).o $(MTL).o
+	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o ../../obj/$(UTILS).o ../../obj/$(MTL).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(TARGET).o -c $(TARGET).cpp
+
+$(UTILS).o: ../lib/$(UTILS).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(UTILS).o -c ../lib/$(UTILS).cpp
+
+$(MTL).o: $(MTL).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(MTL).o -c $(MTL).cpp
+
+clean:
+	$(CLEAN) ../../obj/*.o ../../bin/$(TARGET)

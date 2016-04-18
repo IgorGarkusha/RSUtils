@@ -1,0 +1,23 @@
+# Makefile for calc_index project
+
+TARGET=calc_index
+UTILS=utils
+CXX=cl
+CCFLAGS=/D__MSVC__ /EHsc /I"$(QGIS_HOME)\include"
+GDAL_LIB="$(QGIS_HOME)\lib\gdal_i.lib"
+CLEAN=del /Q
+
+all: $(TARGET).exe
+
+$(TARGET).exe: $(TARGET).obj $(UTILS).obj
+	$(CXX) /Fe..\..\bin\$(TARGET).exe ..\..\obj\$(TARGET).obj ..\..\obj\$(UTILS).obj $(GDAL_LIB) /link && del ..\..\bin\*.exp && del ..\..\bin\*.lib
+
+$(TARGET).obj: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) /Fo..\..\obj\$(TARGET).obj /c $(TARGET).cpp
+
+$(UTILS).obj: ..\lib\$(UTILS).cpp
+	$(CXX) $(CCFLAGS) /Fo..\..\obj\$(UTILS).obj /c ..\lib\$(UTILS).cpp
+
+clean:
+	$(CLEAN) ..\..\obj\*
+	$(CLEAN) ..\..\bin\$(TARGET).exe

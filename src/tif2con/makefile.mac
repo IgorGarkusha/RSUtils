@@ -1,0 +1,22 @@
+# Makefile for tif2con project
+
+TARGET=tif2con
+UTILS=utils
+CXX=g++
+CCFLAGS=-Wall -I/Library/Frameworks/GDAL.framework/Versions/Current/Headers
+LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o $(UTILS).o
+	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o ../../obj/$(UTILS).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(TARGET).o -c $(TARGET).cpp
+
+$(UTILS).o: ../lib/$(UTILS).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(UTILS).o -c ../lib/$(UTILS).cpp
+
+clean:
+	$(CLEAN) ../../obj/*.o ../../bin/$(TARGET)

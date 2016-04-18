@@ -1,0 +1,24 @@
+# Makefile for s2_set_projection project
+
+TARGET=s2_set_projection
+MODULEXML=s2_xml
+CXX=mingw32-g++
+CCFLAGS=-I"$(QGIS_HOME)\include"
+LIBS="$(QGIS_HOME)\lib\gdal_i.lib" "$(QGIS_HOME)\lib\libxml2.lib"
+COPY_DLL=copy "$(QGIS_HOME)\bin\libxml2.dll"
+CLEAN=del /Q
+
+all: $(TARGET).exe
+
+$(TARGET).exe: $(TARGET).obj $(MODULEXML).obj
+	$(CXX) -o ..\..\bin\$(TARGET).exe ..\..\obj\$(TARGET).obj ..\..\obj\$(MODULEXML).obj $(LIBS) && $(COPY_DLL) ..\..\bin\
+
+$(TARGET).obj: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ..\..\obj\$(TARGET).obj -c $(TARGET).cpp
+
+$(MODULEXML).obj: $(MODULEXML).cpp
+	$(CXX) $(CCFLAGS) -o ..\..\obj\$(MODULEXML).obj -c $(MODULEXML).cpp
+
+clean:
+	$(CLEAN) ..\..\obj\*
+	$(CLEAN) ..\..\bin\$(TARGET).exe

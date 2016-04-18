@@ -1,0 +1,18 @@
+# Makefile for PROGRAM__NAME project
+
+TARGET=PROGRAM__NAME
+CXX=g++
+CCFLAGS=-Wall -I/Library/Frameworks/GDAL.framework/Versions/Current/Headers
+LDFLAGS=-L/Library/Frameworks/GDAL.framework/Versions/Current/unix/lib -lgdal
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o
+	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../obj/$(TARGET).o -c $(TARGET).cpp
+
+clean:
+	$(CLEAN) ../../obj/*.o ../../bin/$(TARGET)

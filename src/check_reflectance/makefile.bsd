@@ -1,0 +1,18 @@
+# Makefile for check_reflectance project
+
+TARGET=check_reflectance
+CXX=clang++
+CCFLAGS=-Wall -I/usr/local/include
+LDFLAGS=-L/usr/local/lib -lgdal
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o
+	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../objects/$(TARGET).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../objects/$(TARGET).o -c $(TARGET).cpp
+
+clean:
+	$(CLEAN) ../../objects/*.o ../../bin/$(TARGET)

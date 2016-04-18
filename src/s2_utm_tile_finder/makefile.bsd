@@ -1,0 +1,17 @@
+# Makefile for s2_utm_tile_finder project
+
+TARGET=s2_utm_tile_finder
+CXX=clang++
+CCFLAGS=-Wall
+CLEAN=rm -f
+
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o
+	$(CXX) -o ../../bin/$(TARGET) ../../objects/$(TARGET).o
+
+$(TARGET).o: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ../../objects/$(TARGET).o -c $(TARGET).cpp
+
+clean:
+	$(CLEAN) ../../objects/*.o ../../bin/$(TARGET)
