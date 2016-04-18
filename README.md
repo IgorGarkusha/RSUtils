@@ -78,6 +78,7 @@ THE SOFTWARE.
 ### RSUtils: building in GNU/Linux, Mac OS X, FreeBSD
 
 1.Add to PATH the location jdk/bin directory.
+
 2.Add to PATH the location RSUtils/bin directory. Create system variable 
 RSUTILS_HOME and set her the value in path to RSUtils/bin directory.
 
@@ -101,6 +102,7 @@ For FreeBSD -- support GEOS in GDAL library must be enabled!!!
 ### RSUtils: building in Windows
 
 1.Add to PATH the location jdk\bin directory.
+
 2.Add to PATH the location RSUtils\bin directory. Create system variable 
 RSUTILS_HOME and set her the value in path to RSUtils\bin directory.
 
