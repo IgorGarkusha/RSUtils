@@ -1,6 +1,6 @@
 ## RSUtils. Version 1.17.04.2016
 
-1. Has been updates build scripts for various platform.
+1. Has been updates build scripts for various platform (support build for: GNU/Linux GNU GCC, Mac OS X GNU GCC, FreeBSD Clang-compiler, MS Windows MS CL-compiler, MS Windows MinGW-32 GNU GCC).
 2. Improved build system.
 3. Added two additional modes in the program check_reflectance.
 4. Added new programs: l8_dn_conversion, calc_index, tif2con.
