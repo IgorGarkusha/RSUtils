@@ -99,7 +99,7 @@ For FreeBSD -- support GEOS in GDAL library must be enabled!!!
 3.Execute from console file build.sh. To clean the build directory to use the file clear.sh.
 
 
-### RSUtils: building in Windows
+### RSUtils: building in Microsoft Windows
 
 1.Add to PATH the location jdk\bin directory.
 
