@@ -117,4 +117,3 @@ For example:
 4. Start Windows SDK Command Prompt. Go to the directory RSUtils and execute file 
 build_msvc.cmd (for MS Visual C++ compiler) or build_mingw32.cmd (for MinGW-32 GNU GCC).
 To clean the build directory to use the file clear_msvc.cmd or clear_mingw32.cmd (depending on the build).
-
