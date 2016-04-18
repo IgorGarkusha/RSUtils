@@ -77,8 +77,8 @@ THE SOFTWARE.
 
 ### RSUtils: building in GNU/Linux, Mac OS X, FreeBSD
 
-1. Add to PATH the location jdk/bin directory.
-2. Add to PATH the location RSUtils/bin directory. Create system variable 
+1.Add to PATH the location jdk/bin directory.
+2.Add to PATH the location RSUtils/bin directory. Create system variable 
 RSUTILS_HOME and set her the value in path to RSUtils/bin directory.
 
 For example in GNU/Linux: 
@@ -95,25 +95,25 @@ For example in Mac OS X:
 	
 For FreeBSD -- support GEOS in GDAL library must be enabled!!!
 
-3. Execute from console file build.sh. To clean the build directory to use the file clear.sh.
+3.Execute from console file build.sh. To clean the build directory to use the file clear.sh.
 
 
 ### RSUtils: building in Windows
 
-1. Add to PATH the location jdk\bin directory.
-2. Add to PATH the location RSUtils\bin directory. Create system variable 
+1.Add to PATH the location jdk\bin directory.
+2.Add to PATH the location RSUtils\bin directory. Create system variable 
 RSUTILS_HOME and set her the value in path to RSUtils\bin directory.
 
 For example: 
 
 	RSUTILS_HOME=C:\RSUtils\bin
 	
-3. Create system variable QGIS_HOME and set her the value in path to QGIS 2.12 (or high version) directory.
+3.Create system variable QGIS_HOME and set her the value in path to QGIS 2.12 (or high version) directory.
 
 For example: 
 
 	QGIS_HOME=C:\QGIS
 	
-4. Start Windows SDK Command Prompt. Go to the directory RSUtils and execute file 
+4.Start Windows SDK Command Prompt. Go to the directory RSUtils and execute file 
 build_msvc.cmd (for MS Visual C++ compiler) or build_mingw32.cmd (for MinGW-32 GNU GCC).
 To clean the build directory to use the file clear_msvc.cmd or clear_mingw32.cmd (depending on the build).
