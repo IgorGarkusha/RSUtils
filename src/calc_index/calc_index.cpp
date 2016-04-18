@@ -130,14 +130,14 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-    GDALDatasetH  pDataset1;
-	GDALDatasetH  pDataset2;
-	GDALDatasetH  pDataset3;
-	GDALDatasetH  pDataset4;
-    GDALRasterBandH pBand1;
-    GDALRasterBandH pBand2;
-    GDALRasterBandH pBand3;
-    GDALRasterBandH pBand4;
+    GDALDatasetH  pDataset1 = NULL;
+    GDALDatasetH  pDataset2 = NULL;
+    GDALDatasetH  pDataset3 = NULL;
+    GDALDatasetH  pDataset4 = NULL;
+    GDALRasterBandH pBand1 = NULL;
+    GDALRasterBandH pBand2 = NULL;
+    GDALRasterBandH pBand3 = NULL;
+    GDALRasterBandH pBand4 = NULL;
     GDALDriverH pDriver = NULL;
 
     GDALAllRegister();
