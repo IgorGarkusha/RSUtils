@@ -28,3 +28,9 @@
 9. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion, UTM Tile Set Projection and Check Reflectance (**s2_set_projection, check_reflectance**):
     https://www.youtube.com/watch?v=LjbZY9trZPs
 
+10. **NEW** Landsat-8 DN values conversion (**l8_dn_conversion**):
+    https://www.youtube.com/watch?v=hD6eGw0d5CM
+
+11. **NEW** Calculation of vegetation indexes (**calc_index**):
+    https://www.youtube.com/watch?v=ylArHbOXFnM
+
