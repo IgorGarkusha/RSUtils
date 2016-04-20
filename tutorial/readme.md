@@ -34,3 +34,6 @@
 11. **NEW!** Calculation of vegetation indexes (**calc_index**):
     https://www.youtube.com/watch?v=ylArHbOXFnM
 
+12. **NEW!** GeoTIFF values to the console or in a formatted text file (**tif2con**):
+    https://www.youtube.com/watch?v=YXaKjk3GGzk
+
