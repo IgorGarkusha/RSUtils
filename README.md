@@ -96,7 +96,7 @@ For example in Mac OS X:
 	
 For FreeBSD -- support GEOS in GDAL library must be enabled!!!
 
-3.Execute from console file build.sh. To clean the build directory to use the file clear.sh.
+3.Execute from console file build.sh (bash ./build.sh). To clean the build directory to use the file clear.sh (bash ./clear.sh).
 
 
 ### RSUtils: building in Microsoft Windows
