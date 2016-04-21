@@ -1,5 +1,20 @@
 
-## Tutorials
+## Tutorials ver. 1.17.04.2016
+
+1. How to build RSUtils on Ubuntu:
+    https://www.youtube.com/watch?v=hs29zSNk4SM
+
+2. Landsat-8 DN values conversion (**l8_dn_conversion**):
+    https://www.youtube.com/watch?v=hD6eGw0d5CM
+
+3. Calculation of vegetation indexes (**calc_index**):
+    https://www.youtube.com/watch?v=ylArHbOXFnM
+
+4. GeoTIFF values to the console or in a formatted text file (**tif2con**):
+    https://www.youtube.com/watch?v=YXaKjk3GGzk
+
+
+## Tutorials ver. 1.09.03.2016
 
 1. How to build RSUtils on GNU/Linux:
     https://www.youtube.com/watch?v=ataLjyJyPvU
@@ -27,13 +42,4 @@
 
 9. Sentinel-2A L1C MSI Tile to GeoTIFF Convertion, UTM Tile Set Projection and Check Reflectance (**s2_set_projection, check_reflectance**):
     https://www.youtube.com/watch?v=LjbZY9trZPs
-
-10. **NEW!** Landsat-8 DN values conversion (**l8_dn_conversion**):
-    https://www.youtube.com/watch?v=hD6eGw0d5CM
-
-11. **NEW!** Calculation of vegetation indexes (**calc_index**):
-    https://www.youtube.com/watch?v=ylArHbOXFnM
-
-12. **NEW!** GeoTIFF values to the console or in a formatted text file (**tif2con**):
-    https://www.youtube.com/watch?v=YXaKjk3GGzk
 
