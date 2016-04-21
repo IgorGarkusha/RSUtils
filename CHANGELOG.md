@@ -1,5 +1,9 @@
 ## RSUtils. Version 1.17.04.2016
 
+#### Update 04/21/2016
+
+Has been updates build scripts for GNU/Linux. Enable support build for Ubuntu. Tested under Ubuntu 14.04, Fedora 23.
+
 #### Update 04/20/2016
 
 Updated directory structure for build and added tutorials.
