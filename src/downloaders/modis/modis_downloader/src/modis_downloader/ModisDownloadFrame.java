@@ -273,9 +273,11 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
         frm.setBounds(new Rectangle(800, 600));
         frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frm.add(panel);
+        frm.setResizable(true);
+        //frm.setVisible(true);
+        frm.pack();
         frm.setResizable(false);
         frm.setVisible(true);
-        frm.pack();
         frm.setLocationRelativeTo(null);
     }
 
