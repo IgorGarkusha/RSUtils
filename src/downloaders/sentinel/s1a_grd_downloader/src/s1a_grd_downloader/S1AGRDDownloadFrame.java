@@ -152,6 +152,7 @@ public class S1AGRDDownloadFrame extends ConsoleS1AGRDDownloadFrame implements R
         vbox.add(hbox8);
                 
         panel.add(vbox);
+        frm.pack();
 	}
 
 	private void setParameter(int paramIndex, String str)
