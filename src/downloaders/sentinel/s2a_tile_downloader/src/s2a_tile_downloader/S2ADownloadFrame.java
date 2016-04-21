@@ -173,6 +173,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
         vbox.add(hbox9);
         
         panel.add(vbox);
+        frm.pack();
 	}
 	
 	private void setParameter(int paramIndex, String str)
