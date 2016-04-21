@@ -159,6 +159,7 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
         vbox.add(hbox7);
                 
         panel.add(vbox);
+        frm.pack();
 	}
 
 	private void setParameter(int paramIndex, String str)
