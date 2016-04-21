@@ -4,13 +4,16 @@
 1. How to build RSUtils on Ubuntu:
     https://www.youtube.com/watch?v=hs29zSNk4SM
 
-2. Landsat-8 DN values conversion (**l8_dn_conversion**):
+2. How to build RSUtils on MS Windows:
+    https://www.youtube.com/watch?v=2S0ICNe88-s
+
+3. Landsat-8 DN values conversion (**l8_dn_conversion**):
     https://www.youtube.com/watch?v=hD6eGw0d5CM
 
-3. Calculation of vegetation indexes (**calc_index**):
+4. Calculation of vegetation indexes (**calc_index**):
     https://www.youtube.com/watch?v=ylArHbOXFnM
 
-4. GeoTIFF values to the console or in a formatted text file (**tif2con**):
+5. GeoTIFF values to the console or in a formatted text file (**tif2con**):
     https://www.youtube.com/watch?v=YXaKjk3GGzk
 
 
