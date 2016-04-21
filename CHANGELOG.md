@@ -3,7 +3,7 @@
 #### Update 04/21/2016
 
 1. Has been updates build scripts for GNU/Linux. Enable support build for Ubuntu. Tested under Ubuntu 14.04, Fedora 23.
-2. Update modis_downloader, s1a_grd_downloader, s2a_tile_downloader.
+2. Update modis_downloader, s1a_grd_downloader, s2a_tile_downloader: fix window size on some platforms.
 
 #### Update 04/20/2016
 
