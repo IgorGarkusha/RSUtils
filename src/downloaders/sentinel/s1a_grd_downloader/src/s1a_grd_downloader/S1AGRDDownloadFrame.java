@@ -258,7 +258,7 @@ public class S1AGRDDownloadFrame extends ConsoleS1AGRDDownloadFrame implements R
     public void CreateFrame()
     {
         frm.setTitle(ProgramTitle);
-        frm.setBounds(new Rectangle(300,120));
+        frm.setBounds(new Rectangle(800,600));
         frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frm.add(panel);
         frm.setResizable(false);
