@@ -11,7 +11,7 @@ CLEAN=rm -f
 all: $(TARGET)
 
 $(TARGET): $(TARGET).o $(UTILS).o $(STACK).o
-	$(CXX) $(LDFLAGS) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o ../../obj/$(UTILS).o ../../obj/$(STACK).o
+	$(CXX) -o ../../bin/$(TARGET) ../../obj/$(TARGET).o ../../obj/$(UTILS).o ../../obj/$(STACK).o $(LDFLAGS)
 
 $(TARGET).o: $(TARGET).cpp
 	$(CXX) $(CCFLAGS) -o ../../obj/$(TARGET).o -c $(TARGET).cpp
