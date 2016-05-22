@@ -43,6 +43,19 @@ jar cf ../../../../bin/s1a_grd_downloader.jar -C ./class .
 cd ../
 
 echo ""
+echo "BUILD S1A_SLC_DOWNLOADER..."
+echo ""
+
+rm -Rf ./s1a_slc_downloader/class/*
+cd ./s1a_slc_downloader/src/s1a_slc_downloader/
+
+javac -Xlint -d ../../class/ -cp ../../src:../../../../../../bin/librsutils_downloader.jar:. *.java
+cd ../../
+jar cf ../../../../bin/s1a_slc_downloader.jar -C ./class .
+
+cd ../
+
+echo ""
 echo "BUILD S2A_TILE_DOWNLOADER..."
 echo ""
 
@@ -54,6 +67,19 @@ cd ../../
 jar cf ../../../../bin/s2a_tile_downloader.jar -C ./class .
 
 cd ../../../../
+
+echo ""
+echo "BUILD SATELLITE_COVERAGE..."
+echo ""
+
+cd ./src/satellite_coverage/org/rsutils/mapviewer
+javac AboutDialog.java
+javac -cp ../../../lib/JMapViewer.jar:../../../:. SatelliteCoverage.java
+cd ../../../
+jar cfm ../../bin/SatelliteCoverage.jar manifest.mf org data
+mkdir ../../bin/lib
+cp -f ./lib/JMapViewer.jar ../../bin/lib/
+cd ../../
 
 echo ""
 echo "CREATE START SCRIPTS..."
@@ -71,7 +97,17 @@ echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/s1a_grd
 echo "" >> ./bin/s1a_grd_downloader
 chmod +x ./bin/s1a_grd_downloader
 
+echo "#!"$SHELL > ./bin/s1a_slc_downloader
+echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/s1a_slc_downloader.jar:. s1a_slc_downloader.s1a_slc_download \$1" >> ./bin/s1a_slc_downloader
+echo "" >> ./bin/s1a_slc_downloader
+chmod +x ./bin/s1a_slc_downloader
+
 echo "#!"$SHELL > ./bin/s2a_tile_downloader
 echo "java -cp ${RSUTILS_HOME}/librsutils_downloader.jar:${RSUTILS_HOME}/s2a_tile_downloader.jar:. s2a_tile_downloader.s2_tile_download \$1" >> ./bin/s2a_tile_downloader
 echo "" >> ./bin/s2a_tile_downloader
 chmod +x ./bin/s2a_tile_downloader
+
+echo "#!"$SHELL > ./bin/satellite_coverage
+echo "java -jar SatelliteCoverage.jar" >> ./bin/satellite_coverage
+echo "" >> ./bin/satellite_coverage
+chmod +x ./bin/satellite_coverage
