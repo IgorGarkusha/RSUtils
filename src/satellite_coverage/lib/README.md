@@ -39,6 +39,8 @@
 
 http://wiki.openstreetmap.org/wiki/JMapViewer
 
+http://svn.openstreetmap.org/applications/viewer/jmapviewer/releases
+
 This work bases partly on the JOSM plugin "Slippy Map Chooser" by Tim Haussmann
 
 License: GPL
