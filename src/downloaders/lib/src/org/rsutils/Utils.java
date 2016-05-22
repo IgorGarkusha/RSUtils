@@ -97,4 +97,14 @@ public class Utils
     {
         JOptionPane.showMessageDialog(parent, message);
     }
+    
+    public static String extractDirName(String fullPathFileName)
+    {
+		return fullPathFileName.substring(0, fullPathFileName.lastIndexOf(File.separator) );
+	}
+	
+	public static String getApplicationName(Object obj)
+	{
+		return obj.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+	}
 }
