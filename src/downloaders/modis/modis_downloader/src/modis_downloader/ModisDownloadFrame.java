@@ -38,6 +38,8 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
     {
 		super(null);
 		
+		appPath = Utils.getApplicationName(this);
+				
         frm = new JFrame();
         panel = new JPanel();
         
@@ -182,7 +184,11 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
 		btnShowSatelliteCoverage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				try{ Runtime.getRuntime().exec("java -jar SatelliteCoverage.jar");
+				String cmd = "java -jar ";
+				cmd += Utils.extractDirName(appPath);
+				cmd += File.separator;
+				cmd += "SatelliteCoverage.jar";
+				try{ Runtime.getRuntime().exec(cmd);
 				}catch(Exception ex){}
 			}
 		});
@@ -306,6 +312,7 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
 	
 	public JButton getUI_btnDownload() { return btnDownload; }
 	
+	private String appPath = "";
     private JFrame frm;
     private JPanel panel;
     private JTextField txtWorkDir;
