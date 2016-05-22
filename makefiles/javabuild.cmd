@@ -95,5 +95,5 @@ echo java -cp %RSUTILS_HOME%\librsutils_downloader.jar;%RSUTILS_HOME%\s2a_tile_d
 echo. >> bin\s2a_tile_downloader.cmd
 
 echo @echo off > bin\satellite_coverage.cmd
-echo java -jar SatelliteCoverage.jar >> bin\satellite_coverage.cmd
+echo java -jar %RSUTILS_HOME%\SatelliteCoverage.jar >> bin\satellite_coverage.cmd
 echo. >> bin\satellite_coverage.cmd

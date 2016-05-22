@@ -108,6 +108,6 @@ echo "" >> ./bin/s2a_tile_downloader
 chmod +x ./bin/s2a_tile_downloader
 
 echo "#!"$SHELL > ./bin/satellite_coverage
-echo "java -jar SatelliteCoverage.jar" >> ./bin/satellite_coverage
+echo "java -jar ${RSUTILS_HOME}/SatelliteCoverage.jar" >> ./bin/satellite_coverage
 echo "" >> ./bin/satellite_coverage
 chmod +x ./bin/satellite_coverage
