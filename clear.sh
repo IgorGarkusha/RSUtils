@@ -21,10 +21,12 @@ rm -f ./src/downloaders/lib/class/org/rsutils/downloader/*
 rm -f ./src/downloaders/lib/class/org/rsutils/*
 rm -f ./src/downloaders/modis/modis_downloader/class/modis_downloader/*
 rm -f ./src/downloaders/sentinel/s1a_grd_downloader/class/s1a_grd_downloader/*
+rm -f ./src/downloaders/sentinel/s1a_slc_downloader/class/s1a_slc_downloader/*
 rm -f ./src/downloaders/sentinel/s2a_tile_downloader/class/s2a_tile_downloader/*
+rm -f ./src/satellite_coverage/org/rsutils/mapviewer/*.class
 
 cd $CUR_DIR
-rm -f ./bin/*
+rm -Rf ./bin/*
 
 echo ""
 echo "./bin:"
