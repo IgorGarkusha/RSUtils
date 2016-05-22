@@ -7,7 +7,7 @@
 RSUtils is free and open source (GPL) software.
 RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the capabilities of the GDAL/OGR library. When developing the used functionality of the libxml2 library.
 
-Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipropetrovsk.
+Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipro (Dnipropetrovsk).
 
 
 ## Previous versions
