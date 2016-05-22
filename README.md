@@ -9,6 +9,7 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipropetrovsk.
 
+
 ## Previous versions
 
 Version 1.17.04.2016: https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.17.04.2016.tar.gz
