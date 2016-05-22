@@ -1,6 +1,6 @@
 # RSUtils
 
-**Remote Sensing Utilities. Version 1.17.04.2016 (Update 04/21/2016)**
+**Remote Sensing Utilities. Version 1.22.05.2016**
 
 **Welcome to RSUtils (Remote Sensing Utilities - Extentions GDAL/OGR)!**
 
@@ -10,6 +10,8 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipropetrovsk.
 
 ## Previous versions
+
+Version 1.17.04.2016: https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.17.04.2016.tar.gz
 
 Version 1.09.03.2016: https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.09.03.2016.tar.gz
 
@@ -56,7 +58,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-## BUILD FOR Version 1.17.04.2013
+## JMapViewer
+
+MapViewer is a java component which allows to easily integrate an OSM map view into your Java application.
+This work bases partly on the JOSM plugin "Slippy Map Chooser" by Tim Haussmann.
+
+Copyright (C) 2007, Tim Haussmann
+Copyright (C) 2008-2012, Jan Peter Stotz
+Copyright (C) 2009-2015, Dirk Stöcker
+Copyright (C) 2009, Stefan Zeller
+Copyright (C) 2009, Karl Guggisberg
+Copyright (C) 2009, Dave Hansen
+Copyright (C) 2010-2011, Ian Dees
+Copyright (C) 2010-2011, Michael Vigovsky
+Copyright (C) 2011-2015, Paul Hartmann
+Copyright (C) 2011-2014, Gleb Smirnoff
+Copyright (C) 2011-2015, Vincent Privat
+Copyright (C) 2011, Jason Huntley
+Copyright (C) 2012, Simon Legner
+Copyright (C) 2012, Teemu Koskinen
+Copyright (C) 2012, Jiri Klement
+Copyright (C) 2013, Matt Hoover
+Copyright (C) 2013, Alexei Kasatkin
+Copyright (C) 2013, Galo Higueras
+
+This program is free software; you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation; either version 2 of the License, or 
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along 
+with this program; if not, write to the Free Software Foundation, Inc., 
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+## BUILD FOR Version 1.22.05.2016
 
 ### RSUtils: build requirements
 
@@ -94,7 +134,7 @@ For example in Mac OS X:
 	
 	export PATH=$PATH:$RSUTILS_HOME
 	
-For FreeBSD -- support GEOS in GDAL library must be enabled!!!
+For FreeBSD -- setup locale with UTF-8 support; support GEOS in GDAL library must be enabled!!!
 
 3.Execute from console file build.sh (bash ./build.sh). To clean the build directory to use the file clear.sh (bash ./clear.sh).
 

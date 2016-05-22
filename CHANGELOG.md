@@ -1,3 +1,9 @@
+## RSUtils. Version 1.22.05.2016
+
+1. Add new programs: satellite_coverage, s1a_slc_downloader.
+2. Fix bugs in modules: ModisDownloadFrame.java, calc_index.cpp.
+3. Update downloaders (add satellite coverage scheme): modis_downloader, s2a_tile_downloader.
+
 ## RSUtils. Version 1.17.04.2016
 
 #### Update 04/21/2016
