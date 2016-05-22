@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
  *          Ukraine, Dnipropetrovsk
  * 
- * Copyright (C) 2012-2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2012-2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 #define NODATAVALUE -9999
 
 #define PROG_VERSION "3"
-#define DATE_VERSION "17.04.2016"
+#define DATE_VERSION "22.05.2016"
 
 int progress(int index, int count, int oldpersent);
 float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState);
@@ -233,6 +233,7 @@ int main(int argc, char* argv[])
 			if(100 < typeIndexFlag) { 
 				GDALRasterIO(pBand4, GF_Read, 0, 0, cols, 1, pline4, cols, 1, GDALGetRasterDataType(pBand4), 0, 0 );
 				NoDataBand3 = getDataAsFloat(pline4, 1, GDALGetRasterDataType(pBand4));
+			}
 		}
         
         if(flagNoData==false)
@@ -273,7 +274,7 @@ int main(int argc, char* argv[])
 							float res = getIndexValue(getDataAsFloat(pline1, j, GDALGetRasterDataType(pBand1)),
 													  getDataAsFloat(pline2, j, GDALGetRasterDataType(pBand2)),
 													  typeIndexFlag, &flState);
-							
+
 							if(flState)
 							{
 								if(flFirst) { min = res; max = res; flFirst = false; }
@@ -303,9 +304,7 @@ int main(int argc, char* argv[])
 				for(int i=0; i<rows; i++)
 				{
 					GDALRasterIO(pBand3, GF_Read, 0, i, cols, 1, pline3, cols, 1, GDT_Float32, 0, 0 );
-					
-					for(int j=0; j<cols; j++) if(pline3[j]!=NODATAVALUE) summ += (pline3[j]-mean)*(pline3[j]-mean);
-								
+					for(int j=0; j<cols; j++) summ += (pline3[j]-mean)*(pline3[j]-mean);
 					oldpr = progress(i, rows-1, oldpr);
 				}
 		}
@@ -400,16 +399,17 @@ int main(int argc, char* argv[])
 		stddev = sqrt(summ);
 		
 		GDALSetRasterStatistics(pBand3, min, max, mean, stddev);
-		GDALSetRasterNoDataValue(pBand3, NODATAVALUE);
+		if(flagNoData) GDALSetRasterNoDataValue(pBand3, NODATAVALUE);
 		
 		CPLFree(pline1);
 		CPLFree(pline2);
 		CPLFree(pline3);
 		if(100 < typeIndexFlag) CPLFree(pline4);
 		if(pDataset3!=NULL) { GDALClose(pDataset3); }
-	 }
+		
+	 }else fputs("\nERROR: input data is not Float32-data type!!!\n", stderr);
 	
-	}else fputs("\nERROR: input data is not Float32-data type!!!\n", stderr);
+	
 	 
 	if(pDataset1!=NULL) { GDALClose(pDataset1); }
 	if(pDataset2!=NULL) { GDALClose(pDataset2); }
