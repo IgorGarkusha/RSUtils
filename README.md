@@ -69,23 +69,41 @@ MapViewer is a java component which allows to easily integrate an OSM map view i
 This work bases partly on the JOSM plugin "Slippy Map Chooser" by Tim Haussmann.
 
 Copyright (C) 2007, Tim Haussmann
+
 Copyright (C) 2008-2012, Jan Peter Stotz
+
 Copyright (C) 2009-2015, Dirk Stöcker
+
 Copyright (C) 2009, Stefan Zeller
+
 Copyright (C) 2009, Karl Guggisberg
+
 Copyright (C) 2009, Dave Hansen
+
 Copyright (C) 2010-2011, Ian Dees
+
 Copyright (C) 2010-2011, Michael Vigovsky
+
 Copyright (C) 2011-2015, Paul Hartmann
+
 Copyright (C) 2011-2014, Gleb Smirnoff
+
 Copyright (C) 2011-2015, Vincent Privat
+
 Copyright (C) 2011, Jason Huntley
+
 Copyright (C) 2012, Simon Legner
+
 Copyright (C) 2012, Teemu Koskinen
+
 Copyright (C) 2012, Jiri Klement
+
 Copyright (C) 2013, Matt Hoover
+
 Copyright (C) 2013, Alexei Kasatkin
+
 Copyright (C) 2013, Galo Higueras
+
 
 This program is free software; you can redistribute it and/or modify 
 it under the terms of the GNU General Public License as published by 
