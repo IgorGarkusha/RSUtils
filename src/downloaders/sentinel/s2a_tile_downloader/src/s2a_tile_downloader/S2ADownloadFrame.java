@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
  *          Ukraine, Dnipropetrovsk
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,8 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
                 
         pBar = new JProgressBar();
         pBar.setStringPainted(true);
+
+		btnShowSatelliteCoverage = new JButton("Satellite Coverage...");
 
         btnDownload = new JButton("Download");
         
@@ -136,7 +138,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		Box hbox1 = Box.createHorizontalBox(); hbox1.add(jLabelWorkDir); hbox1.add(txtWorkDir); hbox1.add(btnSetWorkDir);
 		Box hbox2 = Box.createHorizontalBox(); hbox2.add(jLabelProdID); hbox2.add(txtProductID);
 		Box hbox3 = Box.createHorizontalBox(); hbox3.add(jLabelProdName); hbox3.add(txtProductName);
-		Box hbox4 = Box.createHorizontalBox(); hbox4.add(jLabelUTMTile); hbox4.add(txtUTM_TILE);
+		Box hbox4 = Box.createHorizontalBox(); hbox4.add(jLabelUTMTile); hbox4.add(txtUTM_TILE); hbox4.add(btnShowSatelliteCoverage);
 		
 		Box hbox5 = Box.createHorizontalBox(); hbox5.add(jLabelBands); hbox5.add(cbBands); hbox5.add(Box.createHorizontalGlue());
 		
@@ -191,6 +193,14 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 
     public void CreateListener()
     {
+		btnShowSatelliteCoverage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				try{ Runtime.getRuntime().exec("java -jar SatelliteCoverage.jar");
+				}catch(Exception ex){}
+			}
+		});
+		
 		btnSetWorkDir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -318,6 +328,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
     private JButton btnDownload;
     private JButton btnExit;
     private JButton btnAbout;
+    private JButton btnShowSatelliteCoverage;
     
     private String ProgramTitle = "Sentinel-2A Tile Downloader. Version " + 
 								  s2_tile_download.PROG_VERSION +"."+s2_tile_download.DATE_VERSION;
