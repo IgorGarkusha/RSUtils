@@ -1,1 +1,4 @@
-
+Manifest-Version: 1.0
+Main-Class: org.rsutils.mapviewer.SatelliteCoverage
+Class-Path: lib/JMapViewer.jar
+Created-By: Igor Garkusha
