@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
  *          Ukraine, Dnipropetrovsk
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import org.rsutils.*;
 public class modis_download
 {
 	public static final String PROG_VERSION = "1";
-	public static final String DATE_VERSION = "21.04.2016";
+	public static final String DATE_VERSION = "22.05.2016";
 	
 	public static void main(String[] args)
 	{

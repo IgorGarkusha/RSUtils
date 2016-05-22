@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
  *          Ukraine, Dnipropetrovsk
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,8 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
         pBar = new JProgressBar();
         pBar.setStringPainted(true);
 
+		btnShowSatelliteCoverage = new JButton("Satellite Coverage...");
+
         btnDownload = new JButton("Download");
         
         btnSaveParams = new JButton("Save Parameters");
@@ -131,7 +133,7 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
 		hbox3.add(jLabelFromMonth); hbox3.add(cbFromMonth); hbox3.add(Box.createHorizontalStrut(10)); 
 		hbox3.add(jLabelToMonth); hbox3.add(cbToMonth); hbox3.add(Box.createHorizontalGlue());
 		
-		Box hbox4 = Box.createHorizontalBox(); hbox4.add(jLabelTiles); hbox4.add(txtTiles);
+		Box hbox4 = Box.createHorizontalBox(); hbox4.add(jLabelTiles); hbox4.add(txtTiles); hbox4.add(btnShowSatelliteCoverage);
 				
 		Box hbox5 = Box.createHorizontalBox();
 		hbox5.add(pBar);
@@ -177,6 +179,14 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
 
     public void CreateListener()
     {
+		btnShowSatelliteCoverage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				try{ Runtime.getRuntime().exec("java -jar SatelliteCoverage.jar");
+				}catch(Exception ex){}
+			}
+		});
+		
 		btnSetWorkDir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -202,7 +212,7 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
 				{
 					String fileName = chooser.getSelectedFile().getAbsolutePath();
 					
-					String ext = fileName.substring(fileName.length()-8, fileName.length());
+					String ext = fileName.substring(fileName.length()-10, fileName.length());
 					if( ext.compareToIgnoreCase(".modis.cfg") != 0 ) fileName += ".modis.cfg";
 
 					PrintStream fout = null;
@@ -314,6 +324,7 @@ public class ModisDownloadFrame extends ConsoleModisDownloadFrame implements Run
     private JButton btnDownload;
     private JButton btnExit;
     private JButton btnAbout;
+    private JButton btnShowSatelliteCoverage;
         
     private String ProgramTitle = "Terra MODIS Product Downloader. Version " + 
 								  modis_download.PROG_VERSION +"."+modis_download.DATE_VERSION;
