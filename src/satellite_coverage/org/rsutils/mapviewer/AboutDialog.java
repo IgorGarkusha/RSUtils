@@ -87,7 +87,7 @@ public class AboutDialog extends JDialog
 							"</a>&nbsp;(License: GPL)<br><br>"+
 							"Copyright (C) 2007, Tim Haussmann<br>"+
 							"Copyright (C) 2008-2012, Jan Peter Stotz<br>"+
-							"Copyright (C) 2009-2015, Dirk Stöcker<br>"+
+							"Copyright (C) 2009-2015, Dirk St&#x00F6;cker<br>"+
 							"Copyright (C) 2009, Stefan Zeller<br>"+
 							"Copyright (C) 2009, Karl Guggisberg<br>"+
 							"Copyright (C) 2009, Dave Hansen<br>"+
