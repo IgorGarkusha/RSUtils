@@ -1,5 +1,11 @@
 ## RSUtils. Version 1.22.05.2016
 
+#### Update 05/24/2016
+
+1. Has been updated module Utils.java -- added the ability to properly run the satellite_coverage in Windows from external programs.
+
+## RSUtils. Version 1.22.05.2016
+
 1. Add new programs: satellite_coverage, s1a_slc_downloader.
 2. Fix bugs in modules: ModisDownloadFrame.java, calc_index.cpp.
 3. Update downloaders (add satellite coverage scheme): modis_downloader, s2a_tile_downloader.
