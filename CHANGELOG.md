@@ -2,7 +2,7 @@
 
 #### Update 05/24/2016
 
-1. Has been updated module Utils.java -- added the ability to properly run the satellite_coverage in Windows from external programs.
+1. Has been updated module Utils.java: added the ability to properly run the satellite_coverage in Windows from external programs.
 
 ## RSUtils. Version 1.22.05.2016
 
