@@ -100,11 +100,23 @@ public class Utils
     
     public static String extractDirName(String fullPathFileName)
     {
-		return fullPathFileName.substring(0, fullPathFileName.lastIndexOf(File.separator) );
-	}
-	
-	public static String getApplicationName(Object obj)
+	String typeOS = System.getProperty("os.name");
+	int startPos = 0;
+	if( -1 != typeOS.indexOf("Win") ) startPos = 1;
+	if( (0 == fullPathFileName.indexOf("/"))&&(2 == fullPathFileName.indexOf(":"))&&(startPos == 0) ) startPos=1;
+	String path = new String("");
+	try
 	{
-		return obj.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		path = fullPathFileName.substring( startPos, fullPathFileName.lastIndexOf(File.separator) );
+	}catch(StringIndexOutOfBoundsException e)
+	{
+		path = fullPathFileName.substring( startPos, fullPathFileName.lastIndexOf('/') );
 	}
+	return path;
+    }
+	
+    public static String getApplicationName(Object obj)
+    {
+	return obj.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+    }
 }
