@@ -84,7 +84,7 @@ public class AboutDialog extends JDialog
 		String strJMapViewerInfo = "<html><center>Satellite Coverage based on &nbsp;"+
 							"<a href=\"http://wiki.openstreetmap.org/wiki/JMapViewer\">"+
 							"JMapViewer"+
-							"</a>&nbsp;(License: GPL)<br><br>"+
+							"</a>&nbsp;(License: GPL ver. 2.0)<br><br>"+
 							"Copyright (C) 2007, Tim Haussmann<br>"+
 							"Copyright (C) 2008-2012, Jan Peter Stotz<br>"+
 							"Copyright (C) 2009-2015, Dirk St&#x00F6;cker<br>"+
