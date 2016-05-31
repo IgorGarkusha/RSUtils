@@ -1,5 +1,10 @@
 ## RSUtils. Version 1.22.05.2016
 
+#### Update 05/31/2016
+
+1. Fix bugs in module SatelliteCoverage.java.
+2. Has been updated coverage schemes WRS-2 DESCENDING and MODIS Sinusoidal tiles.
+
 #### Update 05/24/2016
 
 1. Has been updated module Utils.java: added the ability to properly run the satellite_coverage in Windows from external programs.
