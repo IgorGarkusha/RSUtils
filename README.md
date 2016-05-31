@@ -1,6 +1,6 @@
 # RSUtils
 
-**Remote Sensing Utilities. Version 1.22.05.2016 (Last Update: 05/24/2016)**
+**Remote Sensing Utilities. Version 1.22.05.2016 (Last Update: 05/31/2016)**
 
 **Welcome to RSUtils (Remote Sensing Utilities - Extentions GDAL/OGR)!**
 
