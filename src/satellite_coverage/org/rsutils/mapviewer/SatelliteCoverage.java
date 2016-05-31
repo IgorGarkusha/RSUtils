@@ -95,7 +95,7 @@ import java.io.PrintStream;
 public class SatelliteCoverage extends Thread
 {
 	public static final String PROG_VERSION = "1";
-	public static final String DATE_VERSION = "22.05.2016";
+	public static final String DATE_VERSION = "31.05.2016";
 	public String ProgramTitle = "Coverage Scheme of Satellites. Version " + PROG_VERSION +"."+DATE_VERSION;
 	
 	public static void main(String[] args)
@@ -329,7 +329,7 @@ public class SatelliteCoverage extends Thread
 					mode = 1; // Terra MODIS, S2A
 					MAX_FILES_COUNT = 4;
 					delta = 90;
-					zoomBorder = 5;
+					zoomBorder = 4;
 					fileNameSchemePrefix = "data/mod";
 					break;
 			}
@@ -421,13 +421,32 @@ public class SatelliteCoverage extends Thread
 								String [] str = fileParts[i].fin.nextLine().split(" ");
 								String polyName = str[0];
 								int start = 0;
-								if(mode == 1) start = 1;
+								if(mode == 1) { polyName += " "; polyName += str[1]; start = 2; }
 								if(mode == 2) { polyName += "/"; polyName += str[1]; start = 2; }
+								double sign = 0;
+								boolean flFirstSign = true;
 								for(int j=start; j<str.length-1; j+=2)
 								{
-									double y = java.lang.Double.parseDouble(str[j]);
-									double x = java.lang.Double.parseDouble(str[j+1]);									
-									coords.add(new Coordinate(x, y));
+									double x = java.lang.Double.parseDouble(str[j]);
+									double y = java.lang.Double.parseDouble(str[j+1]);
+									
+									if(flFirstSign) 
+									{
+										sign = x;
+										flFirstSign = false;
+									}
+									else
+									{
+										if( ((sign>0)&&(x<0)&& 
+											( Math.abs(x)>160 ) ) || 
+										  ( (sign<0)&&(x>0)&&
+										    ( Math.abs(x)>160 )) )// This fail polygon!
+										{
+											coords.clear();
+											break; 
+										}
+										else coords.add(new Coordinate(y, x));
+									}
 								}
 								if(coords.size()>0)
 								{
