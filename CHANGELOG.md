@@ -1,5 +1,9 @@
 ## RSUtils. Version 1.22.05.2016
 
+#### Update 06/01/2016
+
+1. Has been updated coverage scheme Sentinel-2A.
+
 #### Update 05/31/2016
 
 1. Fix bugs in module SatelliteCoverage.java.
