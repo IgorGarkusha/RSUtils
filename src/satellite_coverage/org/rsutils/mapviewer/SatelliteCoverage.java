@@ -95,7 +95,7 @@ import java.io.PrintStream;
 public class SatelliteCoverage extends Thread
 {
 	public static final String PROG_VERSION = "1";
-	public static final String DATE_VERSION = "31.05.2016";
+	public static final String DATE_VERSION = "01.06.2016";
 	public String ProgramTitle = "Coverage Scheme of Satellites. Version " + PROG_VERSION +"."+DATE_VERSION;
 	
 	public static void main(String[] args)
@@ -317,7 +317,7 @@ public class SatelliteCoverage extends Thread
 					
 				// UTM Tiles (Sentinel-2A)
 				case 1:
-					mode = 1; // Terra MODIS, S2A
+					mode = 3; // Terra MODIS, S2A
 					MAX_FILES_COUNT = 18;
 					delta = 20;
 					zoomBorder = 6;
@@ -423,6 +423,7 @@ public class SatelliteCoverage extends Thread
 								int start = 0;
 								if(mode == 1) { polyName += " "; polyName += str[1]; start = 2; }
 								if(mode == 2) { polyName += "/"; polyName += str[1]; start = 2; }
+								if(mode == 3) { start = 1; }
 								double sign = 0;
 								boolean flFirstSign = true;
 								for(int j=start; j<str.length-1; j+=2)
@@ -445,7 +446,9 @@ public class SatelliteCoverage extends Thread
 											coords.clear();
 											break; 
 										}
-										else coords.add(new Coordinate(y, x));
+										else 
+										if(((y1+20)>=y)&&((y2-20)<=y)) coords.add(new Coordinate(y, x));
+										else {coords.clear(); break; }
 									}
 								}
 								if(coords.size()>0)
