@@ -31,7 +31,7 @@
 #include "../lib/utils.h"
 
 #define PROG_VERSION "1"
-#define DATE_VERSION "17.04.2016"
+#define DATE_VERSION "10.07.2016"
 
 #define ERROR	-1
 
@@ -50,7 +50,7 @@ void printData(const float *** pdata, int headerFormat, int bands, int rows, int
 int main(int argc, char* argv[])
 {
 	fprintf(stderr, "GeoTIFF to CONSOLE PRINTER\nVersion %s.%s. Free software. GNU General Public License, version 3\n", PROG_VERSION, DATE_VERSION);
-	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipropetrovsk\n\n");
+	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipro (Dnipropetrovsk)\n\n");
 	
 	if(!((argc==6)||(argc==8)||(argc==10)))
 	{
@@ -260,7 +260,23 @@ void printData(const float *** pdata, int headerFormat, int bands, int rows, int
 					if(flWriteValue)
 					{
 						printf("%d%c%d%c%d%c%.6lf%c%.6lf", id, separator, k, separator, j, separator, x, separator, y);
-						for(int i=0; i<bands; i++) printf("%c%.7f", separator, pdata[i][j][k]);
+						for(int i=0; i<bands; i++) 
+						{
+							printf("%c%.7f", separator, pdata[i][j][k]);
+							
+							if(flFirst[i])
+							{
+								min[i] = max[i] = pdata[i][j][k];
+								flFirst[i] = false;
+							}
+							else
+							{
+								min[i] = (pdata[i][j][k]<min[i])?pdata[i][j][k]:min[i];
+								max[i] = (pdata[i][j][k]>max[i])?pdata[i][j][k]:max[i];
+							}
+							summ[i] += pdata[i][j][k];
+							count[i]++;
+						}
 						printf("\n");
 						id++;
 					}
@@ -331,8 +347,30 @@ void printData(const float *** pdata, int headerFormat, int bands, int rows, int
 					
 					if(flWriteValue)
 					{
-						for(int i=0; i<(bands-1); i++) printf("%.7f%c", pdata[i][j][k], separator);
+						for(int i=0; i<(bands-1); i++) 
+						{
+							printf("%.7f%c", pdata[i][j][k], separator);
+							
+							if(flFirst[i])
+							{
+								min[i] = max[i] = pdata[i][j][k];
+								flFirst[i] = false;
+							}
+							else
+							{
+								min[i] = (pdata[i][j][k]<min[i])?pdata[i][j][k]:min[i];
+								max[i] = (pdata[i][j][k]>max[i])?pdata[i][j][k]:max[i];
+							}
+							summ[i] += pdata[i][j][k];
+							count[i]++;
+							
+						}
 						printf("%.7f\n", pdata[bands-1][j][k]);
+						
+						min[bands-1] = (pdata[bands-1][j][k]<min[bands-1])?pdata[bands-1][j][k]:min[bands-1];
+						max[bands-1] = (pdata[bands-1][j][k]>max[bands-1])?pdata[bands-1][j][k]:max[bands-1];
+						summ[bands-1] += pdata[bands-1][j][k];
+						count[bands-1]++;
 					}
 				}
 				oldpr = CUtils::progress_ln(stderr, j, rows-1, oldpr);
