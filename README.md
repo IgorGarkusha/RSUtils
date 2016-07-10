@@ -9,7 +9,7 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipro (Dnipropetrovsk).
 
-Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/">CHANGELOG.md</a>.
+Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
 
 ## Previous versions
 
