@@ -1,3 +1,9 @@
+## RSUtils. Version 1.10.07.2016
+
+1. Add new programs: tcap, stat_map_creator.
+2. Fix bug in module: utils.cpp.
+3. Update modules: utils.h, utils.cpp, calc_index.cpp (add indexes: WDRVI, VARI, LAI(based on EVI)), tif2con.cpp (calculate statistics in various modes).
+
 ## RSUtils. Version 1.22.05.2016
 
 #### Update 06/01/2016
