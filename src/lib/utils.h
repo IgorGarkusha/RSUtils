@@ -55,6 +55,8 @@ class CUtils
 		static float getDataAsFloat(GDALRasterBandH hBand, const void * pdata, int index);
 		static void setData(float v, GDALRasterBandH hBand, const void * pdata, int index);
 		static void getComplexDataAsDouble(GDALRasterBandH hBand, const void * pdata, int index, double * pReal, double * pImaginary);
+		static void getRasterValue(GDALRasterBandH hBand, int current_row, int current_col, void* pValue);
+		static void setRasterValue(GDALRasterBandH hBand, int current_row, int current_col, void* pValue);
 		static void getRasterLine(GDALRasterBandH hBand, int current_row, int cols, void* pLineValues);
 		static void setRasterLine(GDALRasterBandH hBand, int current_row, int cols, void* pLineValues);
 		static void getRasterBlock(GDALRasterBandH hBand, int rows, int cols, void* pBlockValues);

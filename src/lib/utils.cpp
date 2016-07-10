@@ -202,6 +202,16 @@ void CUtils::getComplexDataAsDouble(GDALRasterBandH hBand, const void * pdata, i
 	}
 }
 
+void CUtils::getRasterValue(GDALRasterBandH hBand, int current_row, int current_col, void* pValue)
+{
+	GDALRasterIO(hBand, GF_Read, current_col, current_row, 1, 1, pValue, 1, 1, GDALGetRasterDataType(hBand), 0, 0);
+}
+
+void CUtils::setRasterValue(GDALRasterBandH hBand, int current_row, int current_col, void* pValue)
+{
+	GDALRasterIO(hBand, GF_Write, current_col, current_row, 1, 1, pValue, 1, 1, GDALGetRasterDataType(hBand), 0, 0);
+}
+
 void CUtils::getRasterLine(GDALRasterBandH hBand, int current_row, int cols, void* pLineValues)
 {
 	GDALRasterIO(hBand, GF_Read, 0, current_row, cols, 1, pLineValues, cols, 1, GDALGetRasterDataType(hBand), 0, 0);
@@ -475,7 +485,7 @@ float CUtils::getFloatNoDataValueAsBackground(GDALRasterBandH hBand)
 		void* p = NULL;
 		p = mallocData(hBand, p, 1);
 		getRasterLine(hBand, 1, 1, p);
-		NoDataValue = getDataAsFloat(hBand, (const void*)p, 1);
+		NoDataValue = getDataAsFloat(hBand, (const void*)p, 0);
 		CPLFree(p);
 	}
 	return NoDataValue;
