@@ -1,7 +1,7 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
- *          Ukraine, Dnipropetrovsk
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
  * Copyright (C) 2012-2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
@@ -31,7 +31,7 @@
 #define NODATAVALUE -9999
 
 #define PROG_VERSION "3"
-#define DATE_VERSION "22.05.2016"
+#define DATE_VERSION "10.07.2016"
 
 int progress(int index, int count, int oldpersent);
 float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState);
@@ -49,7 +49,7 @@ bool isNoData(void* pbuf1, int index1, GDALDataType dataType1, float NoDataBandV
 int main(int argc, char* argv[])
 {
 	fprintf(stderr, "CALCULATION OF VEGETATION INDEX\nVersion %s.%s. Free software. GNU General Public License, version 3\n", PROG_VERSION, DATE_VERSION);
-	fprintf(stderr, "Copyright (C) 2012-2016 Igor Garkusha.\nUkraine, Dnipropetrovsk\n\n");
+	fprintf(stderr, "Copyright (C) 2012-2016 Igor Garkusha.\nUkraine, Dnipro (Dnipropetrovsk)\n\n");
 	
 	if((argc!=6)&&(argc!=7))
 	{
@@ -113,6 +113,10 @@ int main(int argc, char* argv[])
 		fputs("            (NIR/GREEN)-1               -- Green Chlorophyll Index\n", stderr);
 		fputs("            (NIR/RED)-1                 -- Red-edge Chlorophyll Index\n", stderr);
 		
+		fputs("10 -- WDRVI -- Wide dynamic range vegetation index\n", stderr);
+		fputs("            (0.2*Band1-Band2)/(0.2*Band1+band2)\n", stderr);
+		fputs("            (0.2*NIR-RED)/(0.2*NIR+RED)\n", stderr);
+		
 //?		fputs("10 -- LAI -- 0.2273*exp(4.972*NDVI)     -- White et al. 1997\n", stderr);
 //		fputs("      NDVI: (NIR-RED)/(NIR+RED) --> (Band1 - Band2)/(Band1 + Band2)\n", stderr);
 				
@@ -124,6 +128,18 @@ int main(int argc, char* argv[])
 		fputs("  2 -- GBNDVI -- Green-Blue NDVI\n", stderr);
 		fputs("            	    [Band1 - (Band2 + Band3)]/[Band1 + (Band2 + Band3)]\n", stderr);
 		fputs("                 [NIR - (GREEN + BLUE)]/[NIR + (GREEN + BLUE)]\n", stderr);
+		fputs("  3 -- VARI   -- Visible Atmospherically Resistant Index\n", stderr);
+		fputs("                 (Band1 - Band2)/(Band1 + Band2 + Band3)\n", stderr);
+		fputs("                 (GREEN - RED)]/(GREEN + RED + BLUE)]\n", stderr);
+		fputs("  4 -- LAI    -- Green Leaf Area Index\n", stderr);
+		fputs("                 Reference: Boegh, E., H. Soegaard, N. Broge,\n",stderr);
+		fputs("                 C. Hasager, N. Jensen, K. Schelde, and A. Thomsen.\n",stderr);
+		fputs("                 \"Airborne Multi-spectral Data for Quantifying Leaf Area Index,\n",stderr);
+		fputs("                 Nitrogen Concentration and Photosynthetic Efficiency in Agriculture\".\n",stderr);
+		fputs("                 Remote Sensing of Environment 81, no. 2-3 (2002): 179-193.\n", stderr);
+		fputs("                 3.618*EVI-0.118\n", stderr);
+		fputs("                 3.618*(2.5*[(Band1 - Band2)/(1 + Band1 + 6*Band2 - 7.5*Band3)])-0.118\n", stderr);
+		fputs("                 3.618*(2.5*[(NIR - RED)/(1 + NIR + 6*RED - 7.5*BLUE)])-0.118\n", stderr);
 		
 		fputs("\n", stderr);
 		
@@ -468,10 +484,13 @@ float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState
 			case 9: // Chlorophyll Index
 					// CI = (Band1/Band2)-1
 					if(vBand2!=0) { index = (vBand1/vBand2)-1.0; *flState = true; } else index = NODATAVALUE;
-					break;	
-			case 10:// LAI = 0.2273*exp(4.972*NDVI)
-					if((vBand1+vBand2)!=0) { index = (vBand1-vBand2)/(vBand1+vBand2); index = 0.2273*exp(4.972*index); *flState = true; } else index = NODATAVALUE;
-					break;					
+					break;
+			case 10: // WDRVI
+					if((0.2f*vBand1+vBand2)!=0) { index = (0.2f*vBand1-vBand2)/(0.2f*vBand1+vBand2); *flState = true; } else index = NODATAVALUE;
+					break;
+			//case 10:// LAI = 0.2273*exp(4.972*NDVI)
+				//	if((vBand1+vBand2)!=0) { index = (vBand1-vBand2)/(vBand1+vBand2); index = 0.2273*exp(4.972*index); *flState = true; } else index = NODATAVALUE;
+					//break;					
 										
 			default: index = NODATAVALUE;//-1.0f;
 		}	
@@ -502,6 +521,17 @@ float getIndexValue(float vBand1, float vBand2, float vBand3, int typeSubIndexFl
 				if((vBand1 + vBand2 + vBand3)!=0) { index = (vBand1 - (vBand2 + vBand3))/(vBand1 + (vBand2 + vBand3)); *flState = true; }
 				else index = NODATAVALUE;
 				break;
+	
+		case 103: // VARI = (Band1 - Band2)/(Band1 + Band2 + Band3)
+				if((vBand1 + vBand2 + vBand3)!=0) { index = (vBand1 - vBand2)/(vBand1 + vBand2 + vBand3); *flState = true; }
+				else index = NODATAVALUE;
+				break;
+				
+		case 104: // LAI = 3.618*EVI-0.118
+				zn = (1.0f+vBand1 + 6.0f*vBand2 - 7.5f*vBand3);
+				if(0 == zn) index = NODATAVALUE;
+				else { index = 3.618f*(2.5f*((vBand1 - vBand2)/zn))-0.118f; *flState = true; }
+				break;				
 					
 		default: index = NODATAVALUE;
 	}
