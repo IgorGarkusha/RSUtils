@@ -15,15 +15,15 @@ Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/bl
 
 Version 1.22.05.2016:
 
-https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.22.05.2016.tar.gz?raw=true
+https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.22.05.2016.tar.gz?raw=true
 
 Version 1.17.04.2016:
 
-https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.17.04.2016.tar.gz?raw=true
+https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.17.04.2016.tar.gz?raw=true
 
 Version 1.09.03.2016:
 
-https://github.com/IgorGarkusha/RSUtils/blob/master/archive/RSUtils_ver_1.09.03.2016.tar.gz?raw=true
+https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.09.03.2016.tar.gz?raw=true
 
 ## GDAL/OGR General
 
