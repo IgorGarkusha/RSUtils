@@ -1,2 +1,0 @@
-RSUtils
-Version 1.10.07.2016.
