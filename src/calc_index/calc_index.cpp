@@ -214,10 +214,10 @@ int main(int argc, char* argv[])
 
 		pBand3 = GDALGetRasterBand(pDataset3, 1);
         		
-		void *pline1; // for read data buffer
-		void *pline2; // for read data buffer
-		float *pline3; // for write data buffer and read statistics
-		void *pline4; // for read data buffer
+		void *pline1 = NULL; // for read data buffer
+		void *pline2 = NULL; // for read data buffer
+		float *pline3 = NULL; // for write data buffer and read statistics
+		void *pline4 = NULL; // for read data buffer
         pline1 = CPLMalloc(sizeof(GDALGetRasterDataType(pBand1))*cols);
         pline2 = CPLMalloc(sizeof(GDALGetRasterDataType(pBand2))*cols);
         pline3 = (float *)CPLMalloc(sizeof(float)*cols);
