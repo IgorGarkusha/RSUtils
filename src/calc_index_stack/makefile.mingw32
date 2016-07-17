@@ -1,0 +1,23 @@
+# Makefile for calc_index_stack  project
+
+TARGET=calc_index_stack
+UTILS=utils
+CXX=mingw32-g++
+CCFLAGS=-I"$(QGIS_HOME)\include"
+GDAL_LIB="$(QGIS_HOME)\lib\gdal_i.lib"
+CLEAN=del /Q
+
+all: $(TARGET).exe
+
+$(TARGET).exe: $(TARGET).obj $(UTILS).obj
+	$(CXX) -o ..\..\bin\$(TARGET).exe ..\..\obj\$(TARGET).obj ..\..\obj\$(UTILS).obj $(GDAL_LIB)
+
+$(TARGET).obj: $(TARGET).cpp
+	$(CXX) $(CCFLAGS) -o ..\..\obj\$(TARGET).obj -c $(TARGET).cpp
+
+$(UTILS).obj: ..\lib\$(UTILS).cpp
+	$(CXX) $(CCFLAGS) -o ..\..\obj\$(UTILS).obj -c ..\lib\$(UTILS).cpp
+
+clean:
+	$(CLEAN) ..\..\obj\*
+	$(CLEAN) ..\..\bin\$(TARGET).exe
