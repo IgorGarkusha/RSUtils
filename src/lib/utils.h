@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
- *          Ukraine, Dnipropetrovsk
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,5 +70,6 @@ class CUtils
 		static float getFloatNoDataValueAsBackground(GDALRasterBandH hBand);
 		static bool insideInPolygons(OGRDataSourceH poDS, double x, double y);
 		static bool isFloat32DataType(GDALDatasetH hDataset);
+		static bool fileExist(const char * fileName);
 };
 #endif

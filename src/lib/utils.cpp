@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
- *          Ukraine, Dnipropetrovsk
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 */
 
 #include "utils.h"
+#include <stdio.h>
 #include <gdal.h>
 #include <ogrsf_frmts.h>
 #include <ogr_core.h>
@@ -256,13 +257,16 @@ void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, in
 	char **papszOptions = NULL;
     GDALDriverH hDriver;
     GDALRasterBandH hDataset;
-	GDALRasterBandH hBand;
+	//GDALRasterBandH hBand;
 	if( (hDriver = GDALGetDriverByName("GTiff")) != NULL)
 	{
+		fprintf(stderr, "Create image %s...\n", fileName);
         if( (hDataset = GDALCreate( hDriver, fileName, cols, rows, bands, GDT_Float32, papszOptions )) !=NULL )
 		{
 			GDALSetGeoTransform(hDataset, adfGeoTransform );
 			GDALSetProjection(hDataset, szProjection );
+			/*
+			int pr = CUtils::progress_ln_ex(stderr, 0, 0, START_PROGRESS);
 			for(int band = 1; band<=bands; band++)
 			{
 				if( (hBand = GDALGetRasterBand(hDataset, band)) != NULL )
@@ -275,7 +279,10 @@ void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, in
 
 					GDALSetRasterNoDataValue(hBand, noDataValue);
 				}
+				pr = CUtils::progress_ln_ex(stderr, band-1, bands, pr);
 			}
+			CUtils::progress_ln_ex(stderr, 0, 0, END_PROGRESS);
+			*/
 			GDALClose(hDataset);
 		}
 	}
@@ -286,13 +293,16 @@ void CUtils::createNewByteGeoTIFF(const char* fileName, int bands, int rows, int
 	char **papszOptions = NULL;
     GDALDriverH hDriver;
     GDALRasterBandH hDataset;
-	GDALRasterBandH hBand;
+//	GDALRasterBandH hBand;
 	if( (hDriver = GDALGetDriverByName("GTiff")) != NULL)
 	{
+		fprintf(stderr, "Create image %s...\n", fileName);
         if( (hDataset = GDALCreate( hDriver, fileName, cols, rows, bands, GDT_Byte, papszOptions )) !=NULL )
 		{
 			GDALSetGeoTransform(hDataset, adfGeoTransform );
 			GDALSetProjection(hDataset, szProjection );
+			/*
+			int pr = CUtils::progress_ln_ex(stderr, 0, 0, START_PROGRESS);
 			for(int band = 1; band<=bands; band++)
 			{
 				if( (hBand = GDALGetRasterBand(hDataset, band)) != NULL )
@@ -305,7 +315,10 @@ void CUtils::createNewByteGeoTIFF(const char* fileName, int bands, int rows, int
 
 					GDALSetRasterNoDataValue(hBand, noDataValue);
 				}
+				pr = CUtils::progress_ln_ex(stderr, band-1, bands, pr);
 			}
+			CUtils::progress_ln_ex(stderr, 0, 0, END_PROGRESS);
+			*/
 			GDALClose(hDataset);
 		}
 	}
@@ -533,4 +546,15 @@ bool CUtils::insideInPolygons(OGRDataSourceH poDS, double x, double y)
 bool CUtils::isFloat32DataType(GDALDatasetH hDataset)
 {
 	return ( GDALGetRasterDataType( GDALGetRasterBand(hDataset, 1) ) == GDT_Float32 );
+}
+
+bool CUtils::fileExist(const char * fileName)
+{
+	FILE* f = NULL;
+	if( (f = fopen(fileName, "rb")) != NULL )
+	{
+		fclose(f);
+		return true;
+	}
+	else return false;
 }
