@@ -1,6 +1,6 @@
 MAKE_FILE=-f makefile.$(PLATFORM)
 
-all:	s2_set_projection check_reflectance s2_utm_tile_finder tif2con l8_dn_conversion calc_index tcap stat_map_creator
+all:	s2_set_projection check_reflectance s2_utm_tile_finder tif2con l8_dn_conversion calc_index tcap stat_map_creator calc_index_stack
 
 clean: 
 	cd ./src/s2_set_projection && $(MAKE) $(MAKE_FILE) clean
@@ -11,6 +11,7 @@ clean:
 	cd ./src/calc_index && $(MAKE) $(MAKE_FILE) clean
 	cd ./src/tcap && $(MAKE) $(MAKE_FILE) clean
 	cd ./src/stat_map_creator && $(MAKE) $(MAKE_FILE) clean
+	cd ./src/calc_index_stack && $(MAKE) $(MAKE_FILE) clean
 
 s2_set_projection: 
 	cd ./src/s2_set_projection && $(MAKE) $(MAKE_FILE) all
@@ -35,3 +36,6 @@ tcap:
 
 stat_map_creator:
 	cd ./src/stat_map_creator && $(MAKE) $(MAKE_FILE) all
+
+calc_index_stack:
+	cd ./src/calc_index_stack && $(MAKE) $(MAKE_FILE) all
