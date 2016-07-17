@@ -1,3 +1,9 @@
+## RSUtils. Version 1.17.07.2016
+
+1. Add new program: calc_index_stack.
+2. New features added to the programs: calc_index, l8_dn_conversion.
+3. Update modules: utils.h, utils.cpp, calc_index.cpp, l8_dn_conversion.cpp.
+
 ## RSUtils. Version 1.10.07.2016
 
 1. Add new programs: tcap, stat_map_creator.
