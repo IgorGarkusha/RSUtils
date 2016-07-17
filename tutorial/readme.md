@@ -1,3 +1,9 @@
+## Tutorials ver. 1.17.07.2016
+
+1. Create a stack of vegetation indices and mapping statistics 
+   (**calc_index_stack**, **stat_map_creator**, **l8_dn_conversion**):
+    https://www.youtube.com/watch?v=8f3mB2zibQs
+
 ## Tutorials ver. 1.10.07.2016
 
 1. Tasseled Cap Transformation (**tcap**):
