@@ -31,7 +31,7 @@
 #define NODATAVALUE -9999
 
 #define PROG_VERSION "3"
-#define DATE_VERSION "10.07.2016"
+#define DATE_VERSION "17.07.2016"
 
 int progress(int index, int count, int oldpersent);
 float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState);
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 		fputs("                 [NIR - (GREEN + BLUE)]/[NIR + (GREEN + BLUE)]\n", stderr);
 		fputs("  3 -- VARI   -- Visible Atmospherically Resistant Index\n", stderr);
 		fputs("                 (Band1 - Band2)/(Band1 + Band2 + Band3)\n", stderr);
-		fputs("                 (GREEN - RED)]/(GREEN + RED + BLUE)]\n", stderr);
+		fputs("                 (GREEN - RED)/(GREEN + RED + BLUE)\n", stderr);
 		fputs("  4 -- LAI    -- Green Leaf Area Index\n", stderr);
 		fputs("                 Reference: Boegh, E., H. Soegaard, N. Broge,\n",stderr);
 		fputs("                 C. Hasager, N. Jensen, K. Schelde, and A. Thomsen.\n",stderr);
@@ -476,7 +476,7 @@ float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState
 			case 7: // SI = [(Band1 - Band2)/(Band1 + Band2 + 0.5)]*[1 + 0.5]
 					//index = (vBand1 + vBand2)/2.0f; *flState = true; 
 					// SI = SQRT(Band1*Band2)
-					index = sqrtf(vBand1*vBand2); *flState = true; 
+					if((vBand1*vBand2)>=0) { index = sqrtf(vBand1*vBand2); *flState = true;  } else index = NODATAVALUE;
 					break;
 			case 8: // BI = SQRT((Band1*Band1) + (Band2*Band2))
 					index = sqrtf((vBand1*vBand1)+(vBand2*vBand2)); *flState = true; 

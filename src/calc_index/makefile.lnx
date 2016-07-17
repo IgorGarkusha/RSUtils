@@ -3,7 +3,7 @@
 TARGET=calc_index
 UTILS=utils
 CXX=g++
-CCFLAGS=-Wall -I/usr/include/gdal
+CCFLAGS=-O3 -Wall -I/usr/include/gdal
 LDFLAGS=-lgdal
 CLEAN=rm -f
 
