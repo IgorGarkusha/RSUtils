@@ -4,7 +4,7 @@ TARGET=l8_dn_conversion
 UTILS=utils
 MTL=landsat_metadata
 CXX=g++
-CCFLAGS=-Wall -I/usr/include/gdal
+CCFLAGS=-O3 -Wall -I/usr/include/gdal
 LDFLAGS=-lgdal -lm
 CLEAN=rm -f
 

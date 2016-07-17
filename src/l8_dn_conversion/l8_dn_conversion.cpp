@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
- *          Ukraine, Dnipropetrovsk
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 using namespace std;
 
 #define PROG_VERSION "1"
-#define DATE_VERSION "17.04.2016"
+#define DATE_VERSION "17.07.2016"
 
 #ifdef __MSVC__
 #define strcasecmp _stricmp
@@ -60,11 +60,13 @@ using namespace std;
 
 CLandsatMetadata L8Metadata;
 bool flCheckReflectance = false;
-bool flOnlyRadCalc = true;
+bool flOnlyRadCalc = false;
 bool flOnlyReflCalc = true;
+bool flCreateStack = false;
 
 void printHelp();
-char * getArchiveName(char * metadataFileName, char * archiveFileName);
+//char * getArchiveName(char * metadataFileName, char * archiveFileName);
+int getArchiveName(char * metadataFileName, char * archiveFileName);
 char * getDataDir(char * metadataFileName, char * dataDir);
 void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing);
 char * l8_band_dn_processing(const char fileName[], int processing_mode, char * outputFileName, bool flNext=false);
@@ -80,13 +82,14 @@ void l8_band_dn_to_T_Brightness(GDALRasterBandH hBandIn, GDALRasterBandH hBandOu
 void l8_band_dn_to_TC_Brightness(GDALRasterBandH hBandIn, GDALRasterBandH hBandOut,
 								 void *pbufIn, float *pbufOut, int rows, int cols, 
 								 int bandNumber);
+void createStack(const char * stackFileName, const char * outputFileName, int mode);
 
 int main(int argc, char* argv[])
 {
 	fprintf(stderr, "LANDSAT-8 DN CONVERTOR\nVersion %s.%s. Free software. GNU General Public License, version 3\n", PROG_VERSION, DATE_VERSION);
-	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipropetrovsk\n\n");
+	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipro (Dnipropetrovsk)\n\n");
 	
-	if(!((argc>=2)&&(argc<=7)))
+	if(!((argc>=2)&&(argc<=8)))
 	{
 		fputs("Input parameters not found!\n", stderr);
 		printHelp();
@@ -105,6 +108,8 @@ int main(int argc, char* argv[])
 			if(0 == strcmp(argv[i], "-c")) flCheckReflectance = true;
 			else
 			if(0 == strcmp(argv[i], "--refl")) { flOnlyReflCalc = true; flOnlyRadCalc = false; }
+			else
+			if(0 == strcmp(argv[i], "--stack")) flCreateStack = true;
 			else
 			if(0 == strcmp(argv[i], "--rad"))  { flOnlyRadCalc = true; flOnlyReflCalc = false; }
 			else		
@@ -135,10 +140,22 @@ int main(int argc, char* argv[])
 
 	if(flDecompressArchive) 
 	{
-		char cmd[2048] = "tar zxvf ";
+		char cmd[2048] = "";
 		
 		char archiveFileName[MAX_PATH] = "";
-		strcat(cmd, getArchiveName(metadataFileName, archiveFileName));
+		int arch = 0;
+		
+		if( (arch = getArchiveName(metadataFileName, archiveFileName)) == 0 )
+		{
+			fprintf(stderr, "ERROR: UNSUPPORTED ARCHIVE FORMAT!\n");
+			return 1;
+		}
+		
+		if(arch == 1) strcpy(cmd, "tar zxvf ");
+		else strcpy(cmd, "tar jxvf ");
+		
+		strcat(cmd, archiveFileName);
+
 		strcat(cmd, " -C ");
 		strcat(cmd, dataDir);
 	
@@ -176,22 +193,42 @@ void printHelp()
 	fputs("l8_dn_conversion -c -b oli C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -e C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -e -b tirs C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
-	fputs("\nOptions:\n-e -- decompress archive with extern programs\n", stderr);
+	fputs("l8_dn_conversion -c -b 2-7 --stack /home/user1/processing/LC81780262016030LGN00_MTL.txt\n", stderr);
+	fputs("\nOptions:\n-e -- decompress archive (tar.gz, tar.bz, tar.bz2) with extern programs\n", stderr);
 	fputs("-b all|oli|tirs|45|2-5|2-7|451011| -- processing bands\n", stderr);
-	fputs("-c -- execute check_reflectance with method = 3!\n", stderr);
-	fputs("--refl -- only DN to TOA Reflectance\n", stderr);
-	fputs("--rad  -- only DN to TOA Radiance\n\n", stderr);
+	fputs("-b all   -- default mode\n", stderr);
+	fputs("-c       -- execute check_reflectance with method = 3!\n", stderr);
+	fputs("--refl   -- only DN to TOA Reflectance (default mode)\n", stderr);
+	fputs("--rad    -- only DN to TOA Radiance\n", stderr);
+	fputs("--stack  -- create multiband image (only for -b values: 45, 2-5, 2-7, tirs)\n\n", stderr);
 }
 
-char * getArchiveName(char * metadataFileName, char * archiveFileName)
+int getArchiveName(char * metadataFileName, char * archiveFileName)
 {
 	int i = 0, len = strlen(metadataFileName)-1;
 	int end_pos = len;
 	for(i=len; i>=0; i--) if(metadataFileName[i] == '_') { end_pos = i; break; }
 	for(i=0; i<end_pos; i++) archiveFileName[i] = metadataFileName[i];
 	archiveFileName[i] = '\0';
-	strcat(archiveFileName, ".tar.gz");
-	return archiveFileName;
+	
+	char tgzFileName[MAX_PATH] = "";
+	char tbzFileName[MAX_PATH] = "";
+	char tbz2FileName[MAX_PATH] = "";
+	
+	strcpy(tgzFileName, archiveFileName);
+	strcpy(tbzFileName, archiveFileName);
+	strcpy(tbz2FileName, archiveFileName);
+	strcat(tgzFileName, ".tar.gz");
+	strcat(tbzFileName, ".tar.bz");
+	strcat(tbz2FileName, ".tar.bz2");
+	
+	if(CUtils::fileExist(tgzFileName)) { strcat(archiveFileName, ".tar.gz");   return 1; }
+	else 
+	if(CUtils::fileExist(tbzFileName)) { strcat(archiveFileName, ".tar.bz");   return 2; }
+	else 
+	if(CUtils::fileExist(tbz2FileName)) { strcat(archiveFileName, ".tar.bz2"); return 3; }
+	else 
+	return 0;
 }
 
 char * getDataDir(char * metadataFileName, char * dataDir)
@@ -300,7 +337,7 @@ void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing)
 						}
 					}
 					break;
-				case MODE_234567:
+				case MODE_234567:			
 					for(int i=1; i< 7; i++)
 					{
 						char param[20] = "";
@@ -428,6 +465,45 @@ void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing)
 						l8_band_dn_processing(outputFileName, MODE_DN_TO_TC_BR, outputFileName, true);
 					}
 					break;
+			}
+			
+			if(flCreateStack)
+			{
+				if((mode_processing_mode != MODE_UNKNOWN)&&
+				   (mode_processing_mode != MODE_ALL)&&
+				   (mode_processing_mode != MODE_OLI)&&
+				   (mode_processing_mode != MODE_451011) )
+				{
+					value = "";
+					string parameter("LANDSAT_SCENE_ID");
+					char paramID[30] = "";
+					CLandsatMetadata::getParameterValueFromMetadata(finMetaData, parameter, &value);
+					CLandsatMetadata::trim_all_symbol(value.c_str(), paramID, '"');
+					char stackFileName[MAX_PATH]="";
+					strcpy(stackFileName, dataDir);
+					strcat(stackFileName, paramID);
+					
+					switch(mode_processing_mode)
+					{
+						case MODE_2345:
+							strcat(stackFileName,"_2-5.tif");
+							break;
+						case MODE_234567:
+							strcat(stackFileName,"_2-7.tif");
+							break;
+						case MODE_45:
+							strcat(stackFileName,"_4_5.tif");
+							break;
+						case MODE_TIRS:
+							strcat(stackFileName,"_10_11.tif");
+					}
+					
+					char templateFileName[MAX_PATH]="";
+					strcpy(templateFileName, dataDir);
+					strcat(templateFileName, paramID);
+					fprintf(stderr, "\nStacking...\n");
+					createStack(stackFileName, templateFileName, mode_processing_mode);
+				}
 			}
 			
 			if((mode_processing == MODE_ALL)&&(mode_processing_mode == MODE_OLI)) mode_processing_mode = MODE_TIRS;
@@ -654,3 +730,157 @@ void l8_band_dn_to_TC_Brightness(GDALRasterBandH hBandIn, GDALRasterBandH hBandO
 	}
 	CUtils::progress_ln_ex(stderr, 0, 0, END_PROGRESS);
 }
+
+void createStack(const char * stackFileName, const char * outputFileName, int mode)
+{
+	char fullPathName1[MAX_PATH]="";
+	strcpy(fullPathName1, outputFileName);
+	
+	int bands = 0;
+	
+	// Unsupported stack mode!
+	if(mode == MODE_UNKNOWN) 	return;
+	if(mode == MODE_ALL) 		return;
+	if(mode == MODE_OLI) 		return;
+	if(mode == MODE_451011)		return;
+	
+	switch(mode)
+	{
+		case MODE_2345:
+		case MODE_234567:
+		case MODE_45:
+			if(flOnlyReflCalc) 
+			{ 
+				if(flCheckReflectance) strcat(fullPathName1, "_B4_refl.tif.corr.tif"); 
+				else strcat(fullPathName1, "_B4_refl.tif"); 
+			}
+			else
+			if(flOnlyRadCalc) strcat(fullPathName1, "_B4_rad.tif");
+			break;
+		case MODE_TIRS:
+			strcat(fullPathName1, "_B10_tC.tif");
+	}
+	
+	switch(mode)
+	{
+		case MODE_2345:
+			bands = 4;
+			break;
+		case MODE_234567:
+			bands = 6;
+			break;
+		case MODE_45:
+			bands = 2;
+			break;
+		case MODE_TIRS:
+			bands = 2;
+	}
+	
+	GDALDatasetH hDataset = GDALOpen( fullPathName1, GA_ReadOnly );
+
+    if(hDataset!=NULL)
+    {
+		GDALRasterBandH hBand =  GDALGetRasterBand(hDataset, 1);
+		int cols = GDALGetRasterBandXSize(hBand);
+		int rows = GDALGetRasterBandYSize(hBand);
+
+		double adfGeoTransform[6]={0};
+		char szProjection[512] = "";
+		GDALGetGeoTransform(hDataset, adfGeoTransform );
+		strcpy(szProjection, GDALGetProjectionRef(hDataset));
+		
+		CUtils::createNewFloatGeoTIFF(stackFileName, bands, rows, cols, adfGeoTransform, szProjection, 0, 0);
+				
+		GDALClose(hDataset);
+		hDataset = NULL;
+		
+		GDALDatasetH hDatasetOut = NULL;
+		
+		hDatasetOut = GDALOpen( stackFileName, GA_Update );
+		if(hDatasetOut!=NULL)
+		{
+			char ** fullPathName = NULL;
+			
+			float **pbuf = NULL;
+			
+			GDALDatasetH * hDatasetIn = NULL;
+			
+			GDALRasterBandH * hBandIn = NULL;
+			GDALRasterBandH * hBandOut = NULL;
+			
+			hDatasetIn = new GDALDatasetH[bands];
+			hBandIn = new GDALRasterBandH[bands];
+			hBandOut = new GDALRasterBandH[bands];
+			fullPathName = new char*[bands];
+			for(int i=0; i<bands; i++) fullPathName[i] = new char[MAX_PATH];
+			
+			for(int k=0; k<bands; k++)
+			{
+					switch(mode)
+					{
+						case MODE_2345:
+						case MODE_234567:
+							if(flOnlyReflCalc) 
+							{ 
+								if(flCheckReflectance) sprintf(fullPathName[k], "%s_B%d_refl.tif.corr.tif",outputFileName, 2+k);
+								else sprintf(fullPathName[k], "%s_B%d_refl.tif",outputFileName, 2+k);
+							}
+							else
+							if(flOnlyRadCalc) sprintf(fullPathName[k], "%s_B%d_rad.tif",outputFileName, 2+k);
+							break;
+							
+						case MODE_45:
+							if(flOnlyReflCalc) 
+							{ 
+								if(flCheckReflectance) sprintf(fullPathName[k], "%s_B%d_refl.tif.corr.tif",outputFileName, 4+k);
+								else sprintf(fullPathName[k], "%s_B%d_refl.tif",outputFileName, 4+k);
+							}
+							else
+							if(flOnlyRadCalc) sprintf(fullPathName[k], "%s_B%d_rad.tif",outputFileName, 4+k);
+							break;
+							
+						case MODE_TIRS:
+							sprintf(fullPathName[k], "%s_B%d_tC.tif",outputFileName, 10+k);
+					}
+											
+				hDatasetIn[k] = GDALOpen( fullPathName[k], GA_ReadOnly );
+				hBandIn[k] =  GDALGetRasterBand(hDatasetIn[k], 1);
+				hBandOut[k] =  GDALGetRasterBand(hDatasetOut, k+1);
+			}
+		
+			pbuf = new float*[bands];
+			for(int k=0; k<bands; k++) pbuf[k] = new float[cols];
+		
+			int pr = CUtils::progress_ln_ex(stderr, 0, 0, START_PROGRESS);
+			for(int i=0; i<rows; i++)
+			{					
+				for(int k=0; k<bands; k++)
+				{
+				 GDALRasterIO(hBandIn[k], GF_Read, 0, i, cols, 1, pbuf[k], cols, 1, GDT_Float32, 0, 0);						
+				 GDALRasterIO(hBandOut[k], GF_Write, 0, i, cols, 1, pbuf[k], cols, 1, GDT_Float32, 0, 0);				
+				}
+				pr = CUtils::progress_ln_ex(stderr, i, rows, pr);
+			}
+			CUtils::progress_ln_ex(stderr, 0, 0, END_PROGRESS);
+			
+			delete [] hBandIn;
+			
+			for(int k=0; k<bands; k++) GDALClose(hDatasetIn[k]);
+			
+			delete [] hDatasetIn;
+			
+			delete [] hBandOut;
+			
+			for(int i=0; i<bands; i++) delete [] fullPathName[i];
+			delete [] fullPathName;
+			
+			for(int k=0; k<bands; k++) delete [] pbuf[k];
+			delete [] pbuf;
+					
+			CUtils::calculateFloatGeoTIFFStatistics(hDatasetOut, -1, true);
+			
+			GDALClose(hDatasetOut);
+		}
+	}
+}
+
