@@ -1,9 +1,9 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
- * Author:  Igor Garkusha <igor_garik@ua.fm>
- *          Ukraine, Dnipropetrovsk
+ * Author:  Igor Garkusha <rsutils.gis@gmail.com>
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
- * Copyright (C) 2016, Igor Garkusha <igor_garik@ua.fm>
+ * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <cpl_conv.h>
 
 #define PROG_VERSION "1"
-#define DATE_VERSION "17.04.2016"
+#define DATE_VERSION "28.08.2016"
 
 #define MAX_PATH 1024
 
@@ -37,7 +37,7 @@ float getCorrectReflectance(float rTOA, int method, float threshold, double NoDa
 int main(int argc, char* argv[])
 {
 	fprintf(stderr, "CHECK and CORRECT REFLECTANCE\nVersion %s.%s. Free software. GNU General Public License, version 3\n", PROG_VERSION, DATE_VERSION);
-	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipropetrovsk\n\n");
+	fprintf(stderr, "Copyright (C) 2016 Igor Garkusha.\nUkraine, Dnipro (Dnipropetrovsk)\n\n");
 	
 	if(argc!=4) 
 	{
@@ -49,11 +49,11 @@ int main(int argc, char* argv[])
 		fputs("               if( Value < 0 ) OutValue := 0\n", stderr);
 		fputs("               if( 0 <= Value < ThresholdValueOnLevel1Percent ) OutValue := Value/ThresholdValueOnLevel1Percent\n", stderr);
 		fputs("               if( Value >= ThresholdValueOnLevel1Percent ) OutValue := 1\n", stderr);
-		fputs("        3 -- simple clipping if outside interval 0-1 with background pixel (coords: 1,1) [if(Value<0) OutValue=NoDataValue; if(Value>1) OutValue=NoDataValue;]\n\n", stderr);
+		fputs("        3 -- simple clipping if outside interval 0-1 with background pixel (coords: 1,1) [if(Value<0) OutValue=NoDataValue; if(Value>1) OutValue=NoDataValue;]\n", stderr);
 		fputs("        4 -- clipping and transformation (For ThresholdValueOnLevel1Percent>1) with background pixel (coords: 1,1):\n",stderr);
 		fputs("               if( Value < 0 ) OutValue := NoDataValue\n", stderr);
 		fputs("               if( 0 <= Value < ThresholdValueOnLevel1Percent ) OutValue := Value/ThresholdValueOnLevel1Percent\n", stderr);
-		fputs("               if( Value >= ThresholdValueOnLevel1Percent ) OutValue := NoDataValue\n", stderr);
+		fputs("               if( Value >= ThresholdValueOnLevel1Percent ) OutValue := NoDataValue\n\n", stderr);
 		return 1;
 	}
 		
@@ -99,9 +99,14 @@ int main(int argc, char* argv[])
 										
 					if( GDALGetProjectionRef( hDatasetIn ) != NULL ) 
 					{
-						char szProjection[4096]="";
-						strcpy(szProjection, GDALGetProjectionRef( hDatasetIn ));
-						GDALSetProjection(hDatasetOut, szProjection );
+						////////////////////////////////////////////////////////////////
+						// !!! THIS IS BUG !!!
+						// char szProjection[4096]="";
+						// strcpy(szProjection, GDALGetProjectionRef( hDatasetIn ));
+						// GDALSetProjection(hDatasetOut, szProjection );
+						////////////////////////////////////////////////////////////////
+						
+						GDALSetProjection(hDatasetOut, GDALGetProjectionRef( hDatasetIn ) );
 					}
 					
 					float *pLineIn = (float *)CPLMalloc(sizeof(float)*cols);
@@ -114,8 +119,12 @@ int main(int argc, char* argv[])
 							if( (hBandOut = GDALGetRasterBand(hDatasetOut, band)) != NULL )
 							{
 								int bSuccess = 0;
-								double NoDataValue = GDALGetRasterNoDataValue(hBandIn, &bSuccess);
-								if(!bSuccess) NoDataValue = 0;
+								double NoDataValue = 0;
+								if( method != 1 ) 
+								{
+									NoDataValue = GDALGetRasterNoDataValue(hBandIn, &bSuccess);
+									if(!bSuccess) NoDataValue = 0;
+								}
 								
 								float vThreshold = 0;
 								
