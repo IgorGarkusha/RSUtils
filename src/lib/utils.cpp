@@ -252,7 +252,8 @@ int CUtils::progress_ln_ex(FILE* stream, int index, int count, int progress)
 	return progress;
 }
 
-void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], float fillData, float noDataValue)
+//void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], float fillData, float noDataValue)
+void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], const char * szProjection, float fillData, float noDataValue)
 {
 	char **papszOptions = NULL;
     GDALDriverH hDriver;
@@ -288,7 +289,8 @@ void CUtils::createNewFloatGeoTIFF(const char* fileName, int bands, int rows, in
 	}
 }
 
-void CUtils::createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], byte fillData, byte noDataValue)
+//void CUtils::createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], byte fillData, byte noDataValue)
+void CUtils::createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], const char * szProjection, byte fillData, byte noDataValue)
 {
 	char **papszOptions = NULL;
     GDALDriverH hDriver;
@@ -397,10 +399,10 @@ void CUtils::calculateFloatGeoTIFFStatistics(GDALDatasetH hDataset, int userBand
 		}
 		
 		GDALSetRasterStatistics(hBand, min, max, mean, stddev);
-		GDALSetRasterNoDataValue(hBand, NoDataValue);
+		GDALSetRasterNoDataValue(hBand, NoDataValue);		
 	}
 	
-	CPLFree(pbuf);
+	CPLFree(pbuf);	
 }
 
 void CUtils::calculateByteGeoTIFFStatistics(GDALDatasetH hDataset, int userBandNumber, byte flNoDataValueAsBackground, byte NoDataValue)

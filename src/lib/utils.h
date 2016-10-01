@@ -63,8 +63,12 @@ class CUtils
 		static void setRasterBlock(GDALRasterBandH hBand, int rows, int cols, void* pBlockValues);
 		static int progress_ln(FILE* stream, int index, int count, int oldpersent);
 		static int progress_ln_ex(FILE* stream, int index, int count, int progress);
-		static void createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], float fillData, float noDataValue);
-		static void createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], byte fillData, byte noDataValue);
+		//static void createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], float fillData, float noDataValue);
+		//static void createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], char szProjection[512], byte fillData, byte noDataValue);
+		
+		static void createNewFloatGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], const char * szProjection, float fillData, float noDataValue);
+		static void createNewByteGeoTIFF(const char* fileName, int bands, int rows, int cols, double adfGeoTransform[6], const char * szProjection, byte fillData, byte noDataValue);
+		
 		static void calculateFloatGeoTIFFStatistics(GDALDatasetH hDataset, int userBandNumber, bool flNoDataValueAsBackground=true, float NoDataValue=-9999);
 		static void calculateByteGeoTIFFStatistics(GDALDatasetH hDataset, int userBandNumber, byte flNoDataValueAsBackground, byte NoDataValue);
 		static float getFloatNoDataValueAsBackground(GDALRasterBandH hBand);
