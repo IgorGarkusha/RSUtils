@@ -5,7 +5,8 @@ UTILS=utils
 MTL=landsat_metadata
 CXX=g++
 CCFLAGS=-O3 -Wall -Wno-unused-result -I/usr/include/gdal
-LDFLAGS=-lgdal -lm
+# -I${RSUTILS_HOME}/include
+LDFLAGS=-L${RSUTILS_HOME}/lib -lgdal -lm -ltiff
 CLEAN=rm -f
 
 all: $(TARGET)

@@ -1,4 +1,5 @@
 /*
+ *
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
  *          Ukraine, Dnipro (Dnipropetrovsk)
@@ -26,13 +27,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+
+#ifndef __MSVC__
+#include <strings.h>
+#endif
+
 #include "landsat_metadata.h"
 #include "../lib/utils.h"
 
 using namespace std;
 
-#define PROG_VERSION "1"
-#define DATE_VERSION "17.07.2016"
+#define PROG_VERSION "2"
+#define DATE_VERSION "24.09.2016"
 
 #ifdef __MSVC__
 #define strcasecmp _stricmp
@@ -68,8 +74,9 @@ void printHelp();
 //char * getArchiveName(char * metadataFileName, char * archiveFileName);
 int getArchiveName(char * metadataFileName, char * archiveFileName);
 char * getDataDir(char * metadataFileName, char * dataDir);
+char * getDataSubDir(char * metadataFileName, char * dataDir);
 void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing);
-char * l8_band_dn_processing(const char fileName[], int processing_mode, char * outputFileName, bool flNext=false);
+char * l8_band_dn_processing(const char * fileName, int processing_mode, char * outputFileName, bool flNext=false);
 void l8_band_dn_to_TOARad(GDALRasterBandH hBandIn, GDALRasterBandH hBandOut,
 						  void *pbufIn, float *pbufOut, int rows, int cols, 
 						  int bandNumber);
@@ -83,6 +90,10 @@ void l8_band_dn_to_TC_Brightness(GDALRasterBandH hBandIn, GDALRasterBandH hBandO
 								 void *pbufIn, float *pbufOut, int rows, int cols, 
 								 int bandNumber);
 void createStack(const char * stackFileName, const char * outputFileName, int mode);
+bool inputFileIsArchive(const char * fileName, char * extention);
+bool doCommonDecompress(const char * archFileName, const char * extention, 
+						const char * decompressOption, 
+						char * dataDir, char * metadataFileName);
 
 int main(int argc, char* argv[])
 {
@@ -95,15 +106,31 @@ int main(int argc, char* argv[])
 		printHelp();
 		return 1;
 	}
-		
+	
+	char dataDir[MAX_PATH] = "";
+	char cmd[2048] = "";
+	char decompressOption[4] = "";
+	
 	bool flDecompressArchive = false;
+	bool flDecompressToSubdir = false;
+	bool flDecompressToExternDir = false;
+	
 	int mode_processing = MODE_ALL;
 	
 	if(argc>2)
 	{
 		for(int i=1; i<argc-1; i++)
 		{
-			if(0 == strcmp(argv[i], "-e")) flDecompressArchive = true;
+			if(0 == strcmp(argv[i], "-e")) { flDecompressArchive = true; strcpy(decompressOption, "-e"); }
+			else
+			if(0 == strcmp(argv[i], "-ed")) { flDecompressArchive = true; flDecompressToSubdir = true; strcpy(decompressOption, "-ed"); }
+			else
+			if(0 == strcmp(argv[i], "-x")) { flDecompressArchive = true; flDecompressToExternDir = true; 
+											 strcpy(decompressOption, "-x");
+											 strcpy(dataDir, argv[i+1]); i++; 
+											 sprintf(cmd, "mkdir %s", dataDir);
+											 system(cmd);
+										   }
 			else
 			if(0 == strcmp(argv[i], "-c")) flCheckReflectance = true;
 			else
@@ -133,38 +160,66 @@ int main(int argc, char* argv[])
 	}
 		
 	char metadataFileName[MAX_PATH] = "";
-	char dataDir[MAX_PATH] = "";
-
-	strcpy(metadataFileName, argv[argc-1]);
-	strcpy(dataDir, getDataDir(metadataFileName, dataDir));
-
-	if(flDecompressArchive) 
+	char extention[10] = "";
+	
+	if( inputFileIsArchive(argv[argc-1], extention) )
 	{
-		char cmd[2048] = "";
-		
-		char archiveFileName[MAX_PATH] = "";
-		int arch = 0;
-		
-		if( (arch = getArchiveName(metadataFileName, archiveFileName)) == 0 )
+		if(flDecompressArchive == false)
+		{
+			fprintf(stderr, "ERROR: The program is started without options -e or -ed or -x!\n\n");
+			printHelp();
+			return 3;
+		}
+
+		if( doCommonDecompress(argv[argc-1], extention, decompressOption, dataDir, metadataFileName) == false )
 		{
 			fprintf(stderr, "ERROR: UNSUPPORTED ARCHIVE FORMAT!\n");
+			printHelp();
 			return 1;
 		}
+	}
+	else
+	{
+		strcpy(metadataFileName, argv[argc-1]);
 		
-		if(arch == 1) strcpy(cmd, "tar zxvf ");
-		else strcpy(cmd, "tar jxvf ");
-		
-		strcat(cmd, archiveFileName);
+		if(flDecompressToExternDir == false)
+		{
+			if(flDecompressToSubdir == false) strcpy(dataDir, getDataDir(metadataFileName, dataDir));
+			else 
+			{
+				strcpy(dataDir, getDataSubDir(metadataFileName, dataDir));
+				sprintf(cmd, "mkdir %s", dataDir);
+				system(cmd);
+			}
+		}
 
-		strcat(cmd, " -C ");
-		strcat(cmd, dataDir);
-	
-		fprintf(stderr, "DECOMPRESS ARCHIVE %s...\n", archiveFileName);
-	
-		printf("%s\n", cmd);
-		system(cmd);
+		if(flDecompressArchive) 
+		{
+			char archiveFileName[MAX_PATH] = "";
+			int arch = 0;
+			
+			if( (arch = getArchiveName(metadataFileName, archiveFileName)) == 0 )
+			{
+				fprintf(stderr, "ERROR: UNSUPPORTED ARCHIVE FORMAT!\n");
+				printHelp();
+				return 1;
+			}
+			
+			if(arch == 1) strcpy(cmd, "tar zxvf ");
+			else strcpy(cmd, "tar jxvf ");
+			
+			strcat(cmd, archiveFileName);
+
+			strcat(cmd, " -C ");
+			strcat(cmd, dataDir);
 		
-		fprintf(stderr, "\n");
+			fprintf(stderr, "DECOMPRESS ARCHIVE %s...\n", archiveFileName);
+		
+			printf("%s\n", cmd);
+			system(cmd);
+			
+			fprintf(stderr, "\n");
+		}
 	}
 
 	GDALAllRegister();
@@ -189,12 +244,27 @@ void printHelp()
 {
 	fputs("Examples:\n", stderr);
 	fputs("l8_dn_conversion [options] <Landsat-8_Metadata_File>\n", stderr);
+	
 	fputs("l8_dn_conversion -b oli C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -c -b oli C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -e C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
+	fputs("l8_dn_conversion -ed C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
+	fputs("l8_dn_conversion -x C:\\RSProcessing\\OUTDIR C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -e -b tirs C:\\RSProcessing\\L8\\30\\LC81780262016030LGN00_MTL.txt\n", stderr);
 	fputs("l8_dn_conversion -c -b 2-7 --stack /home/user1/processing/LC81780262016030LGN00_MTL.txt\n", stderr);
-	fputs("\nOptions:\n-e -- decompress archive (tar.gz, tar.bz, tar.bz2) with extern programs\n", stderr);
+	
+	fputs("\nWindows-style:\n", stderr);
+	fputs("l8_dn_conversion -e | -ed | [other options] <Landsat-8_Scene_Archive_File>\n", stderr);
+	fputs("l8_dn_conversion -ed -b 45 -c .\\LC81780262016030LGN00.tar.bz2\n", stderr);
+	
+	fputs("\nUnix-style:\n", stderr);
+	fputs("l8_dn_conversion -e | -ed | -x <DIR> | [other options] <Landsat-8_Scene_Archive_File>\n", stderr);
+	fputs("l8_dn_conversion -ed -b 45 -c ./LC81780262016030LGN00.tar.bz2\n", stderr);
+	fputs("l8_dn_conversion -x /home/user1/processing -c -b 2-7 /home/user1/L8/30/LC81780262016030LGN00.tar.gz\n", stderr);
+		
+	fputs("\nOptions:\n-e       -- decompress archive (tar.gz, tar.bz, tar.bz2) with extern programs\n", stderr);
+	fputs("-ed      -- decompress archive to subdirectory (tar.gz, tar.bz, tar.bz2) with extern programs\n", stderr);
+	fputs("-x <DIR> -- decompress archive to directory <DIR> (tar.gz, tar.bz, tar.bz2) with extern programs\n", stderr);
 	fputs("-b all|oli|tirs|45|2-5|2-7|451011| -- processing bands\n", stderr);
 	fputs("-b all   -- default mode\n", stderr);
 	fputs("-c       -- execute check_reflectance with method = 3!\n", stderr);
@@ -236,6 +306,16 @@ char * getDataDir(char * metadataFileName, char * dataDir)
 	int i = 0, len = strlen(metadataFileName)-1;
 	int end_pos = len;
 	for(i=len; i>=0; i--) if(metadataFileName[i] == SLASH) { end_pos = i; break; }
+	for(i=0; i<=end_pos; i++) dataDir[i] = metadataFileName[i];
+	dataDir[i] = '\0';
+	return dataDir;
+}
+
+char * getDataSubDir(char * metadataFileName, char * dataDir)
+{
+	int i = 0, end_pos = 0;
+	for(i=strlen(metadataFileName)-1; metadataFileName[i] != '_'; i--);
+	end_pos = i-1;
 	for(i=0; i<=end_pos; i++) dataDir[i] = metadataFileName[i];
 	dataDir[i] = '\0';
 	return dataDir;
@@ -363,6 +443,7 @@ void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing)
 								strcat(cmd2, " 3 ");
 								strcat(cmd2, outputFileName);
 								strcat(cmd2, ".corr.tif");
+								
 								system(cmd2);
 							}
 						}
@@ -516,23 +597,23 @@ void l8_dn_conversion(FILE* finMetaData, char dataDir[], int mode_processing)
 	}
 }
 
-char * l8_band_dn_processing(const char fileName[], int processing_mode, char * outputFileName, bool flNext)
+char * l8_band_dn_processing(const char * fileName, int processing_mode, char * outputFileName, bool flNext)
 {
-    char tmpOutputFileName[MAX_PATH] = "";  
-      
-    char szBandNumber[3] = "";
-    int bandNumber = 0;
-
-	char tmpInputFileName[MAX_PATH] = "";
-    
 	GDALDatasetH  hDatasetIn = NULL;
 	GDALDatasetH  hDatasetOut = NULL;
     GDALRasterBandH hBandIn = NULL;
     GDALRasterBandH hBandOut = NULL;
     
-    strcpy(tmpInputFileName, fileName);
+    char tmpOutputFileName[MAX_PATH] = "";  
+    char tmpInputFileName[MAX_PATH] = "";
+      
+    char szBandNumber[3] = "";
+    int bandNumber = 0;
+
     int i = 0, j = 0;
-    
+        
+    strcpy(tmpInputFileName, fileName);
+
     int index = strlen(tmpInputFileName)-1;
     i = 0, j = 0;
     for(i=index; tmpInputFileName[i]!='.'; i--);
@@ -577,12 +658,17 @@ char * l8_band_dn_processing(const char fileName[], int processing_mode, char * 
 		int rows = GDALGetRasterBandYSize(hBandIn);
 		
 		double adfGeoTransform[6]={0};
-		char szProjection[512] = "";
 		GDALGetGeoTransform(hDatasetIn, adfGeoTransform );
+
+		////////////////////////////////////////////////////////////////
+		// !!! THIS IS BUG !!!
+		//char szProjection[512] = "";
+		//strcpy(szProjection, GDALGetProjectionRef(hDatasetIn)); 
+		////////////////////////////////////////////////////////////////
 		
-		strcpy(szProjection, GDALGetProjectionRef(hDatasetIn));
+		//const char *szProjection = GDALGetProjectionRef(hDatasetIn);
 		
-		CUtils::createNewFloatGeoTIFF(outputFileName, 1, rows, cols, adfGeoTransform, szProjection, 0, 0);
+		CUtils::createNewFloatGeoTIFF(outputFileName, 1, rows, cols, adfGeoTransform, GDALGetProjectionRef(hDatasetIn), 0, 0);
 		
 		hDatasetOut = GDALOpen( outputFileName, GA_Update );
 		if(hDatasetOut!=NULL)
@@ -614,10 +700,10 @@ char * l8_band_dn_processing(const char fileName[], int processing_mode, char * 
 					CUtils::calculateFloatGeoTIFFStatistics(hDatasetOut, bandNumber, false, -273.15);
 					break;					
 			}
-			
+						
 			CPLFree(pbufIn);
 			CPLFree(pbufOut);
-			
+						
 			GDALClose(hDatasetOut);
 		}
 		else fputs("\nError open input image!!!\n\n", stderr);
@@ -627,7 +713,7 @@ char * l8_band_dn_processing(const char fileName[], int processing_mode, char * 
 	else
 	fputs("\nError open input image!!!\n\n", stderr);
 
-
+	// fprintf(stderr, "outputFileName: %s\n", outputFileName);
 	return outputFileName;
 }
 
@@ -785,11 +871,17 @@ void createStack(const char * stackFileName, const char * outputFileName, int mo
 		int rows = GDALGetRasterBandYSize(hBand);
 
 		double adfGeoTransform[6]={0};
-		char szProjection[512] = "";
 		GDALGetGeoTransform(hDataset, adfGeoTransform );
-		strcpy(szProjection, GDALGetProjectionRef(hDataset));
+						
+		////////////////////////////////////////////////////////////////
+		// !!! THIS IS BUG !!!
+		//char szProjection[512] = "";
+		//strcpy(szProjection, GDALGetProjectionRef(hDataset)); 
+		////////////////////////////////////////////////////////////////
 		
-		CUtils::createNewFloatGeoTIFF(stackFileName, bands, rows, cols, adfGeoTransform, szProjection, 0, 0);
+		//const char *szProjection = GDALGetProjectionRef(hDataset);
+		
+		CUtils::createNewFloatGeoTIFF(stackFileName, bands, rows, cols, adfGeoTransform, GDALGetProjectionRef(hDataset), 0, 0);
 				
 		GDALClose(hDataset);
 		hDataset = NULL;
@@ -882,5 +974,113 @@ void createStack(const char * stackFileName, const char * outputFileName, int mo
 			GDALClose(hDatasetOut);
 		}
 	}
+}
+
+bool inputFileIsArchive(const char * fileName, char * extention)
+{
+	int end_pos = strlen(fileName)-1;
+	int i = 0, j = 0, pos = 0, count = 0;
+	for(i=end_pos; fileName[i] != SLASH; i--)
+	{
+		if( '.' == fileName[i] )
+		{
+			if( 1 == count ) break;
+			else count++;
+		}
+	}
+	pos = i;
+	for(i=pos, j=0; i<= end_pos; i++, j++) extention[j] = fileName[i];
+	extention[j] = '\0';
+	
+	if( strcasecmp(extention, ".tar.gz") == 0 )  return true;
+	else
+	if( strcasecmp(extention, ".tar.bz") == 0 )  return true;
+	else
+	if( strcasecmp(extention, ".tar.bz2") == 0 ) return true;
+	
+	return false;
+}
+		
+bool doCommonDecompress(const char * archFileName, const char * extention, 
+						const char * decompressOption, 
+						char * dataDir, char * metadataFileName)
+{
+	char cmd[2048] = "";
+	char commonName[50] = "";
+	int archType = 0;
+	bool flCreateDir = false;
+	
+	if( strlen(dataDir)<=1 )
+	{
+		int pos = 0, i = 0;
+		int end_pos = strlen(archFileName)-1;
+		for(i=end_pos; archFileName[i] != SLASH; i--);
+		
+		if( strcmp(decompressOption, "-e") == 0) 
+		{ 
+			pos = i;
+			for(i=0; i<= pos; i++) dataDir[i] = archFileName[i];
+			dataDir[i] = '\0';
+		}
+		else
+		if( strcmp(decompressOption, "-ed") == 0 )
+		{
+			for(; archFileName[i] != '.'; i++);
+			pos = i-1;
+			for(i=0; i<= pos; i++) dataDir[i] = archFileName[i];
+			dataDir[i] = '\0';
+			flCreateDir = true;
+		}
+	}
+	
+	if( strcmp(decompressOption, "-x") == 0 ) flCreateDir = true;
+	
+	if(flCreateDir)
+	{
+		sprintf(cmd, "mkdir %s", dataDir);
+		system(cmd);
+	}
+		
+	if( strcasecmp(extention, ".tar.gz") == 0 )  archType = 1;
+	else
+	if( strcasecmp(extention, ".tar.bz") == 0 )  archType = 2;
+	else
+	if( strcasecmp(extention, ".tar.bz2") == 0 ) archType = 2;
+	else
+	{
+		return false;
+	}
+	
+	int len = strlen(dataDir)-1;
+	if( dataDir[len] != SLASH ) 
+	{
+		dataDir[len+1] = SLASH;
+		dataDir[len+2] = '\0';
+	}
+		
+	if(archType == 1) sprintf(cmd, "tar zxvf %s -C %s", archFileName, dataDir);
+	else sprintf(cmd, "tar jxvf %s -C %s", archFileName, dataDir);
+	
+	fprintf(stderr, "DECOMPRESS ARCHIVE %s...\n", archFileName);
+		
+	printf("%s\n", cmd);
+	system(cmd);
+	
+	fprintf(stderr, "\n");
+		
+	int i = 0, j = 0;
+	
+	for(i=strlen(archFileName)-1; i>=0; i--)
+	{
+		if(archFileName[i] == SLASH) break;
+	}
+	
+	i++;
+	
+	for(j=0; archFileName[i] != '.'; i++, j++) commonName[j] = archFileName[i];
+	commonName[j] = '\0';
+	sprintf(metadataFileName, "%s%s_MTL.txt", dataDir, commonName);
+	
+	return true;
 }
 
