@@ -3,7 +3,7 @@
 TARGET=s2_set_projection
 MODULEXML=s2_xml
 CXX=cl
-CCFLAGS=/D__MSVC__ /EHsc /I"$(QGIS_HOME)\include"
+CCFLAGS=/D__MSVC__ /EHsc /I"$(QGIS_HOME)\include" /I"$(QGIS_HOME)\include\libxml2"
 LIBS="$(QGIS_HOME)\lib\gdal_i.lib" "$(QGIS_HOME)\lib\libxml2.lib"
 COPY_DLL=copy "$(QGIS_HOME)\bin\libxml2.dll"
 CLEAN=del /Q

@@ -3,8 +3,9 @@
 TARGET=s2_set_projection
 MODULEXML=s2_xml
 CXX=g++
-CCFLAGS=-Wall -I/usr/include/gdal -I/usr/include/libxml2
-LDFLAGS=-lgdal -lxml2
+CCFLAGS=-Wall -Wno-unused-result -I/usr/include/gdal -I/usr/include/libxml2
+# CCFLAGS=-Wall -Wno-unused-result -I${RSUTILS_HOME}/include -I${RSUTILS_HOME}/include/libxml2
+LDFLAGS=-lgdal -lxml2 -ltiff
 CLEAN=rm -f
 
 all: $(TARGET)

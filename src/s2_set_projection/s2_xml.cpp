@@ -23,6 +23,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef __MSVC__
+#include <strings.h>
+#endif
+
 #include "s2_xml.h"
 
 #ifdef __MSVC__
