@@ -1,7 +1,7 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
- *          Ukraine, Dnipropetrovsk
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
  * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 

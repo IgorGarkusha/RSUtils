@@ -1,7 +1,7 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
- *          Ukraine, Dnipropetrovsk
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
  * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
@@ -25,11 +25,13 @@ package s2a_tile_downloader;
 import org.rsutils.*;
 import org.rsutils.downloader.*;
 import java.io.*;
+import java.net.*;
 import java.nio.file.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
 public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnable
@@ -43,6 +45,11 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
         frm = new JFrame();
         panel = new JPanel();
 
+		buttonGroup = new ButtonGroup();
+		buttonGroup.add(rbSCIHUB);
+		buttonGroup.add(rbAWS);
+		
+		txtAWSLink = new JTextField(50);
         txtProductID = new JTextField(50);
         txtProductName = new JTextField(50);
         txtUTM_TILE = new JTextField(7);
@@ -61,6 +68,8 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 
 		btnShowSatelliteCoverage = new JButton("Satellite Coverage...");
 
+		btnShowAWSS2Browser = new JButton("Sentinel-2 on AWS in Browser...");
+
         btnDownload = new JButton("Download");
         
         btnSaveParams = new JButton("Save Parameters");
@@ -75,15 +84,35 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		txtWorkDir.setEditable(false);
 		
 		btnSetWorkDir = new JButton("...");
+				
+		cbDecompress = new JCheckBox("Decompress to GeoTIFF and set projection");
+		cbDecompress.setSelected(false);		
+		cbCheckReflectance = new JCheckBox("Check and correction TOA spectral reflectance (with default method 1 for the program check_reflectance!)");
+		cbCheckReflectance.setSelected(false);
+		cbCheckReflectance.setEnabled(false);
+		cbGdalMerge = new JCheckBox("Execute GDAL_MERGE (ignore, if downloading all bands!)");
+		cbGdalMerge.setSelected(false);
+		cbGdalMerge.setEnabled(false);
     }
     
     public void InitDownloadVariable()
     {
 		m_WorkDir = txtWorkDir.getText();
-		m_ProductID = txtProductID.getText();
-		m_ProductName = txtProductName.getText();
-		m_UTMTILE = txtUTM_TILE.getText();
-		m_UserNameAndPasword = this.txtUsername.getText()+":"+new String(this.txtPassword.getPassword());
+		
+		if( false == flAWS )
+		{
+			m_ProductID = txtProductID.getText();
+			m_ProductName = txtProductName.getText();
+			m_UTMTILE = txtUTM_TILE.getText();
+			m_UserNameAndPasword = this.txtUsername.getText()+":"+new String(this.txtPassword.getPassword());
+		}
+		else
+		{
+			m_ProductID = "";
+			m_ProductName = txtAWSLink.getText(); // THIS IS AWS LINK!
+			m_UTMTILE = "";
+			m_UserNameAndPasword = "";
+		}
 		
 		switch(cbBands.getSelectedIndex())
 		{
@@ -119,6 +148,9 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		JLabel jLabelWorkDir = new JLabel("Work Directory:");
 		jLabelWorkDir.setFont(new Font("Dialog", 0, 12));
 		
+		JLabel jLabelAWSLink = new JLabel("AWS Direct Link:");
+		jLabelAWSLink.setFont(new Font("Dialog", 0, 12));
+		
 		JLabel jLabelProdID = new JLabel("Product ID:");
 		jLabelProdID.setFont(new Font("Dialog", 0, 12));
 		
@@ -137,7 +169,16 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		JLabel jLabelBands = new JLabel("Download bands:");
 		jLabelBands.setFont(new Font("Dialog", 0, 12));
 		
+		JLabel jLabelPostProcessing = new JLabel("Post downloading process:");
+		jLabelPostProcessing.setFont(new Font("Dialog", 0, 12));
+		
+		
+		Box hbox11 = Box.createHorizontalBox(); hbox11.add(rbSCIHUB); hbox11.add(Box.createHorizontalStrut(10)); hbox11.add(rbAWS);
+		
 		Box hbox1 = Box.createHorizontalBox(); hbox1.add(jLabelWorkDir); hbox1.add(txtWorkDir); hbox1.add(btnSetWorkDir);
+		
+		Box hbox10 = Box.createHorizontalBox(); hbox10.add(jLabelAWSLink); hbox10.add(txtAWSLink); hbox10.add(btnShowAWSS2Browser);
+		
 		Box hbox2 = Box.createHorizontalBox(); hbox2.add(jLabelProdID); hbox2.add(txtProductID);
 		Box hbox3 = Box.createHorizontalBox(); hbox3.add(jLabelProdName); hbox3.add(txtProductName);
 		Box hbox4 = Box.createHorizontalBox(); hbox4.add(jLabelUTMTile); hbox4.add(txtUTM_TILE); hbox4.add(btnShowSatelliteCoverage);
@@ -146,6 +187,11 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		
 		Box hbox6 = Box.createHorizontalBox(); 
 		hbox6.add(jLabelUsername); hbox6.add(txtUsername); hbox6.add(Box.createHorizontalStrut(10)); hbox6.add(jLabelPassword); hbox6.add(txtPassword);
+		
+		Box hbox12 = Box.createHorizontalBox(); hbox12.add(jLabelPostProcessing); hbox12.add(Box.createHorizontalGlue());
+		Box hbox13 = Box.createHorizontalBox(); hbox13.add(cbDecompress); hbox13.add(Box.createHorizontalGlue());
+		Box hbox14 = Box.createHorizontalBox(); hbox14.add(cbCheckReflectance); hbox14.add(Box.createHorizontalGlue());
+		Box hbox15 = Box.createHorizontalBox(); hbox15.add(cbGdalMerge); hbox15.add(Box.createHorizontalGlue());
 		
 		Box hbox7 = Box.createHorizontalBox();
 		hbox7.add(pBar);
@@ -158,7 +204,12 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		hbox9.add(btnExit); hbox9.add(Box.createHorizontalStrut(20)); hbox9.add(btnAbout);
 				
 		Box vbox = Box.createVerticalBox();
+		
+		vbox.add(hbox11);
+		vbox.add(Box.createVerticalStrut(10));
         vbox.add(hbox1);
+        vbox.add(Box.createVerticalStrut(10));
+        vbox.add(hbox10);
         vbox.add(Box.createVerticalStrut(10));
         vbox.add(hbox2);
         vbox.add(Box.createVerticalStrut(10));
@@ -169,6 +220,16 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
         vbox.add(hbox5);
         vbox.add(Box.createVerticalStrut(10));
         vbox.add(hbox6);
+        
+        vbox.add(Box.createVerticalStrut(10));
+        vbox.add(hbox12);
+        vbox.add(Box.createVerticalStrut(10));
+        vbox.add(hbox13);
+        vbox.add(Box.createVerticalStrut(10));
+        vbox.add(hbox14);
+        vbox.add(Box.createVerticalStrut(10));
+        vbox.add(hbox15);
+        
         vbox.add(Box.createVerticalStrut(10));
         vbox.add(hbox7);
         vbox.add(Box.createVerticalStrut(10));
@@ -178,6 +239,8 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
         
         panel.add(vbox);
         frm.pack();
+        
+        controlStateComponents(false);
 	}
 	
 	private void setParameter(int paramIndex, String str)
@@ -192,9 +255,124 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
             case 6: cbBands.setSelectedIndex(Integer.parseInt(str)); break;
         }
     }
+    
+    private void setAWSParameter(int paramIndex, String str)
+    {
+		switch(paramIndex)
+        {
+            case 1: txtWorkDir.setText(str); break;
+            case 2: txtAWSLink.setText(str); break;
+            case 3: if( Integer.parseInt(str.split(" ")[0]) == 1 ) cbDecompress.setSelected(true);
+					else cbDecompress.setSelected(false);
+					if( Integer.parseInt(str.split(" ")[1]) == 1 ) cbCheckReflectance.setSelected(true);
+					else cbCheckReflectance.setSelected(false);
+					if( Integer.parseInt(str.split(" ")[2]) == 1 ) cbGdalMerge.setSelected(true);
+					else cbGdalMerge.setSelected(false);
+					break;
+            case 4: cbBands.setSelectedIndex(Integer.parseInt(str)); break;
+        }
+	}
+
+	private void controlStateComponents(boolean state)
+	{
+		flAWS = state;
+		
+		txtAWSLink.setEnabled(flAWS);
+		btnShowAWSS2Browser.setEnabled(flAWS);
+		cbDecompress.setSelected(flAWS);
+		cbDecompress.setEnabled(flAWS);
+        //cbCheckReflectance.setEnabled(flAWS);
+        //cbGdalMerge.setEnabled(flAWS);
+        
+        txtProductID.setEnabled(!flAWS);
+        txtProductName.setEnabled(!flAWS);
+        txtUTM_TILE.setEnabled(!flAWS);
+        txtUsername.setEnabled(!flAWS);
+        txtPassword.setEnabled(!flAWS);
+	}
+
+	private boolean getAWSConfigFile(String fileName)
+	{
+		boolean res = false;
+		Scanner fin = null;
+		try
+		{
+			fin = new Scanner(new File(fileName));
+			int countLines = 0;
+			while(fin.hasNextLine())
+			{
+				String str = fin.nextLine();
+				countLines++;
+			}			
+			if( 4 == countLines ) res = true;
+		}
+		catch(FileNotFoundException ex)
+		{
+		}
+		finally
+		{
+			if( null != fin ) { fin.close(); fin = null; }
+		}
+		
+		return res;
+	}
+
+	public boolean isAWSMode()
+	{
+		return flAWS;
+	}
+
+	public boolean isDecompress()
+	{
+		return cbDecompress.isSelected();
+	}
+	
+	public boolean isCheckReflectance()
+	{
+		return cbCheckReflectance.isSelected();
+	}
+	
+	public boolean isGdalMerge()
+	{
+		return cbGdalMerge.isSelected();
+	}
+	
+	public void selectCheckReflectance(boolean state)
+	{
+		if( false == state ) cbCheckReflectance.setSelected(state);
+		cbCheckReflectance.setEnabled(state);
+	}
+	
+	public void selectGdalMerge(boolean state)
+	{
+		if( false == state ) cbGdalMerge.setSelected(state);
+		cbGdalMerge.setEnabled(state);
+	}
 
     public void CreateListener()
     {
+		rbSCIHUB.addChangeListener(new RadioButtonListener(this, false));
+		rbAWS.addChangeListener(new RadioButtonListener(this, true));
+		
+		cbDecompress.addChangeListener(new CheckBoxListener(this));
+		cbCheckReflectance.addChangeListener(new CheckBoxListener(this));
+		cbGdalMerge.addChangeListener(new CheckBoxListener(this));
+		
+		btnShowAWSS2Browser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				String search_page = "file://" + Utils.extractDirName(appPath) + "/html/s2_aws_search_page.html";
+				Desktop desktop = Desktop.isDesktopSupported()?Desktop.getDesktop():null;
+				if( (null != desktop) && (desktop.isSupported(Desktop.Action.BROWSE)) )
+				{
+					try{ 
+						desktop.browse(new URL(search_page).toURI()); }
+					catch(Exception ex){}
+				}
+				else Utils.openWebPage(search_page);
+			}
+		});
+		
 		btnShowSatelliteCoverage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -239,11 +417,34 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 					try
 					{
 						fout = new PrintStream(fileName);
+						
 						fout.println(txtWorkDir.getText());
-						fout.println(txtProductID.getText());
-						fout.println(txtProductName.getText());
-						fout.println(txtUsername.getText());
-						fout.println(txtUTM_TILE.getText());
+						
+						if(false == flAWS)
+						{
+							fout.println(txtProductID.getText());
+							fout.println(txtProductName.getText());
+							fout.println(txtUsername.getText());
+							fout.println(txtUTM_TILE.getText());
+						}
+						else 
+						{
+							fout.println(txtAWSLink.getText());
+							
+							String tmpStr = "";
+														
+							if(cbDecompress.isSelected()) tmpStr += "1 ";
+							else tmpStr += "0 ";
+														
+							if(cbCheckReflectance.isSelected()) tmpStr += "1 ";
+							else tmpStr += "0 ";
+							
+							if(cbGdalMerge.isSelected()) tmpStr += "1";
+							else tmpStr += "0";
+							
+							fout.println(tmpStr);
+						}
+						
 						fout.println(cbBands.getSelectedIndex());
 						fout.close();
 					} catch (FileNotFoundException ex) {}
@@ -264,6 +465,11 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 				{				
 					String fileName = chooser.getSelectedFile().getAbsolutePath();
 
+					if( getAWSConfigFile(fileName) ) rbAWS.setSelected(true);
+					//controlStateComponents(true);
+					else rbSCIHUB.setSelected(true);
+					//controlStateComponents(false);
+
 					Scanner fin = null;
 					try
 					{
@@ -273,7 +479,8 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 						{
 							String str = fin.nextLine();
 							i++;
-							setParameter(i, str);
+							if(false == flAWS) setParameter(i, str);
+							else setAWSParameter(i, str);
 						}
 						fin.close();
 					} catch(FileNotFoundException ex) {}
@@ -283,7 +490,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		);
 		
 		
-		btnDownload.addActionListener(new DownloadButtonLister(this, pBar, txtInfoArea));
+		btnDownload.addActionListener(new DownloadButtonListener(this, pBar, txtInfoArea));
 		
 		btnExit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -291,7 +498,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 			} 
 		});
 		
-		btnAbout.addActionListener(new AboutButtonLister(frm, "About...", ProgramTitle));
+		btnAbout.addActionListener(new AboutButtonListener(frm, "About...", ProgramTitle));
     }
 
     public void CreateFrame()
@@ -321,6 +528,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 	private String appPath = "";
     private JFrame frm;
     private JPanel panel;
+    private JTextField txtAWSLink;
     private JTextField txtWorkDir;
     private JTextField txtProductID, txtProductName, txtUTM_TILE, txtUsername;
     private JPasswordField txtPassword;
@@ -328,6 +536,13 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
     private JScrollPane scrollArea;
     private JProgressBar pBar;
     private JComboBox<String> cbBands;
+    private ButtonGroup buttonGroup;
+    private JRadioButton rbSCIHUB = new JRadioButton("Scientific Data Hub", true);
+    private JRadioButton rbAWS = new JRadioButton("Sentinel-2 on AWS cloud", false);
+
+    private JCheckBox cbDecompress;
+    private JCheckBox cbCheckReflectance;
+    private JCheckBox cbGdalMerge;
     
     private JButton btnSetWorkDir;
     private JButton btnSaveParams;
@@ -336,15 +551,16 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
     private JButton btnExit;
     private JButton btnAbout;
     private JButton btnShowSatelliteCoverage;
+    private JButton btnShowAWSS2Browser;
     
     private String ProgramTitle = "Sentinel-2A Tile Downloader. Version " + 
 								  s2_tile_download.PROG_VERSION +"."+s2_tile_download.DATE_VERSION;
 								  
     private String curDir = System.getProperty("user.dir");
        
-    private class DownloadButtonLister implements ActionListener
+    private class DownloadButtonListener implements ActionListener
     {
-		public DownloadButtonLister(S2ADownloadFrame mainFrame, JProgressBar prBar, JTextArea txtInfo)
+		public DownloadButtonListener(S2ADownloadFrame mainFrame, JProgressBar prBar, JTextArea txtInfo)
 		{
 			m_mainFrame = mainFrame;
 			m_prBar = prBar;
@@ -354,7 +570,13 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		public void actionPerformed(ActionEvent e)
 		{
 			m_mainFrame.InitDownloadVariable();
-			new Thread(new S2ADownloadProcessRunner(m_mainFrame, m_prBar, m_txtInfo)).start();
+			if( m_mainFrame.isAWSMode() == false )
+				new Thread(new S2ADownloadProcessRunner(m_mainFrame, m_prBar, m_txtInfo)).start();
+			else
+				new Thread(new AWS_S2_DownloadProcessRunner(m_mainFrame, m_prBar, m_txtInfo, 
+							cbDecompress.isSelected(),
+							cbCheckReflectance.isSelected(),
+							cbGdalMerge.isSelected() )).start();
 		}
 		
 		private S2ADownloadFrame m_mainFrame = null;
@@ -362,9 +584,9 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		private JTextArea m_txtInfo = null;
 	}
 	
-	private class AboutButtonLister implements ActionListener
+	private class AboutButtonListener implements ActionListener
     {
-		public AboutButtonLister(JFrame parent, String title, String programName)
+		public AboutButtonListener(JFrame parent, String title, String programName)
 		{
 			m_parent = parent;
 			m_title = title;
@@ -380,5 +602,61 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		private JFrame m_parent = null;
 		private String m_title = null;
 		private String m_programName = "";
+	}
+	
+	private class RadioButtonListener implements ChangeListener
+    {
+		public RadioButtonListener(S2ADownloadFrame parent, boolean flRbAWS)
+		{
+			m_parent = parent;
+			m_flRbAWS = flRbAWS;
+		}
+		
+		public void stateChanged(ChangeEvent e)
+		{
+			if( ( ((JRadioButton)(e.getSource())).isSelected() ) && (m_flRbAWS) )
+                controlStateComponents(true);
+            else 
+            if( ( ((JRadioButton)(e.getSource())).isSelected() ) && (!m_flRbAWS) )
+				controlStateComponents(false);
+		}
+		
+		private S2ADownloadFrame m_parent = null;
+		private boolean m_flRbAWS = false;
+	}
+	
+	private class CheckBoxListener implements ChangeListener
+    {
+		public CheckBoxListener(S2ADownloadFrame parent)
+		{
+			m_parent = parent;
+		}
+		
+		public void stateChanged(ChangeEvent e)
+		{
+			if( m_parent.isDecompress() == false )
+			{
+				m_parent.selectCheckReflectance(false);
+			}
+			
+			if( m_parent.isDecompress() == true )
+			{
+				m_parent.selectCheckReflectance(true);
+			}
+						
+			
+			if( m_parent.isCheckReflectance() == false )
+			{
+				m_parent.selectGdalMerge(false);
+			}
+						
+			
+			if( m_parent.isCheckReflectance() == true )
+			{
+				m_parent.selectGdalMerge(true);
+			}
+		}
+		
+		private S2ADownloadFrame m_parent = null;
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
- *          Ukraine, Dnipropetrovsk
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
  * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
@@ -27,11 +27,15 @@ import java.io.*;
 
 public class ConsoleS2ADownloadFrame extends DownLoadMainFrameAdapter
 {
+	// Scientific Data Hub
 	// args[0] - WorkDir
 	// args[1] - ProductID
 	// args[2] - ProductName
 	// args[3] - UTM_TILE
 	// args[4] - username:password
+	// Sentinel-2 on AWS cloud
+	// args[0] - WorkDir
+	// args[1] - AWS Direct Link
 	public ConsoleS2ADownloadFrame(String[] args)
 	{
 		if(args!=null)
@@ -53,6 +57,17 @@ public class ConsoleS2ADownloadFrame extends DownLoadMainFrameAdapter
 						else band_indexes[j] = Integer.parseInt(args[i]);
 					}
 				}
+			}
+			else
+			if(args.length == 2) // AWS Mode
+			{
+				flAWS = true;
+				
+				m_WorkDir = args[0];
+				m_ProductID = "";
+				m_ProductName = args[1]; // AWS Direct Link
+				m_UTMTILE = "";
+				m_UserNameAndPasword = "";
 			}
 		}
 	}
@@ -84,108 +99,131 @@ public class ConsoleS2ADownloadFrame extends DownLoadMainFrameAdapter
 	
 	public String getSUFFIX()
 	{
-		return m_SUFFIX;
+		if(flAWS) return "";
+		else return m_SUFFIX;
 	}
 	
 	public String getProductXML()
 	{
-		String productXMLFileName = "S2A_OPER_MTD_SAFL1C_PDMC_";
-        String productName = m_ProductName;
-        int begin_pos = 0;
-        int end_pos = 0;
-        int count = 0;
-        int i=0;
-        while(productName.charAt(i)!='.')
-        {
-            if(productName.charAt(i)=='_') count++;
-            if(count == 5) { begin_pos = i+1; break; }
-            i++;
-        }
-        end_pos = 0; while(productName.charAt(end_pos)!='.') end_pos++;       
-        productXMLFileName += (productName.substring(begin_pos, end_pos) + ".xml");
-        return productXMLFileName;
+		if(false == flAWS)
+		{
+			String productXMLFileName = "S2A_OPER_MTD_SAFL1C_PDMC_";
+			String productName = m_ProductName;
+			int begin_pos = 0;
+			int end_pos = 0;
+			int count = 0;
+			int i=0;
+			while(productName.charAt(i)!='.')
+			{
+				if(productName.charAt(i)=='_') count++;
+				if(count == 5) { begin_pos = i+1; break; }
+				i++;
+			}
+			end_pos = 0; while(productName.charAt(end_pos)!='.') end_pos++;       
+			productXMLFileName += (productName.substring(begin_pos, end_pos) + ".xml");
+			return productXMLFileName;
+		}
+		else return "";
 	}
 	
 	public String getGranuleName(String manifestSafePathName)
 	{
-		BufferedReader in = null;
-        try
-        {
-            String res = "";
-            in = new BufferedReader(new FileReader(manifestSafePathName));
-            int ch = (int)'0';
-            String buff = "";
-            while((ch=in.read())!=-1)
-            {
-                buff += (char)ch;
-                if(buff.length() == 9)
-                {
-                    if(buff.compareToIgnoreCase("/GRANULE/") == 0)
-                    {
-                        while((ch = in.read())!='/') res += (char)ch;
-                        break;
-                    }
-                    else buff = "";
-                }
-            }
-            in.close();
-            
-            int begin_pos = 0;
-            int end_pos = 0;
-            int count = 0;
-            for(int i=res.length()-1; i>=0; i--)
-            {
-                if(res.charAt(i) == '_') count++;
-                if(count == 2) { end_pos = i; break; }
-            }
-            String resStr = res.substring(begin_pos, end_pos);
-            
-            
-            begin_pos = 0;
-            end_pos = res.length();
-            count = 0;
-            for(int i=res.length()-1; i>=0; i--)
-            {
-                if(res.charAt(i) == '_') count++;
-                if(count == 1) { begin_pos = i+1; break; }
-            }
-            m_SUFFIX = res.substring(begin_pos, end_pos);
-            
-            return resStr;
-        }
-        catch(IOException e)
-        {
-            return "";
-        }  
+		if( false == flAWS )
+		{
+			BufferedReader in = null;
+			try
+			{
+				String res = "";
+				in = new BufferedReader(new FileReader(manifestSafePathName));
+				int ch = (int)'0';
+				String buff = "";
+				while((ch=in.read())!=-1)
+				{
+					buff += (char)ch;
+					if(buff.length() == 9)
+					{
+						if(buff.compareToIgnoreCase("/GRANULE/") == 0)
+						{
+							while((ch = in.read())!='/') res += (char)ch;
+							break;
+						}
+						else buff = "";
+					}
+				}
+				in.close();
+				
+				int begin_pos = 0;
+				int end_pos = 0;
+				int count = 0;
+				for(int i=res.length()-1; i>=0; i--)
+				{
+					if(res.charAt(i) == '_') count++;
+					if(count == 2) { end_pos = i; break; }
+				}
+				String resStr = res.substring(begin_pos, end_pos);
+				
+				
+				begin_pos = 0;
+				end_pos = res.length();
+				count = 0;
+				for(int i=res.length()-1; i>=0; i--)
+				{
+					if(res.charAt(i) == '_') count++;
+					if(count == 1) { begin_pos = i+1; break; }
+				}
+				m_SUFFIX = res.substring(begin_pos, end_pos);
+				
+				return resStr;
+			}
+			catch(IOException e)
+			{
+				return "";
+			}
+		}
+		else return "";
 	}
 	
 	private String CutPrefixGranuleTileFileName(String granuleName)
     {
-        int begin_pos = 0;
-        int count = 0;
-        while(count<3)
-        {
-            if(granuleName.charAt(begin_pos) == '_') count++;
-            begin_pos++;
-        }
-        return granuleName.substring(begin_pos, granuleName.length());
+		if( false == flAWS )
+		{
+			int begin_pos = 0;
+			int count = 0;
+			while(count<3)
+			{
+				if(granuleName.charAt(begin_pos) == '_') count++;
+				begin_pos++;
+			}
+			return granuleName.substring(begin_pos, granuleName.length());
+		}
+		else return "";
     }
 	
 	public String getGranuleXMLFileName(String granuleName)
 	{
-		return "S2A_OPER_MTD_" + CutPrefixGranuleTileFileName(granuleName)+ "_T" + m_UTMTILE + ".xml";
+		if( false == flAWS )
+			return "S2A_OPER_MTD_" + CutPrefixGranuleTileFileName(granuleName)+ "_T" + m_UTMTILE + ".xml";
+		else 
+			return "";
 	}
 	
 	private String getGranuleTileFileName(String granuleName)
     {
-        return granuleName + "_T" + m_UTMTILE;
+		if( false == flAWS )
+			return granuleName + "_T" + m_UTMTILE;
+		else
+			return "";
     }
 	
 	public String getBandName(String granuleName, int index)
 	{
-		if(index < 10) return getGranuleTileFileName(granuleName) + "_B0" + Integer.toString(index) + ".jp2";
-        else if(index < 13) return getGranuleTileFileName(granuleName) + "_B" + Integer.toString(index) + ".jp2";
-        else return getGranuleTileFileName(granuleName) + "_B8A.jp2";
+		if( false == flAWS )
+		{
+			if(index < 10) return getGranuleTileFileName(granuleName) + "_B0" + Integer.toString(index) + ".jp2";
+			else if(index < 13) return getGranuleTileFileName(granuleName) + "_B" + Integer.toString(index) + ".jp2";
+			else return getGranuleTileFileName(granuleName) + "_B8A.jp2";
+		}
+		else return "";
 	}
 	
 	public int[] getDownloadBandsIndexes()
@@ -200,4 +238,5 @@ public class ConsoleS2ADownloadFrame extends DownLoadMainFrameAdapter
 	protected String m_ProductName = "";
 	protected String m_ProductID = "";
 	protected int [] band_indexes = null;
+	protected boolean flAWS = false;
 }
