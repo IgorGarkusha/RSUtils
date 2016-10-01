@@ -1,1 +1,113 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Sentinel-2 on AWS. Search page</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="description" content="Sentinel-2 on AWS" />
+	<meta name="keywords" content="Sentinel, ESA, AWS, Satellite, imagery, Sinergise" />
+	<meta name="author" content="Sinergise" />
 
+	<link rel="icon" type="image/png" href="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/img/favicons/favicon.ico" sizes="16x16" />
+	<link rel="stylesheet" href="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/css/style.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+	<link href="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/css/classic-min.css" media="all" rel="stylesheet" />
+	<link href="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/css/browser.css" media="all" rel="stylesheet" />
+
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/moment.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/jquery.geocomplete.min.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/jQAllRangeSliders-withRuler-min.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/common.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/custom.js"></script>
+	<script src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/js/jquery.stickit.js"></script>
+</head>
+
+<body>
+	<div class="category-block" id="embedMap">
+		<a id="ImagerySearch" name="ImagerySearch"></a>
+		<h3 class="category-block-title">This is page for search</h3>
+		<p>This is only part original page of project "<a href="http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sentinel-2</a> on <a href="https://aws.amazon.com/">AWS</a>". Original page see:&nbsp;<a href="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/">http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/</a></p>
+		<h3 class="category-block-title">Browse through data</h3>
+		<p>You can browse through the contents of the Sentinel-2 Amazon Public Data set via the Sentinel Image browser.</p>
+		<div id="settings">
+			<h3 class="dateHeading">Date range: <a class="active" id="sliderMode">Slider</a><a id="manualMode">Manual</a></h3>
+			<div id="dateSlider" class="dateHolder"></div>
+			<div id="manualDate" class="dateHolder">
+				<label>From:</label><input id="startDate" size="9" />
+				<label>To:</label><input id="endDate" size="9" />
+			</div>
+			<h3>Cloud coverage:</h3>
+			<div id="cloudSlider"></div>
+		</div>
+		<iframe frameborder="0" height="100%" id="geopediaWidget" scrolling="no"
+			src="http://www.geopedia.world?widgetId=sentinelBrowser&showStatusBar=false&sidebar=right&panZoomMode=ZOOM&panZoomPosition=BOTTOM_RIGHT" width="100%"></iframe>
+		<div id="loadingPanel" class="mainLoadingWrap">
+			<div class="inner">
+				<h1>Sentinel Image browser</h1>
+				<div class="spinner">
+				  <div class="bounce1"></div>
+				  <div class="bounce2"></div>
+				  <div class="bounce3"></div>
+				</div>
+				<p>Loading application. Please wait ...</p>
+			</div>
+		</div>
+	</div>
+			    		
+	<div class="category-info " id="mixed-view">
+		<a id="AccessingData" name="AccessingData"></a>
+		<h3 class="category-title">Accessing the Data</h3>
+		<h4 class="category-description">Users can search for files using the index pages and access individual or related sets of files through the Sentinel Public bucket.</h4>
+		<h4 class="category-description">The address for the public bucket is: <br /><a href="http://sentinel-s2-l1c.s3-website.eu-central-1.amazonaws.com">sentinel-s2-l1c.s3-website.eu-central-1.amazonaws.com</a></h4>
+	</div>
+	<div class="category-info">
+		<a id="FeaturedUses" name="FeaturedUses"></a>
+		<h3 class="category-title">Featured uses</h3>
+		<div class="steps-box">
+		<ul class="steps">
+			<li class="step">
+				<span class="step-number">2</span>
+				<h4 class="step-title"><a href="http://www.sentinel-hub.com/apps/wms">Sentinel-2 WMS service</a></h4>
+				<p>Browse through data in full resolution via cloud GIS or using standard web services (WMS/WMTS).</p>
+			</li>
+			<li class="step">
+				<span class="step-number">3</span>
+				<h4 class="step-title"><a href="http://www.sentinel-hub.com/apps/postcards/">Postcards from Space</a></h4>
+				<p>Technology demonstration of the Sentinel 2 WMS, providing access to full archive</p>
+			</li>
+			<li class="step">
+				<span class="step-number">2</span>
+				<h4 class="step-title"><a href="http://satcat.eoproc.com/cat-01/dev-online.html?&config=aws-01">SatCat - interactive satellite imagery browser</a></h4>
+				<p>Search for Sentinel-2 and Landsat-8 data with an interactive preview</p>
+			</li>
+			<li class="step">
+				<span class="step-number">1</span>
+				<h4 class="step-title"><a href="https://github.com/sinergise/Sentinel2ProductIngestor/">Sentinel2 Product Ingestor</a></h4>
+				<p>Sinergise manages ingestor, which is used to download and process data on AWS.</p>
+			</li>
+		</ul>
+		</div>
+	</div>
+	<div class="category-info ">
+		<a id="Inquiry" name="Inquiry"></a>
+		<h3 class="category-title">Contact us</h3>
+		 <h4 class="category-description">In case you would be interested in adding some value added services to the data or you would like to show us what you can do with Sentinel data on AWS, please contact us.</h4>
+		<div class="contacts">
+		<a class="button blue"href="MAILTO:info@sinergise.com">Send Message</a>
+		</div>
+		<p>We’re ready to see new applications of Sentinel’s data.</p>
+	</div>
+	
+	<div class="footer-logo-wrapper">
+	   <p><a href="http://www.sinergise.com"><img src="http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/img/sinergise_logo_black.png" alt="sinergise"></img></a></p>
+	   <p class="copyright helper right"></p>
+	</div>
+</body>
+</html>
