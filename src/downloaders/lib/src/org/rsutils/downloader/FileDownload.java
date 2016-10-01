@@ -96,7 +96,7 @@ public class FileDownload implements Runnable
         
         try 
         {
-            if(m_UserNameAndPasword.compareTo("") == 0) // HTTP Connection (for example: Terra MODIS)
+            if(m_UserNameAndPasword.compareTo("") == 0)
 			connection = (HttpURLConnection)m_url.openConnection();
 		else  // HTTPS Connection (for example: Sentinel-1A, Sentinel-2A)
 		{
@@ -285,7 +285,7 @@ public class FileDownload implements Runnable
 		}while(flContinueDownload);
 				
 	}
-    
+	    
     private String m_UserNameAndPasword = "";
     private URL m_url;
     private String m_saveFileName;
