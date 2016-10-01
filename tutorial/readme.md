@@ -1,3 +1,15 @@
+## Tutorials ver. 2.24.09.2016
+
+1. Landsat-8 DN values conversion with decompress to folder support (**l8_dn_conversion**):
+    https://www.youtube.com/watch?v=XWRaNttQX9w
+
+2. Landsat-8 batch preprocessing (**l8_dn_batch_convert**):
+    https://www.youtube.com/watch?v=HpRepPiLqh0
+
+3. The downloading and preprocessing for the Sentinel-2 data via Amazon service (**s2a_tile_downloader**):
+    https://www.youtube.com/watch?v=92_htUAXbv0
+
+
 ## Tutorials ver. 1.17.07.2016
 
 1. Create a stack of vegetation indices and mapping statistics 
