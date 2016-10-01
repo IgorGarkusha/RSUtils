@@ -1,0 +1,12 @@
+#!/bin/bash
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"${RSUTILS_HOME}"/lib
+if [ "-"$1 == "-" ]; then 
+	"${RSUTILS_HOME}"/opj_decompress
+	echo 'Example: "${RSUTILS_HOME}"/opj_decompress_jp2 input.jp2 output.tif'
+elif [ "-"$2 == "-" ]; then 
+	"${RSUTILS_HOME}"/opj_decompress
+	echo 'Example: "${RSUTILS_HOME}"/opj_decompress_jp2 input.jp2 output.tif'
+else
+	"${RSUTILS_HOME}"/opj_decompress -i $1 -o $2 
+# > /dev/null
+fi
