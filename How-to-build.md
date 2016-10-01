@@ -35,21 +35,18 @@ ATTENTION! If you're using ESRI ArcGIS and QGIS in the same Windows-version, you
 2.Add to PATH the location RSUtils/bin directory and library. Create system variable 
 RSUTILS_HOME and set her the value in path to RSUtils/bin directory.
 
-For example in GNU/Linux: 
+For example in GNU/Linux (add to $HOME/.bashrc): 
 
 	export RSUTILS_HOME=/home/username/bin/RSUtils/bin
-	
 	export PATH=$PATH:$RSUTILS_HOME
-
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RSUTILS_HOME/lib
 	
-For example in Mac OS X:
+For example in Mac OS X (add to $HOME/.bash_profile): 
 
 	export RSUTILS_HOME=/Users/username/Documents/bin/RSUtils/bin
-	
-	export PATH=$PATH:$RSUTILS_HOME
-
+	export GDALPROGS=/Library/Frameworks/GDAL.framework/Versions/Current/Programs
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RSUTILS_HOME/lib
+	export PATH=$PATH:$GDALPROGS:$RSUTILS_HOME
 	
 For FreeBSD -- setup locale with UTF-8 support; support GEOS in GDAL library must be enabled!!!
 
