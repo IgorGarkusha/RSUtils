@@ -3,8 +3,9 @@
 TARGET=calc_index
 UTILS=utils
 CXX=g++
-CCFLAGS=-O3 -Wall -I/usr/include/gdal
-LDFLAGS=-lgdal
+CCFLAGS=-O3 -Wall -Wno-unused-result -I/usr/include/gdal
+# -I${RSUTILS_HOME}/include
+LDFLAGS=-L${RSUTILS_HOME}/lib -lgdal -ltiff
 CLEAN=rm -f
 
 all: $(TARGET)
