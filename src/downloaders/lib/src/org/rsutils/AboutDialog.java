@@ -1,7 +1,7 @@
 /*
  * Project: Remote Sensing Utilities (Extentions GDAL/OGR)
  * Author:  Igor Garkusha <rsutils.gis@gmail.com>
- *          Ukraine, Dnipropetrovsk
+ *          Ukraine, Dnipro (Dnipropetrovsk)
  * 
  * Copyright (C) 2016, Igor Garkusha <rsutils.gis@gmail.com>
  * 
@@ -45,7 +45,7 @@ public class AboutDialog extends JDialog
 		Box hbox2 = Box.createHorizontalBox();
 		hbox2.add(jLabelCopyright);
 				
-		JLabel jLabelCountry = new JLabel("Ukraine, Dnipropetrovsk");
+		JLabel jLabelCountry = new JLabel("Ukraine, Dnipro (Dnipropetrovsk)");
 		jLabelCountry.setFont(new Font("Dialog", Font.BOLD, 12));
 		Box hbox3 = Box.createHorizontalBox();
 		hbox3.add(jLabelCountry);
