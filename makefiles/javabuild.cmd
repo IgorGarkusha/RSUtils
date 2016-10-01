@@ -13,17 +13,19 @@ copy gplv3-127x51.png ..\..\..\class\org\rsutils\
 cd ..\..\..\
 jar cf ..\..\..\bin\librsutils_downloader.jar -C .\class .
 
-echo.
-echo BUILD MODIS_DOWNLOADER...
-echo.
+@rem echo.
+@rem echo BUILD MODIS_DOWNLOADER...
+@rem echo.
 
-cd ..\modis\modis_downloader\src\modis_downloader\
+@rem cd ..\modis\modis_downloader\src\modis_downloader\
 
-javac -Xlint -d ..\..\class\ -cp ..\..\src;..\..\..\..\..\..\bin\librsutils_downloader.jar;. *.java
-cd ..\..\
-jar cf ..\..\..\..\bin\modis_downloader.jar -C .\class .
+@rem javac -Xlint -d ..\..\class\ -cp ..\..\src;..\..\..\..\..\..\bin\librsutils_downloader.jar;. *.java
+@rem cd ..\..\
+@rem jar cf ..\..\..\..\bin\modis_downloader.jar -C .\class .
 
-cd ..\..\
+@rem cd ..\..\
+
+cd ..
 
 echo.
 echo BUILD S1A_GRD_DOWNLOADER...
@@ -78,22 +80,22 @@ echo.
 echo CREATE START SCRIPTS...
 echo.
 
-echo @echo off >  bin\modis_downloader.cmd
-echo java -cp %RSUTILS_HOME%\librsutils_downloader.jar;%RSUTILS_HOME%\modis_downloader.jar;. modis_downloader.modis_download %%* >> bin\modis_downloader.cmd
-echo. >> bin\modis_downloader.cmd
+@rem echo @echo off >  bin\modis_downloader.cmd
+@rem echo java -cp %%RSUTILS_HOME%%\librsutils_downloader.jar;%%RSUTILS_HOME%%\modis_downloader.jar;. modis_downloader.modis_download %%* >> bin\modis_downloader.cmd
+@rem echo. >> bin\modis_downloader.cmd
 
 echo @echo off > bin\s1a_grd_downloader.cmd
-echo java -cp %RSUTILS_HOME%\librsutils_downloader.jar;%RSUTILS_HOME%\s1a_grd_downloader.jar;. s1a_grd_downloader.s1a_grd_download %%* >> bin\s1a_grd_downloader.cmd
+echo java -cp "%%RSUTILS_HOME%%"\librsutils_downloader.jar;"%%RSUTILS_HOME%%"\s1a_grd_downloader.jar;. s1a_grd_downloader.s1a_grd_download %%* >> bin\s1a_grd_downloader.cmd
 echo. >> bin\s1a_grd_downloader.cmd
 
 echo @echo off > bin\s1a_slc_downloader.cmd
-echo java -cp %RSUTILS_HOME%\librsutils_downloader.jar;%RSUTILS_HOME%\s1a_slc_downloader.jar;. s1a_slc_downloader.s1a_slc_download %%* >> bin\s1a_slc_downloader.cmd
+echo java -cp "%%RSUTILS_HOME%%"\librsutils_downloader.jar;"%%RSUTILS_HOME%%"\s1a_slc_downloader.jar;. s1a_slc_downloader.s1a_slc_download %%* >> bin\s1a_slc_downloader.cmd
 echo. >> bin\s1a_slc_downloader.cmd
 
 echo @echo off > bin\s2a_tile_downloader.cmd
-echo java -cp %RSUTILS_HOME%\librsutils_downloader.jar;%RSUTILS_HOME%\s2a_tile_downloader.jar;. s2a_tile_downloader.s2_tile_download %%* >> bin\s2a_tile_downloader.cmd
+echo java -cp "%%RSUTILS_HOME%%"\librsutils_downloader.jar;"%%RSUTILS_HOME%%"\s2a_tile_downloader.jar;. s2a_tile_downloader.s2_tile_download %%* >> bin\s2a_tile_downloader.cmd
 echo. >> bin\s2a_tile_downloader.cmd
 
 echo @echo off > bin\satellite_coverage.cmd
-echo java -jar %RSUTILS_HOME%\SatelliteCoverage.jar >> bin\satellite_coverage.cmd
+echo java -jar "%%RSUTILS_HOME%%"\SatelliteCoverage.jar >> bin\satellite_coverage.cmd
 echo. >> bin\satellite_coverage.cmd
