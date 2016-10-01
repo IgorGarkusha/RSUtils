@@ -1,6 +1,8 @@
 #!/bin/bash
 CUR_DIR=`pwd`
 
+OPJ_VER=2.1.1
+
 MACOS=`uname -a | awk '{print $1;}' | grep Darwin`
 FREEBSD=`uname -a | awk '{print $1;}' | grep FreeBSD`
 
@@ -19,19 +21,19 @@ make -f ./makefiles/makefile clean
 
 rm -f ./src/downloaders/lib/class/org/rsutils/downloader/*
 rm -f ./src/downloaders/lib/class/org/rsutils/*
-rm -f ./src/downloaders/modis/modis_downloader/class/modis_downloader/*
+# rm -f ./src/downloaders/modis/modis_downloader/class/modis_downloader/*
 rm -f ./src/downloaders/sentinel/s1a_grd_downloader/class/s1a_grd_downloader/*
 rm -f ./src/downloaders/sentinel/s1a_slc_downloader/class/s1a_slc_downloader/*
 rm -f ./src/downloaders/sentinel/s2a_tile_downloader/class/s2a_tile_downloader/*
 rm -f ./src/satellite_coverage/org/rsutils/mapviewer/*.class
 
 cd $CUR_DIR
-rm -Rf ./bin/*
+rm -Rf ./bin
+rm -Rf ./obj
+rm -Rf ./objects
 
-echo ""
-echo "./bin:"
-ls -lh ./bin
-echo ""
+rm -Rf ./external/openjpeg/openjpeg-${OPJ_VER}
+
 echo ""
 echo "CLEAR COMPLETE."
 echo ""
