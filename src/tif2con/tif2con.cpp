@@ -28,6 +28,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef __MSVC__
+#include <strings.h>
+#endif
+
 #include "../lib/utils.h"
 
 #define PROG_VERSION "1"
