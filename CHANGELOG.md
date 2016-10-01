@@ -1,3 +1,13 @@
+## RSUtils. Version 2.24.09.2016
+
+1. Fixed many bugs.
+2. Add new program: l8_dn_batch_convert.
+3. Big update program: s2a_tile_downloader (include AWS-support!).
+4. Update modules: l8_dn_conversion.cpp, check_reflectance.cpp.
+5. Update downloaders, libraries.
+6. Include support OpenJPEG 2000 Library ver.2.1.1.
+7. Temporarily removed from the package modis_downloader.
+
 ## RSUtils. Version 1.17.07.2016
 
 1. Add new program: calc_index_stack.

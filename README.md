@@ -1,6 +1,6 @@
 # RSUtils
 
-**Remote Sensing Utilities. Version 1.17.07.2016**
+**Remote Sensing Utilities. Version 2.24.09.2016**
 
 **Welcome to RSUtils (Remote Sensing Utilities - Extentions GDAL/OGR)!**
 
@@ -9,16 +9,17 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipro (Dnipropetrovsk).
 
-Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
+Binary builds release: <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/README.md">Releases</a>.
 
-**Remark (LP DAAC Data Pool <a href="https://lpdaac.usgs.gov/data_access/data_pool">https://lpdaac.usgs.gov/data_access/data_pool</a>):**
-**"As of July 20, 2016, users are now required to log in with their Earthdata login credentials to obtain data. When accessing data via the Data Pool direct access links, you will now be prompted to enter your credentials. Script users should modify their code to reflect this change. For examples please see the Command Line Tips document".**
+Detailed build instructions: <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/How-to-build.md">How-to-build</a>.
 
-**In this regard, version modis_downloader awaiting updates... :(**
-
-
+Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">CHANGELOG</a>.
 
 ## Previous versions
+
+Version 1.17.07.2016:
+
+https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.17.07.2016.tar.gz?raw=true
 
 Version 1.10.07.2016:
 
@@ -35,6 +36,9 @@ https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.17.04
 Version 1.09.03.2016:
 
 https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_1.09.03.2016.tar.gz?raw=true
+
+
+## Licenses
 
 ## GDAL/OGR General
 
@@ -135,66 +139,43 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc., 
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-## BUILD RSUtils
+## OpenJPEG Library
 
-### RSUtils: build requirements
+The copyright in this software is being made available under the 2-clauses 
+BSD License, included below. This software may be subject to other third 
+party and contributor rights, including patent rights, and no such rights
+are granted under this license.
 
-1. For GNU/Linux: installed GNU GCC/G++ compilers;
-   for Mac OS X: installed Xcode;
-   for Windows 32/64-bit: installed Windows SDK or Visual Studio with Visual C++ compiler
-   or for Windows installed MinGW-32 GNU GCC compiler (for example with IDE Code::Blocks);
-   for FreeBSD: installed Clang etc.
+Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
+Copyright (c) 2002-2014, Professor Benoit Macq
+Copyright (c) 2003-2014, Antonin Descampe
+Copyright (c) 2003-2009, Francois-Olivier Devaux
+Copyright (c) 2005, Herve Drolon, FreeImage Team
+Copyright (c) 2002-2003, Yannick Verschueren
+Copyright (c) 2001-2003, David Janssens
+Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+Copyright (c) 2012, CS Systemes d'Information, France
 
-2. Installed the library GDAL (only for GNU/Linux, Mac OS X, FreeBSD (with support GEOS!)).
+All rights reserved.
 
-3. Installed the library Libxml2 (only for GNU/Linux, Mac OS X, FreeBSD).
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
 
-4. Installed OpenJDK 1.8 or Oracle JDK 1.8.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS `AS IS'
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 
-5. Installed Quantum GIS 2.12 or high (necessarily only for MS Windows! For other -- optional).
-
-
-### RSUtils: building in GNU/Linux, Mac OS X, FreeBSD
-
-1.Add to PATH the location jdk/bin directory.
-
-2.Add to PATH the location RSUtils/bin directory. Create system variable 
-RSUTILS_HOME and set her the value in path to RSUtils/bin directory.
-
-For example in GNU/Linux: 
-
-	export RSUTILS_HOME=/home/username/bin/RSUtils/bin
-	
-	export PATH=$PATH:$RSUTILS_HOME
-	
-For example in Mac OS X:
-
-	export RSUTILS_HOME=/Users/username/Documents/bin/RSUtils/bin
-	
-	export PATH=$PATH:$RSUTILS_HOME
-	
-For FreeBSD -- setup locale with UTF-8 support; support GEOS in GDAL library must be enabled!!!
-
-3.Execute from console file build.sh (bash ./build.sh). To clean the build directory to use the file clear.sh (bash ./clear.sh).
-
-
-### RSUtils: building in Microsoft Windows
-
-1.Add to PATH the location jdk\bin directory.
-
-2.Add to PATH the location RSUtils\bin directory. Create system variable 
-RSUTILS_HOME and set her the value in path to RSUtils\bin directory.
-
-For example: 
-
-	RSUTILS_HOME=C:\RSUtils\bin
-	
-3.Create system variable QGIS_HOME and set her the value in path to QGIS 2.12 (or high version) directory.
-
-For example: 
-
-	QGIS_HOME=C:\QGIS
-	
-4.Start Windows SDK Command Prompt. Go to the directory RSUtils and execute file 
-build_msvc.cmd (for MS Visual C++ compiler) or build_mingw32.cmd (for MinGW-32 GNU GCC).
-To clean the build directory to use the file clear_msvc.cmd or clear_mingw32.cmd (depending on the build).
