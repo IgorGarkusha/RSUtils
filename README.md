@@ -9,11 +9,13 @@ RSUtils - this is a small empowerment tools GDAL command. RSUtils based on the c
 
 Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipro (Dnipropetrovsk).
 
-Binary builds release: <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/README.md">Releases</a>.
+<a href="https://github.com/IgorGarkusha/RSUtils/blob/master/LICENSE">License</a>
 
-Detailed build instructions: <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/How-to-build.md">How-to-build</a>.
+<a href="https://github.com/IgorGarkusha/RSUtils/blob/master/README.md">Binary builds release</a>
 
-Change history - in the file <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">CHANGELOG</a>.
+<a href="https://github.com/IgorGarkusha/RSUtils/blob/master/How-to-build.md">Detailed build instructions</a>
+
+<a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">Change history</a>
 
 ## Previous versions
 
