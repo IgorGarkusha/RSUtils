@@ -1,8 +1,9 @@
 #!/bin/bash
 
-OPJ_VER=2.1.1
+OPJ_VER=2.1.2
 
 mkdir ./bin
+mkdir ${RSUTILS_HOME}/bin
 mkdir ./bin/lib
 
 MACOS=`uname -a | awk '{print $1;}' | grep Darwin`
