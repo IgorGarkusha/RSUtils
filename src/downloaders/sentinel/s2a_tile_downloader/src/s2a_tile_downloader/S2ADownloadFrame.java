@@ -78,7 +78,7 @@ public class S2ADownloadFrame extends ConsoleS2ADownloadFrame implements Runnabl
 		btnExit = new JButton("Exit");
 		btnAbout = new JButton("About");
 		
-		cbBands = new JComboBox<String>(new String[]{"all", "10 m - 2, 3, 4, 8", "20 m - 5, 6, 7, 8b(13), 11, 12", "60 m - 1, 9, 10"});
+		cbBands = new JComboBox<String>(new String[]{"all", "10 m - 2, 3, 4, 8", "20 m - 5, 6, 7, 8a(13), 11, 12", "60 m - 1, 9, 10"});
 		
 		txtWorkDir = new JTextField(20);
 		txtWorkDir.setEditable(false);

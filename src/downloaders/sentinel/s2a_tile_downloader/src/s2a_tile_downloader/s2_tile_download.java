@@ -27,7 +27,7 @@ import javax.swing.*;
 public class s2_tile_download
 {
 	public static final String PROG_VERSION = "1";
-	public static final String DATE_VERSION = "24.09.2016";
+	public static final String DATE_VERSION = "24.09.2016.2";
 	
 	public static void main(String[] args)
 	{
