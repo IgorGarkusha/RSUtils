@@ -31,7 +31,7 @@
 #define NODATAVALUE -9999
 
 #define PROG_VERSION "3"
-#define DATE_VERSION "17.07.2016"
+#define DATE_VERSION "06.12.2016"
 
 int progress(int index, int count, int oldpersent);
 float getIndexValue(float vBand1, float vBand2, int typeIndexFlag, bool *flState);
@@ -140,6 +140,12 @@ int main(int argc, char* argv[])
 		fputs("                 3.618*EVI-0.118\n", stderr);
 		fputs("                 3.618*(2.5*[(Band1 - Band2)/(1 + Band1 + 6*Band2 - 7.5*Band3)])-0.118\n", stderr);
 		fputs("                 3.618*(2.5*[(NIR - RED)/(1 + NIR + 6*RED - 7.5*BLUE)])-0.118\n", stderr);
+		fputs("  5 -- NMDI   -- Normalized Multi-band Drought Index\n", stderr);
+		fputs("                 [Band1 - (Band2 - Band3)]/[Band1 + (Band2 - Band3)]\n", stderr);
+		fputs("                 [NIR - (SWIR1640 - SWIR2130)]/[NIR + (SWIR1640 - SWIR2130)]\n", stderr);
+		fputs("                 Reference: Wang, L., and J. Qu. \"NMDI: A Normalized Multi-Band Drought Index\n", stderr);
+		fputs("                 for Monitoring Soil and Vegetation Moisture with Satellite Remote Sensing.\"\n", stderr);
+		fputs("                 Geophysical Research Letters 34 (2007): L20405.\n", stderr);
 		
 		fputs("\n", stderr);
 		
@@ -531,7 +537,11 @@ float getIndexValue(float vBand1, float vBand2, float vBand3, int typeSubIndexFl
 				zn = (1.0f+vBand1 + 6.0f*vBand2 - 7.5f*vBand3);
 				if(0 == zn) index = NODATAVALUE;
 				else { index = 3.618f*(2.5f*((vBand1 - vBand2)/zn))-0.118f; *flState = true; }
-				break;				
+				break;
+		case 105: // NMDI = [Band1 - (Band2 - Band3)]/[Band1 + (Band2 - Band3)]
+				if((vBand1 + vBand2 - vBand3)!=0) { index = (vBand1 - vBand2 + vBand3)/(vBand1 + vBand2 - vBand3); *flState = true; }
+				else index = NODATAVALUE;
+				break;
 					
 		default: index = NODATAVALUE;
 	}
