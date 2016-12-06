@@ -31,19 +31,19 @@
 #define NODATAVALUE -9999
 
 #define PROG_VERSION "1"
-#define DATE_VERSION "17.07.2016"
+#define DATE_VERSION "06.12.2016"
 
 int count_indexes = -1;
 int * indexes = NULL;
 int idSensor = -1;
 float * noDataValues = NULL;
 
-typedef enum{OLI27, OLI25, OLI45, TM, TM34, ETM, ETM34, MSI, MSI10}SENSOR;
+typedef enum{OLI27, OLI25, OLI45, TM, TM34, ETM, ETM34, MSI, MSI10, MSI20}SENSOR;
 
 typedef enum{NDVI, GNDVI, BNDVI, NBR, NDSII, NDWI, NDSI, NDSI2, RVI, SW,
 			 RB, SN, DVI, IPVI, EVI, EVI2, SAVI, SI_BLUE, SI_GREEN, 
 			 BI_RED_NIR, BI_GREEN_RED, CI_GREEN, CI_RED, WDRVI, GBNDVI,
-			 VARI, LAI
+			 VARI, LAI, NMDI
 			}V_INDEX;
 
 void printHelp();
@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
 			if(CUtils::isFloat32DataType(pSrcDataset))
 			{
 				bands = GDALGetRasterCount(pSrcDataset);
-				if( ((bands == 6)||(bands == 4)||(bands == 2)) )
+				if( ((bands == 6)||(bands == 4)||(bands == 2)||(bands == 3)) )
 				{
 					pSrcBand = GDALGetRasterBand(pSrcDataset, 1);
 					if(pSrcBand != NULL)
@@ -186,6 +186,7 @@ int getIdSensorFromName(const char * sensorName)
 	if( strcmp(sensorName, "etm34") == 0 ) 	return ETM34;
 	if( strcmp(sensorName, "msi") == 0 ) 	return MSI;
 	if( strcmp(sensorName, "msi10") == 0 ) 	return MSI10;
+	if( strcmp(sensorName, "msi20") == 0 ) 	return MSI20;
 	return -1;
 }
 
@@ -218,6 +219,7 @@ int getIndexFromName(const char * strIndexName)
 	if( strcmp(strIndexName, "gbndvi") == 0 )	return GBNDVI;
 	if( strcmp(strIndexName, "vari") == 0 )		return VARI;
 	if( strcmp(strIndexName, "lai") == 0 )		return LAI;
+	if( strcmp(strIndexName, "nmdi") == 0 )		return NMDI;
 	
 	return -1;
 }
@@ -253,6 +255,7 @@ const char * getIndexName(int index)
 		case GBNDVI: return "GBNDVI";
 		case VARI: return "VARI";
 		case LAI: return "LAI";
+		case NMDI: return "NMDI";
 	}
 	
 	return "UNKNOWN";
@@ -318,6 +321,7 @@ float getVIndex(float ** pSrcLine, int srcBands, int column, int index, int idSe
 {
 	int BLUE=0, GREEN=1, RED=2, NIR=3, SWIR1=4, SWIR2=5;
 	float zn = 0;
+	int NIR8A = 0, SWIR11 = 1, SWIR12 = 2;
 	
 	if((idSensor == MSI10)||(idSensor == OLI25)) { SWIR1 = SWIR2 = -1; }
 	else
@@ -426,6 +430,9 @@ float getVIndex(float ** pSrcLine, int srcBands, int column, int index, int idSe
 			zn = (1.0f+pSrcLine[NIR][column] + 6.0f*pSrcLine[RED][column] - 7.5f*pSrcLine[BLUE][column]);
 			if(0 == zn) return NODATAVALUE;
 			else return 3.618f*(2.5f*((pSrcLine[NIR][column] - pSrcLine[RED][column])/zn))-0.118f;
+		case NMDI:
+			if(idSensor != MSI20) return NODATAVALUE;
+			if((pSrcLine[NIR8A][column] + pSrcLine[SWIR11][column] - pSrcLine[SWIR12][column])!=0) return (pSrcLine[NIR8A][column] - pSrcLine[SWIR11][column] + pSrcLine[SWIR12][column])/(pSrcLine[NIR8A][column] + pSrcLine[SWIR11][column] - pSrcLine[SWIR12][column]); else return NODATAVALUE;
 	}
 	
 	return NODATAVALUE;
@@ -466,6 +473,7 @@ void printHelp()
 	fputs("\tetm   -- Landsat-7   ETM+ (bands: 1,2,3,4,5,7)\n", stderr);
 	fputs("\tetm34 -- Landsat-7   ETM+ (bands: 3,4)\n", stderr);
 	fputs("\tmsi   -- Sentinel-2A MSI  (bands: 2,3,4,8,11,12)\n", stderr);
+	fputs("\tmsi20 -- Sentinel-2A MSI  (bands: 8a,11,12)\n", stderr);
 	fputs("\tmsi10 -- Sentinel-2A MSI  (bands: 2,3,4,8)\n", stderr);
 	fputs("\n", stderr);
 	fputs("NAME_OF_INDEX (there is more information in help CALC_INDEX):\n", stderr);
@@ -495,7 +503,8 @@ void printHelp()
 	fputs("\twdrvi        -- Wide dynamic range vegetation index -- (0.2*NIR-RED)/(0.2*NIR+RED)\n", stderr);
 	fputs("\tgbndvi       -- Green-Blue NDVI -- [NIR - (GREEN + BLUE)]/[NIR + (GREEN + BLUE)]. Unsupport OLI45, TM34, ETM34 mode!\n", stderr);
 	fputs("\tvari         -- Visible Atmospherically Resistant Index -- [(GREEN - RED)]/(GREEN + RED + BLUE)]. Unsupport OLI45, TM34, ETM34 mode!\n", stderr);
-	fputs("\tlai          -- Green Leaf Area Index -- (3.618*EVI-0.118). Unsupport OLI45, TM34, ETM34 mode!\n", stderr);	
+	fputs("\tlai          -- Green Leaf Area Index -- (3.618*EVI-0.118). Unsupport OLI45, TM34, ETM34 mode!\n", stderr);
+	fputs("\tnmdi         -- Normalized Multi-band Drought Index -- [NIR - (SWIR1640 - SWIR2130)]/[NIR + (SWIR1640 - SWIR2130)]. Support MSI20 mode!\n", stderr);
 	
 	fputs("\n", stderr);
 
