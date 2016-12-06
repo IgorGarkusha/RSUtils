@@ -32,7 +32,7 @@
 #define COUNT_OUT_BANDS 4
 
 #define PROG_VERSION "1"
-#define DATE_VERSION "10.07.2016"
+#define DATE_VERSION "10.07.2016.2"
 
 void printHelp();
 //bool loadTCCoeffTableForSensor(const char * fileName);
@@ -313,7 +313,7 @@ void printHelp()
 	fputs("\ttm5   -- Landsat-5 TM    (bands: 1,2,3,4,5,7)\n", stderr);
 	fputs("\ttm4   -- Landsat-4 TM    (bands: 1,2,3,4,5,7)\n", stderr);
 	//fputs("\tmsi10 -- Sentinel-2A MSI (bands: 2,3,4,8)\n", stderr);
-	fputs("\tmsi   -- Sentinel-2A MSI (based on Landsat-5 TM coeff.; bands: 2,3,4,8,11,12)\n\n", stderr);
-	
+	fputs("\tmsi   -- Sentinel-2A MSI (temporarily based on Landsat-5 TM coeff.; bands: 2,3,4,8,11(10m),12(10m))\n\n", stderr);
+
 	fputs("NoDataModeFlag: Value of pixel with coordinates (1,1)\n\n", stderr);
 }
