@@ -1,6 +1,6 @@
 # RSUtils
 
-**Remote Sensing Utilities. Version 2.24.09.2016**
+**Remote Sensing Utilities. Version 2.06.12.2016**
 
 **Welcome to RSUtils (Remote Sensing Utilities - Extentions GDAL/OGR)!**
 
@@ -18,6 +18,10 @@ Copyright (C) 2016, Igor Garkusha. Ukraine, Dnipro (Dnipropetrovsk).
 <a href="https://github.com/IgorGarkusha/RSUtils/blob/master/CHANGELOG.md">Change history</a>
 
 ## Previous versions
+
+Version 2.24.09.2016:
+
+https://github.com/IgorGarkusha/RSUtils/blob/archive/archive/RSUtils_ver_2.24.09.2016.tar.gz?raw=true
 
 Version 1.17.07.2016:
 
