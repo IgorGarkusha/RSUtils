@@ -1,3 +1,9 @@
+## RSUtils. Version 2.06.12.2016
+
+1. Add NMDI-index to calc_index and calc_index_stack.
+2. Fix s2a_tile_downloader.
+3. Include support OpenJPEG 2000 Library ver.2.1.2.
+
 ## RSUtils. Version 2.24.09.2016
 
 1. Fixed many bugs.
