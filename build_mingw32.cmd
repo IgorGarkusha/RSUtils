@@ -14,7 +14,7 @@ sleep 3
 set PATH=%PATH%;%QGIS_HOME%\bin;%QGIS_HOME%\apps\msys\bin
 mv "%QGIS_HOME%"\apps\msys\bin\sh.exe "%QGIS_HOME%"\apps\msys\bin\-sh.exe
 
-set OPJ_VER=2.1.1
+set OPJ_VER=2.1.2
 set TIFFLIB="%QGIS_HOME%\bin\libtiff.dll"
 
 mkdir bin

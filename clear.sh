@@ -1,7 +1,7 @@
 #!/bin/bash
 CUR_DIR=`pwd`
 
-OPJ_VER=2.1.1
+OPJ_VER=2.1.2
 
 MACOS=`uname -a | awk '{print $1;}' | grep Darwin`
 FREEBSD=`uname -a | awk '{print $1;}' | grep FreeBSD`

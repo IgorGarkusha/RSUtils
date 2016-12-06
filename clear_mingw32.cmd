@@ -4,7 +4,7 @@ set PATH=%PATH%;%QGIS_HOME%\bin;%QGIS_HOME%\apps\msys\bin
 
 mv "%QGIS_HOME%"\apps\msys\bin\sh.exe "%QGIS_HOME%"\apps\msys\bin\-sh.exe
 
-set OPJ_VER=2.1.1
+set OPJ_VER=2.1.2
 
 set PLATFORM=mingw32
 mingw32-make.exe -f makefiles\makefile clean
